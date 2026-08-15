@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useSyncExternalStore } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
 interface RouteInfo {
   route: string
@@ -35,9 +35,19 @@ function parseHash(hash: string): RouteInfo {
   return { route: '/', params: {} }
 }
 
+// Cache to ensure stable object references between renders
+let cachedHash = ''
+let cachedSnapshot: RouteInfo = { route: '/', params: {} }
+
+const defaultSnapshot: RouteInfo = { route: '/', params: {} }
+
 function getHashSnapshot(): RouteInfo {
-  if (typeof window === 'undefined') return { route: '/', params: {} }
-  return parseHash(window.location.hash || '#/')
+  const hash = typeof window !== 'undefined' ? (window.location.hash || '#/') : ''
+  if (hash !== cachedHash) {
+    cachedHash = hash
+    cachedSnapshot = parseHash(hash)
+  }
+  return cachedSnapshot
 }
 
 function subscribeToHash(callback: () => void): () => void {
@@ -46,7 +56,7 @@ function subscribeToHash(callback: () => void): () => void {
 }
 
 export function useHashRouter() {
-  const routeInfo = useSyncExternalStore(subscribeToHash, getHashSnapshot, getHashSnapshot)
+  const routeInfo = useSyncExternalStore(subscribeToHash, getHashSnapshot, () => defaultSnapshot)
 
   const navigate = useCallback((hash: string) => {
     if (typeof window !== 'undefined') {
