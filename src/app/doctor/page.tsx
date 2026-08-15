@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLogin from '@/components/admin/AdminLogin';
 import AdminLayout from '@/components/admin/AdminLayout';
 import type { AdminView } from '@/components/admin/AdminSidebar';
@@ -15,13 +15,17 @@ import BlockedDatesManager from '@/components/admin/BlockedDatesManager';
 import SettingsManager from '@/components/admin/SettingsManager';
 
 export default function DoctorPage() {
-  const [authenticated] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return !!localStorage.getItem('admin-token');
-    }
-    return false;
-  });
+  // Always start unauthenticated to match server render, then check after mount
+  const [authenticated, setAuthenticated] = useState(false);
   const [currentView, setCurrentView] = useState<AdminView>('dashboard');
+
+  useEffect(() => {
+    const token = localStorage.getItem('admin-token');
+    if (token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- must check localStorage after mount to avoid hydration mismatch
+      setAuthenticated(true);
+    }
+  }, []);
 
   const handleLogin = () => {
     window.location.reload();
