@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,20 +7,217 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// ============ CLINIC ============
+
+model Clinic {
+  id          String   @id @default(cuid())
+  name        String
+  tagline     String?
+  description String?
+  logo        String?
+  favicon     String?
+  phone       String?
+  email       String?
+  whatsapp    String?
+  address     String?
+  googleMapsUrl String?
+  facebook    String?
+  instagram   String?
+  youtube     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  settings    ClinicSettings[]
+  services    Service[]
+  appointments Appointment[]
+  workingHours WorkingHour[]
+  blockedDates BlockedDate[]
+  gallery      GalleryImage[]
+  testimonials Testimonial[]
+  blogs        BlogPost[]
 }
 
-model Post {
+model ClinicSettings {
+  id                    String   @id @default(cuid())
+  clinicId              String
+  clinic                Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+
+  // Doctor info
+  doctorName            String?
+  doctorQualification   String?
+  doctorExperience      String?
+  doctorBio             String?
+  doctorPhoto           String?
+  doctorSpecializations String?
+
+  // Appointment settings
+  defaultSlotDuration   Int      @default(30)
+  bookingAdvanceDays    Int      @default(30)
+
+  // Stats for trust section
+  statYears             String?
+  statPatients          String?
+  statServices          String?
+  statRating            String?
+
+  // SEO
+  homeSeoTitle          String?
+  homeSeoDescription    String?
+
+  // Admin password
+  adminPassword         String?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// ============ SERVICES ============
+
+model Service {
+  id               String   @id @default(cuid())
+  clinicId         String
+  clinic           Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  name             String
+  slug             String
+  shortDescription String?
+  fullDescription  String?
+  image            String?
+  price            Float?
+  duration         Int      @default(30)
+  featured         Boolean  @default(false)
+  active           Boolean  @default(true)
+  displayOrder     Int      @default(0)
+  seoTitle         String?
+  seoDescription   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  appointments     Appointment[]
+}
+
+// ============ APPOINTMENTS ============
+
+model Appointment {
+  id              String   @id @default(cuid())
+  clinicId        String
+  clinic          Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  serviceId       String?
+  service         Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  patientName     String
+  patientPhone    String
+  patientEmail    String?
+  patientMessage  String?
+
+  appointmentDate String   // YYYY-MM-DD
+  appointmentTime String   // HH:mm
+  status          String   @default("Pending") // Pending, Confirmed, Completed, Cancelled, No Show
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([clinicId, appointmentDate, appointmentTime])
+}
+
+// ============ WORKING HOURS ============
+
+model WorkingHour {
   id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  dayOfWeek Int      // 0=Monday, 6=Sunday
+  enabled   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  sessions  WorkingSession[]
+}
+
+model WorkingSession {
+  id             String       @id @default(cuid())
+  workingHourId  String
+  workingHour    WorkingHour  @relation(fields: [workingHourId], references: [id], onDelete: Cascade)
+  startTime      String       // HH:mm
+  endTime        String       // HH:mm
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+// ============ BLOCKED DATES ============
+
+model BlockedDate {
+  id        String   @id @default(cuid())
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  date      String   // YYYY-MM-DD
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@unique([clinicId, date])
+}
+
+// ============ GALLERY ============
+
+model GalleryImage {
+  id           String   @id @default(cuid())
+  clinicId     String
+  clinic       Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  title        String?
+  image        String
+  category     String?
+  displayOrder Int      @default(0)
+  visible      Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ============ TESTIMONIALS ============
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  clinicId     String
+  clinic       Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  patientName  String
+  review       String
+  rating       Int      @default(5)
+  photo        String?
+  published    Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ============ BLOG ============
+
+model BlogPost {
+  id              String   @id @default(cuid())
+  clinicId        String
+  clinic          Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  title           String
+  slug            String
+  featuredImage   String?
+  content         String?
+  category        String?
+  tags            String?
+  author          String?
+  published       Boolean  @default(false)
+  publishedAt     DateTime?
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([clinicId, slug])
+}
+
+// ============ CONTACT SUBMISSIONS ============
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

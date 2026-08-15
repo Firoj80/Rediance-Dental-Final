@@ -14,24 +14,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
+  title: "Radiance Dental Care & Facial Trauma Centre",
+  description: "Comprehensive dental care in Siwan, Bihar. Dr. Shahid Raza provides modern dental treatments with gentle care and affordable prices.",
+  keywords: ["dental", "dentist", "Siwan", "Bihar", "dental care", "oral health", "Dr. Shahid Raza"],
+  authors: [{ name: "Radiance Dental Care" }],
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "Radiance Dental Care & Facial Trauma Centre",
+    description: "Comprehensive dental care in Siwan, Bihar with modern technology and gentle treatment.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "Radiance Dental Care",
+    description: "Comprehensive dental care in Siwan, Bihar.",
   },
 };
 
