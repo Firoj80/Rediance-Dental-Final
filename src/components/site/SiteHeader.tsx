@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Stethoscope, Menu, Phone, X } from 'lucide-react'
+import { Stethoscope, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
@@ -91,20 +91,8 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          {/* Desktop CTA + Phone */}
+          {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            {clinicData?.phone && (
-              <a
-                href={`tel:${clinicData.phone}`}
-                className={cn(
-                  'flex items-center gap-1.5 text-sm transition-colors',
-                  scrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-                )}
-              >
-                <Phone className="w-4 h-4" />
-                {clinicData.phone}
-              </a>
-            )}
             <Button
               size="sm"
               onClick={() => handleNav('#/book')}
