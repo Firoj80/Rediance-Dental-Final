@@ -21,28 +21,13 @@ const NAV_LINKS = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [onHomePage, setOnHomePage] = useState(true)
   const clinicData = useSiteStore((s) => s.clinicData)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  // Detect home page for transparent vs solid header
-  useEffect(() => {
-    const check = () => {
-      const hash = window.location.hash
-      setOnHomePage(hash === '' || hash === '#/' || hash === '#/home')
-    }
-    check()
-    window.addEventListener('hashchange', check)
-    return () => window.removeEventListener('hashchange', check)
-  }, [])
-
-  // On non-home pages, always show solid header
-  const solid = !onHomePage || scrolled
 
   const handleNav = (hash: string) => {
     setMobileOpen(false)
@@ -53,9 +38,9 @@ export function SiteHeader() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        solid
-          ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_3px_rgb(0_0_0/0.05)]'
-          : 'bg-white/80 backdrop-blur-xl'
+        scrolled
+          ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_3px_rgb(0_0_0/0.06)]'
+          : 'bg-white/80 backdrop-blur-md'
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -112,7 +97,7 @@ export function SiteHeader() {
             <Button
               size="sm"
               onClick={() => handleNav('#/book')}
-              className="bg-amber-500 hover:bg-amber-600 text-white rounded-lg px-5 font-medium shadow-sm hover:shadow-md transition-shadow"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg px-5 font-medium shadow-sm hover:shadow-md transition-shadow"
             >
               Book Appointment
             </Button>
@@ -159,7 +144,7 @@ export function SiteHeader() {
                 </nav>
                 <div className="p-4 border-t border-slate-100">
                   <Button
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-semibold shadow-sm"
+                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold shadow-sm"
                     onClick={() => handleNav('#/book')}
                   >
                     Book Appointment

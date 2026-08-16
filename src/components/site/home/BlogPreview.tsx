@@ -2,7 +2,7 @@
 
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
-import { CalendarDays } from 'lucide-react'
+import { CalendarDays, ArrowRight } from 'lucide-react'
 
 export function BlogPreview() {
   const blogPosts = useSiteStore((s) => s.blogPosts)
@@ -14,69 +14,78 @@ export function BlogPreview() {
   const latestPosts = blogPosts.slice(0, 3)
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-16 lg:py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-8 text-center">
+        <div className="max-w-2xl mx-auto text-center mb-12">
           <span className="section-label text-emerald-600 mb-3 block">Blog</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
             Latest from Our Blog
           </h2>
+          <p className="text-slate-500 leading-relaxed">
+            Tips, guides, and news about dental health.
+          </p>
         </div>
 
-        {/* Blog Cards Grid — horizontal cards */}
-        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Blog Cards */}
+        <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {latestPosts.map((post, i) => (
             <article
               key={post.id}
               onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
               className={`
-                bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover
-                flex flex-col sm:flex-row cursor-pointer
-                transition-all duration-500
+                bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer
+                hover:shadow-lg hover:shadow-slate-900/5 transition-all duration-300
                 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
               `}
-              style={{ transitionDelay: `${i * 100}ms` }}
+              style={{ transitionDelay: `${i * 80}ms` }}
             >
-              {/* Image side */}
-              <div className="sm:w-48 h-40 sm:h-auto bg-slate-100 flex-shrink-0">
-                {post.featuredImage ? (
-                  <img
-                    src={post.featuredImage}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-amber-50 flex items-center justify-center">
-                    <CalendarDays className="w-8 h-8 text-emerald-200" />
-                  </div>
-                )}
-              </div>
+              {/* Image */}
+              {post.featuredImage ? (
+                <div className="h-44 overflow-hidden">
+                  <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                </div>
+              ) : (
+                <div className="h-44 bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center">
+                  <span className="text-4xl text-emerald-100">📰</span>
+                </div>
+              )}
 
-              {/* Content side */}
-              <div className="p-5 flex flex-col justify-center">
+              {/* Content */}
+              <div className="p-5">
                 {post.category && (
-                  <span className="text-emerald-600 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
                     {post.category}
                   </span>
                 )}
-                <h3 className="text-base font-semibold text-slate-900 line-clamp-2 hover:text-emerald-700 transition-colors cursor-pointer mb-2">
+                <h3 className="text-base font-semibold text-slate-900 mt-3 mb-2 line-clamp-2 leading-snug">
                   {post.title}
                 </h3>
-                <p className="text-xs text-slate-400">
-                  {post.publishedAt
-                    ? new Date(post.publishedAt).toLocaleDateString('en-IN', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })
-                    : ''}
-                  {post.author && post.publishedAt ? ' · ' : ''}
-                  {post.author || ''}
-                </p>
+                <div className="flex items-center justify-between">
+                  {post.publishedAt && (
+                    <span className="text-xs text-slate-400 flex items-center gap-1">
+                      <CalendarDays className="w-3 h-3" />
+                      {new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    </span>
+                  )}
+                  <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                    Read <ArrowRight className="w-3 h-3" />
+                  </span>
+                </div>
               </div>
             </article>
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-10 text-center">
+          <button
+            onClick={() => { window.location.hash = '#/blog' }}
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
+          >
+            View All Posts
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </section>

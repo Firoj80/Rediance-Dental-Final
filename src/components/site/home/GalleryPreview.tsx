@@ -1,6 +1,6 @@
 'use client'
 
-import { Camera, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
 
@@ -13,17 +13,20 @@ export function GalleryPreview() {
   const previewImages = galleryImages.slice(0, 6)
 
   return (
-    <section className="py-20 lg:py-28 bg-[#F8FAFC]">
+    <section className="py-16 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-8 text-center">
+        <div className="max-w-2xl mx-auto text-center mb-12">
           <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
             A Glimpse of Our Clinic
           </h2>
+          <p className="text-slate-500 leading-relaxed">
+            See our modern facility, equipment, and treatment results.
+          </p>
         </div>
 
-        {/* Masonry-like grid */}
+        {/* Grid */}
         <div
           ref={ref}
           className="grid grid-cols-2 lg:grid-cols-3 gap-3"
@@ -31,39 +34,36 @@ export function GalleryPreview() {
           {previewImages.map((img, i) => (
             <div
               key={img.id}
-              className={`group relative overflow-hidden rounded-xl transition-all duration-500 ${
-                i === 0 ? 'row-span-2 min-h-[280px] sm:min-h-[360px]' : 'min-h-[140px] sm:min-h-[170px]'
+              className={`group relative overflow-hidden rounded-2xl transition-all duration-500 ${
+                i === 0 ? 'row-span-2 min-h-[260px] sm:min-h-[340px]' : 'min-h-[130px] sm:min-h-[165px]'
               } ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-              style={{ transitionDelay: `${i * 80}ms` }}
+              style={{ transitionDelay: `${i * 60}ms` }}
             >
               {img.image ? (
                 <>
                   <img
                     src={img.image}
-                    alt={img.title || 'Gallery image'}
-                    className="rounded-xl object-cover w-full h-full img-zoom"
+                    alt={img.caption || 'Clinic gallery'}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Hover overlay with Camera icon */}
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-center justify-center">
-                    <Camera className="w-8 h-8 text-white/90" />
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </>
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 rounded-xl flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-emerald-300" />
+                <div className="w-full h-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-slate-200" />
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* CTA */}
         <div className="mt-10 text-center">
           <button
             onClick={() => { window.location.hash = '#/gallery' }}
-            className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
           >
-            View Gallery
+            View Full Gallery
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

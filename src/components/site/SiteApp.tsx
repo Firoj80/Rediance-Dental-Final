@@ -10,11 +10,10 @@ import { MobileCTA } from './MobileCTA'
 
 // Home sections
 import { HeroSection } from './home/HeroSection'
-import { ClinicIntro } from './home/ClinicIntro'
+import { TrustStrip } from './home/TrustStrip'
 import { ServicesPreview } from './home/ServicesPreview'
 import { WhyChooseUs } from './home/WhyChooseUs'
 import { DoctorSection } from './home/DoctorSection'
-import { StatsSection } from './home/StatsSection'
 import { TestimonialsPreview } from './home/TestimonialsPreview'
 import { GalleryPreview } from './home/GalleryPreview'
 import { BlogPreview } from './home/BlogPreview'
@@ -36,11 +35,10 @@ function HomePage() {
   return (
     <>
       <HeroSection />
-      <ClinicIntro />
+      <TrustStrip />
       <ServicesPreview />
       <WhyChooseUs />
       <DoctorSection />
-      <StatsSection />
       <TestimonialsPreview />
       <GalleryPreview />
       <BlogPreview />
