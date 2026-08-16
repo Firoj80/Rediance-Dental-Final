@@ -191,3 +191,23 @@ Stage Summary:
 - Full end-to-end flow verified via API testing
 - 94 source files total: 23 API routes, 11 admin components, 20 public site components, 5 lib/hook files
 - System verified: clinic data, services, testimonials, blogs, appointment booking, double-booking protection, admin auth, admin settings
+
+---
+Task ID: 6
+Agent: Main Orchestrator
+Task: Fix appointment slot bug, add dynamic weekly off-day support, improve admin UI
+
+Work Log:
+- Fixed timezone bug in BookingPage.tsx: `toISOString().split('T')[0]` converted to UTC shifting dates for IST users. Replaced with `toLocalDateString()` helper using local timezone methods.
+- Fixed hardcoded Sunday-only calendar disable: calendar now fetches working hours from `/api/working-hours` and dynamically disables non-enabled days (recurring weekly off days) in the calendar picker.
+- Both `fetchSlots` and `handleConfirm` now use `toLocalDateString()` instead of `toISOString().split('T')[0]`.
+- Improved admin WorkingHoursManager UI: added "Weekly Off" badge for disabled days, info banner explaining the feature, dashed border styling for off days, clock icon for sessions, off-day counter badge.
+- Hardened server-side availability endpoint: string-based date comparison instead of Date object comparison for past-date check.
+
+Stage Summary:
+- Root cause of "No available slots": `toISOString()` shifted Aug 17 IST to Aug 16 UTC, sending wrong date to API
+- Calendar now dynamically disables days based on DB working hours (not hardcoded Sunday only)
+- Doctor can set any day as recurring weekly off via Working Hours admin page
+- Specific date blocking continues to work via Blocked Dates admin page
+- Both mechanisms work together: calendar disables off-days + blocked dates, API also enforces them
+- Lint clean (0 errors)

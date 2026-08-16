@@ -41,15 +41,14 @@ export async function GET(request: Request) {
       return NextResponse.json([])
     }
 
-    // Check if date is in the past
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const selectedDate = new Date(date + 'T00:00:00')
-    if (selectedDate < today) {
+    // Check if date is in the past (string comparison works for YYYY-MM-DD, timezone-safe)
+    const todayStr = new Date().toISOString().slice(0, 10)
+    if (date < todayStr) {
       return NextResponse.json([])
     }
 
-    // Get day of week (0=Monday, 6=Sunday)
+    // Get day of week (0=Monday, 6=Sunday) from the date string
+    const selectedDate = new Date(date + 'T00:00:00')
     const jsDay = selectedDate.getDay()
     const dayOfWeek = jsDay === 0 ? 6 : jsDay - 1
 

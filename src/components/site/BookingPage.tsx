@@ -27,6 +27,14 @@ import { useSiteStore, type ServiceData } from '@/lib/store'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
 
+/** Format a Date to YYYY-MM-DD using local timezone (avoids UTC shift from toISOString) */
+function toLocalDateString(date: Date): string {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 interface SlotData {
   time: string
   available: boolean
@@ -73,6 +81,7 @@ export function BookingPage() {
   const [slots, setSlots] = useState<SlotData[]>([])
   const [slotsLoading, setSlotsLoading] = useState(false)
   const [blockedDates, setBlockedDates] = useState<Date[]>([])
+  const [offDays, setOffDays] = useState<number[]>([]) // JS day numbers (0=Sun, 6=Sat) that are weekly off
   const [bookingAdvanceDays, setBookingAdvanceDays] = useState(30)
   const [patientInfo, setPatientInfo] = useState({
     name: '',
@@ -84,13 +93,14 @@ export function BookingPage() {
   const [bookingResult, setBookingResult] = useState<{ success: boolean; id?: string; error?: string } | null>(null)
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
-  // Fetch blocked dates and advance days on mount
+  // Fetch blocked dates, working hours, and advance days on mount
   useEffect(() => {
     async function fetchConfig() {
       try {
-        const [blockedRes, clinicRes] = await Promise.all([
+        const [blockedRes, clinicRes, hoursRes] = await Promise.all([
           fetch('/api/blocked-dates'),
           fetch('/api/clinic'),
+          fetch('/api/working-hours'),
         ])
         if (blockedRes.ok) {
           const blocked = await blockedRes.json()
@@ -102,6 +112,20 @@ export function BookingPage() {
           if (settings) {
             setBookingAdvanceDays(settings.bookingAdvanceDays || 30)
           }
+        }
+        if (hoursRes.ok) {
+          const hours = await hoursRes.json()
+          // Convert DB dayOfWeek (0=Mon..6=Sun) to JS day (0=Sun..6=Sat)
+          // and collect disabled days
+          const disabled: number[] = []
+          for (const wh of hours) {
+            if (!wh.enabled) {
+              // DB 0=Mon -> JS 1, DB 6=Sun -> JS 0
+              const jsDay = wh.dayOfWeek === 6 ? 0 : wh.dayOfWeek + 1
+              disabled.push(jsDay)
+            }
+          }
+          setOffDays(disabled)
         }
       } catch {
         // silent fail
@@ -116,7 +140,7 @@ export function BookingPage() {
     setSlotsLoading(true)
     setSelectedTime('')
     try {
-      const dateStr = selectedDate.toISOString().split('T')[0]
+      const dateStr = toLocalDateString(selectedDate)
       const params = new URLSearchParams({ date: dateStr })
       if (selectedService) {
         params.set('serviceId', selectedService.id)
@@ -186,7 +210,7 @@ export function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           serviceId: selectedService.id,
-          appointmentDate: selectedDate.toISOString().split('T')[0],
+          appointmentDate: toLocalDateString(selectedDate),
           appointmentTime: selectedTime,
           patientName: patientInfo.name,
           patientPhone: patientInfo.phone,
@@ -283,7 +307,7 @@ export function BookingPage() {
           }}
           disabled={[
             { before: new Date(new Date().setHours(0, 0, 0, 0)) },
-            { dayOfWeek: [0] },
+            ...(offDays.length > 0 ? [{ dayOfWeek: offDays }] : []),
             ...blockedDates,
           ]}
           toDate={maxDate}

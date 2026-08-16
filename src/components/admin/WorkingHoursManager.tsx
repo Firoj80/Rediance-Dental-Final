@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Plus, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Loader2, CalendarOff, Clock } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -138,13 +140,29 @@ export default function WorkingHoursManager() {
     );
   }
 
+  const offDaysCount = DAYS.filter((_, idx) => !ensureDay(idx).enabled).length;
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg p-3">
+        <CalendarOff className="w-4 h-4 shrink-0" />
+        <span>
+          Toggle a day <strong>off</strong> to make it a <strong>recurring weekly off day</strong>.
+          Patients won&apos;t be able to book on that day every week.
+          {offDaysCount > 0 && (
+            <Badge variant="secondary" className="ml-2">{offDaysCount} off day{offDaysCount > 1 ? 's' : ''}</Badge>
+          )}
+        </span>
+      </div>
+
       <div className="space-y-3">
         {DAYS.map((day, idx) => {
           const wh = ensureDay(idx);
           return (
-            <div key={day} className="rounded-lg border p-4">
+            <div key={day} className={cn(
+              'rounded-lg border p-4 transition-colors',
+              !wh.enabled && 'bg-muted/30 border-dashed'
+            )}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <Switch
@@ -154,6 +172,12 @@ export default function WorkingHoursManager() {
                   <span className={`font-medium text-sm ${!wh.enabled ? 'text-muted-foreground' : ''}`}>
                     {day}
                   </span>
+                  {!wh.enabled && (
+                    <Badge variant="outline" className="text-xs bg-destructive/5 text-destructive border-destructive/20">
+                      <CalendarOff className="w-3 h-3 mr-1" />
+                      Weekly Off
+                    </Badge>
+                  )}
                 </div>
                 {wh.enabled && (
                   <Button
@@ -173,6 +197,7 @@ export default function WorkingHoursManager() {
                   ) : (
                     wh.sessions.map((session, sIdx) => (
                       <div key={sIdx} className="flex items-center gap-2">
+                        <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                         <Label className="text-xs w-14 shrink-0">From</Label>
                         <Input
                           type="time"
@@ -215,3 +240,4 @@ export default function WorkingHoursManager() {
     </div>
   );
 }
+
