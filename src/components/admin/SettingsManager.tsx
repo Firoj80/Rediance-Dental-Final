@@ -91,7 +91,7 @@ export default function SettingsManager() {
     if (!settings || !clinic) return;
     setSaving(true);
     try {
-      await adminFetch('/api/admin/settings', {
+      const res = await adminFetch('/api/admin/settings', {
         method: 'PUT',
         body: JSON.stringify({
           // Clinic fields
@@ -123,7 +123,14 @@ export default function SettingsManager() {
           homeSeoDescription: settings.homeSeoDescription,
         }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || 'Failed to save settings');
+        return;
+      }
       toast.success('Settings saved');
+      // Refresh data from server
+      fetchData();
     } catch {
       toast.error('Failed to save settings');
     } finally {
@@ -218,8 +225,9 @@ export default function SettingsManager() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Google Maps Embed URL</Label>
-            <Input placeholder="https://www.google.com/maps/embed?..." value={clinic.googleMapsUrl || ''} onChange={(e) => updateClinicField('googleMapsUrl', e.target.value)} />
+            <Label>Google Maps URL</Label>
+            <Input placeholder="Any Google Maps URL (place, short link, or embed)" value={clinic.googleMapsUrl || ''} onChange={(e) => updateClinicField('googleMapsUrl', e.target.value)} />
+            <p className="text-xs text-muted-foreground">Paste any Google Maps link — it will be automatically converted for embedding.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-2">

@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Phone, Mail, Clock, Send, Facebook, Instagram, Youtube, CheckCircle2 } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Send, Facebook, Instagram, Youtube, CheckCircle2, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSiteStore } from '@/lib/store'
+import { toGoogleMapsEmbedUrl, isGoogleMapsShortUrl } from '@/lib/utils'
 
 export function ContactPage() {
   const clinicData = useSiteStore((s) => s.clinicData)
@@ -236,20 +237,49 @@ export function ContactPage() {
 
               {/* Map */}
               <div className="rounded-xl overflow-hidden border aspect-[4/3]">
-                {clinicData?.googleMapsUrl ? (
-                  <iframe
-                    src={clinicData.googleMapsUrl}
-                    className="w-full h-full"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Clinic Location"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <MapPin className="w-12 h-12 text-muted-foreground/30" />
-                  </div>
-                )}
+                {(function() {
+                  const rawMapUrl = clinicData?.googleMapsUrl
+                  const embedUrl = rawMapUrl ? toGoogleMapsEmbedUrl(rawMapUrl) : null
+                  const isShort = rawMapUrl ? isGoogleMapsShortUrl(rawMapUrl) : false
+                  if (embedUrl) {
+                    return (
+                      <iframe
+                        src={embedUrl}
+                        className="w-full h-full border-0"
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Clinic Location"
+                      />
+                    )
+                  }
+                  if (rawMapUrl) {
+                    return (
+                      <a
+                        href={rawMapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full h-full bg-muted/50 flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-muted/80 transition-colors"
+                      >
+                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                          <MapPin className="w-7 h-7 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground mb-1">View on Google Maps</p>
+                          <p className="text-xs text-muted-foreground">
+                            {isShort ? 'Click to open location' : 'Click to open the map'}
+                          </p>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                      </a>
+                    )
+                  }
+                  return (
+                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                      <MapPin className="w-12 h-12 text-muted-foreground/30" />
+                    </div>
+                  )
+                })()}
               </div>
             </div>
           </div>

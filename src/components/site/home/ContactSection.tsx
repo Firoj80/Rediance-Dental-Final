@@ -1,8 +1,9 @@
 'use client'
 
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, ExternalLink } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSiteStore } from '@/lib/store'
+import { toGoogleMapsEmbedUrl, isGoogleMapsShortUrl } from '@/lib/utils'
 
 export function ContactSection() {
   const clinicData = useSiteStore((s) => s.clinicData)
@@ -21,6 +22,11 @@ export function ContactSection() {
       </section>
     )
   }
+
+  const rawMapUrl = clinicData?.googleMapsUrl
+  const embedUrl = rawMapUrl ? toGoogleMapsEmbedUrl(rawMapUrl) : null
+  const isShortUrl = rawMapUrl ? isGoogleMapsShortUrl(rawMapUrl) : false
+  const hasMap = !!rawMapUrl
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -104,17 +110,35 @@ export function ContactSection() {
             )}
           </div>
 
-          {/* Map placeholder */}
+          {/* Map */}
           <div className="aspect-[4/3] rounded-xl bg-muted/50 flex items-center justify-center overflow-hidden">
-            {clinicData?.googleMapsUrl ? (
+            {embedUrl ? (
               <iframe
-                src={clinicData.googleMapsUrl}
-                className="w-full h-full rounded-xl"
+                src={embedUrl}
+                className="w-full h-full rounded-xl border-0"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Clinic Location"
               />
+            ) : hasMap ? (
+              <a
+                href={rawMapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-muted/80 transition-colors rounded-xl w-full h-full"
+              >
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MapPin className="w-8 h-8 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-1">View on Google Maps</p>
+                  <p className="text-xs text-muted-foreground">
+                    {isShortUrl ? 'Click to open location in Google Maps' : 'Click to open the map'}
+                  </p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground" />
+              </a>
             ) : (
               <div className="text-center">
                 <MapPin className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />

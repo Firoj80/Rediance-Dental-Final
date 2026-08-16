@@ -213,7 +213,31 @@ Stage Summary:
 - Lint clean (0 errors)
 
 ---
-Task ID: 7
+Task ID: 8
+Agent: Main Orchestrator
+Task: Fix Google Map not showing on home page
+
+Work Log:
+- Diagnosed root cause: DB had a Google Maps place URL (`https://www.google.com/maps/place/.../@26.2263454,84.3655602,17z/...`), not an embed URL. Regular Google Maps URLs are blocked by X-Frame-Options and cannot be rendered in iframes.
+- Created `toGoogleMapsEmbedUrl()` utility in `src/lib/utils.ts` that auto-converts any Google Maps URL to an embeddable format:
+  - Extracts `@lat,lng` coordinates from place URLs
+  - Preserves zoom level (e.g., `17z`)
+  - Builds `https://maps.google.com/maps?q=lat,lng&z=zoom&output=embed` format
+  - Handles short URLs (`maps.app.goo.gl`) by returning null for fallback link display
+- Updated `src/components/site/home/ContactSection.tsx` to use the converter; shows iframe for convertible URLs and "View on Google Maps" link for short URLs
+- Updated `src/components/site/ContactPage.tsx` with same map conversion logic
+- Fixed `saveSettings` in `src/components/admin/SettingsManager.tsx`: added `res.ok` check before showing success toast; now refreshes data after save
+- Updated settings label from "Google Maps Embed URL" to "Google Maps URL" with hint that any format works
+- Verified: coordinates 26.2263454, 84.3655602 correctly extracted with zoom=17
+- Verified: iframe renders in DOM with correct embed URL, no console errors
+
+Stage Summary:
+- Map now shows on home page by auto-converting place URLs to embed format
+- Contact page also fixed with same logic
+- Admin settings save now properly checks for errors and refreshes data
+- Lint clean (0 errors)
+---
+Task ID: 9
 Agent: Sub-agent
 Task: Fix auth pattern in all API routes — migrate from throw-based requireAuth to return-based checkAuth
 
