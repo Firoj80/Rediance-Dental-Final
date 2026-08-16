@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { Fragment, useEffect, useState, useMemo } from 'react';
 import { adminFetch } from '@/lib/admin-fetch';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -166,9 +166,8 @@ export default function AppointmentsManager() {
             </TableHeader>
             <TableBody>
               {paged.map((appt) => (
-                <>
+                <Fragment key={appt.id}>
                   <TableRow
-                    key={appt.id}
                     className="cursor-pointer"
                     onClick={() => setExpanded(expanded === appt.id ? null : appt.id)}
                   >
@@ -212,7 +211,7 @@ export default function AppointmentsManager() {
                     </TableCell>
                   </TableRow>
                   {expanded === appt.id && (
-                    <TableRow key={`${appt.id}-detail`}>
+                    <TableRow className="bg-muted/30">
                       <TableCell colSpan={8} className="bg-muted/30">
                         <div className="py-3 px-2 text-sm space-y-2">
                           <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -234,7 +233,7 @@ export default function AppointmentsManager() {
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </Fragment>
               ))}
             </TableBody>
           </Table>
