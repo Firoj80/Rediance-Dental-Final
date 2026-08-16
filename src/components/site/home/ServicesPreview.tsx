@@ -11,13 +11,13 @@ export function ServicesPreview() {
   return (
     <section className="py-20 lg:py-28 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header — Left Aligned */}
-        <div className="mb-12">
+        {/* Section Header */}
+        <div className="mb-12 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Our Services</span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
             Comprehensive Dental Care
           </h2>
-          <p className="text-slate-500 max-w-xl leading-relaxed">
+          <p className="text-slate-500 max-w-xl leading-relaxed mx-auto">
             From routine checkups to advanced cosmetic procedures, we deliver personalized treatments
             using the latest dental technology.
           </p>
@@ -80,7 +80,7 @@ export function ServicesPreview() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-10">
+        <div className="mt-10 text-center">
           <button
             onClick={() => { window.location.hash = '#/services' }}
             className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"

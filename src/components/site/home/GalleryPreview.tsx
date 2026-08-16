@@ -15,8 +15,8 @@ export function GalleryPreview() {
   return (
     <section className="py-20 lg:py-28 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header — Left Aligned */}
-        <div className="mb-12">
+        {/* Section Header */}
+        <div className="mb-12 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             A Glimpse of Our Clinic
@@ -57,8 +57,8 @@ export function GalleryPreview() {
           ))}
         </div>
 
-        {/* Bottom CTA — amber button like services */}
-        <div className="mt-10">
+        {/* Bottom CTA */}
+        <div className="mt-10 text-center">
           <button
             onClick={() => { window.location.hash = '#/gallery' }}
             className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"

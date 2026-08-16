@@ -536,3 +536,37 @@ Stage Summary:
 - Key design changes: left-aligned section headers, bento grid layouts, horizontal blog cards, pill-style filter tabs, glassmorphism header, amber CTAs that pop against emerald
 - Zero lint errors, all functionality preserved
 
+---
+Task ID: 14
+Agent: frontend-styling-expert
+Task: Center-align all section titles and page headers across the site
+
+Work Log:
+- Changed all home page section headers from left-aligned to center-aligned:
+  - ServicesPreview.tsx: added text-center to header container, mx-auto to description, centered CTA button
+  - WhyChooseUs.tsx: added text-center to header container
+  - TestimonialsPreview.tsx: added text-center to header container
+  - GalleryPreview.tsx: added text-center to header container, centered CTA button
+  - BlogPreview.tsx: added text-center to header container
+  - ContactSection.tsx: added text-center to header container
+- Changed all inner page compact headers to center-aligned:
+  - AboutPage.tsx: centered page header, centered "Our Foundation" section header, added mx-auto to clinic description container
+  - ServicesPage.tsx: centered page header, centered search bar with mx-auto
+  - ServiceDetailPage.tsx: centered page header, wrapped breadcrumb in its own div to keep it inline
+  - GalleryPage.tsx: centered page header, centered category filter pills with justify-center
+  - TestimonialsPage.tsx: centered page header
+  - BlogListingPage.tsx: centered page header, centered search/filter bar with justify-center
+  - BlogDetailPage.tsx: centered page header, wrapped breadcrumb, centered meta row with justify-center, added mx-auto to title
+  - ContactPage.tsx: centered page header
+  - BookingPage.tsx: centered page header
+- Intentionally left unchanged per instructions:
+  - ClinicIntro.tsx (editorial/intro style, intentionally left-aligned)
+  - DoctorSection.tsx two-column content (feature layout, no standalone header)
+  - ContactSection.tsx info rows (data rows, not titles)
+  - BookingPage.tsx step content (form content stays left-aligned)
+
+Stage Summary:
+- All section titles and page headers are now center-aligned across 15 files
+- Breadcrumbs on detail pages (ServiceDetailPage, BlogDetailPage) wrapped in their own divs so they remain inline while parent is text-center
+- Functional elements (search bars, filter pills, forms, data rows) left unchanged
+- Zero functional changes, only CSS class additions

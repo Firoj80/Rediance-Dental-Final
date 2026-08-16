@@ -83,18 +83,20 @@ export function BlogDetailPage({ slug }: { slug: string }) {
     <div className="pt-20">
       {/* Compact Header with breadcrumb */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => { window.location.hash = '#/blog' }}
-            className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-emerald-600 transition-colors mb-4"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Blog
-          </button>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-4 max-w-3xl">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-4">
+            <button
+              onClick={() => { window.location.hash = '#/blog' }}
+              className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-emerald-600 transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Blog
+            </button>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-4 max-w-3xl mx-auto">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm">
+          <div className="flex flex-wrap items-center gap-3 text-sm justify-center">
             {post.author && (
               <span className="flex items-center gap-1.5 text-slate-500">
                 <User className="w-3.5 h-3.5" />

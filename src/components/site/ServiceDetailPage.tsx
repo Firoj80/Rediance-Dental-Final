@@ -76,15 +76,17 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
     <div className="pt-20">
       {/* Compact Page Header with breadcrumb */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Breadcrumb */}
-          <button
-            onClick={() => { window.location.hash = '#/services' }}
-            className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-emerald-700 transition-colors mb-4"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Services
-          </button>
+          <div className="mb-4">
+            <button
+              onClick={() => { window.location.hash = '#/services' }}
+              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-emerald-700 transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Services
+            </button>
+          </div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
             {service.name}
           </h1>

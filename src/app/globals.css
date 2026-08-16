@@ -181,7 +181,7 @@
 
 /* Section label (small uppercase text above headings) */
 .section-label {
-  @apply inline-block text-xs font-semibold tracking-widest uppercase;
+  @apply text-xs font-semibold tracking-widest uppercase;
 }
 
 /* Prose for blog content */

@@ -36,7 +36,7 @@ export function BlogListingPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Blog</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
             Our Blog
@@ -48,7 +48,7 @@ export function BlogListingPage() {
       <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search & Filter */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 justify-center">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input

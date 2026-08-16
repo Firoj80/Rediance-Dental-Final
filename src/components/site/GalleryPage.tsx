@@ -59,7 +59,7 @@ export function GalleryPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
             Our Gallery
@@ -75,7 +75,7 @@ export function GalleryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Category Filter Pills */}
           {categories.length > 2 && (
-            <div className="flex flex-wrap gap-2 mb-10">
+            <div className="flex flex-wrap gap-2 mb-10 justify-center">
               {categories.map((cat) => (
                 <button
                   key={cat}

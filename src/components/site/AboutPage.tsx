@@ -24,7 +24,7 @@ export function AboutPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">About Us</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
             About Radiance Dental Care
@@ -40,7 +40,7 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={descRef}
-            className={`max-w-3xl transition-all duration-700 ${descInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`max-w-3xl mx-auto transition-all duration-700 ${descInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             {clinicLoading ? (
               <div className="space-y-4">
@@ -165,7 +165,7 @@ export function AboutPage() {
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="mb-12">
+          <div className="mb-12 text-center">
             <span className="section-label text-emerald-600 mb-3 block">Our Foundation</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
               Mission, Vision & Values

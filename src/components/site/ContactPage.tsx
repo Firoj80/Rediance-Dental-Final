@@ -72,7 +72,7 @@ export function ContactPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Contact</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
             Contact Us
