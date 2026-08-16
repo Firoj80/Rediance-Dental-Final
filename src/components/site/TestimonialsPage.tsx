@@ -5,10 +5,14 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
 
+const MAX_REVIEWS = 9
+
 export function TestimonialsPage() {
   const testimonials = useSiteStore((s) => s.testimonials)
   const clinicLoading = useSiteStore((s) => s.clinicLoading)
   const { ref, inView } = useInView()
+
+  const displayedTestimonials = testimonials.slice(0, MAX_REVIEWS)
 
   return (
     <div className="pt-20">
@@ -22,35 +26,51 @@ export function TestimonialsPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials Grid */}
       <section className="py-10 lg:py-16 bg-slate-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {clinicLoading ? (
-            <div className="space-y-5">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-44 rounded-2xl" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-64 rounded-2xl" />
               ))}
             </div>
           ) : (
-            <div ref={ref} className="space-y-5">
-              {testimonials.map((testimonial, i) => (
+            <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedTestimonials.map((testimonial, i) => (
                 <div
                   key={testimonial.id}
-                  className={`bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 relative transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  className={`bg-white rounded-2xl p-6 border border-slate-100 relative transition-all duration-500 flex flex-col h-full ${
+                    inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
                   {/* Decorative quote mark */}
-                  <span className="absolute top-4 left-6 text-emerald-200 text-6xl font-serif leading-none select-none">
+                  <span className="absolute top-4 right-5 text-emerald-100 text-5xl font-serif leading-none select-none">
                     &ldquo;
                   </span>
 
+                  {/* Stars */}
+                  <div className="flex items-center gap-0.5 mb-4">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star
+                        key={j}
+                        className={`w-4 h-4 ${
+                          j < testimonial.rating
+                            ? 'text-amber-400 fill-amber-400'
+                            : 'text-slate-200'
+                        }`}
+                      />
+                    ))}
+                  </div>
+
                   {/* Review text */}
-                  <p className="text-slate-600 leading-relaxed relative z-10 pl-2 mb-6">
+                  <p className="text-slate-600 leading-relaxed relative z-10 text-sm flex-1 line-clamp-5">
                     {testimonial.review}
                   </p>
 
-                  {/* Bottom: avatar + name + date + stars */}
-                  <div className="flex items-center gap-3 relative z-10">
+                  {/* Bottom: avatar + name */}
+                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-slate-100 relative z-10">
                     {testimonial.photo ? (
                       <img
                         src={testimonial.photo}
@@ -58,32 +78,22 @@ export function TestimonialsPage() {
                         className="rounded-full w-10 h-10 object-cover"
                       />
                     ) : (
-                      <div className="bg-emerald-100 text-emerald-700 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold">
-                        {testimonial.patientName.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                      <div className="bg-emerald-100 text-emerald-700 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0">
+                        {testimonial.patientName
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                          .substring(0, 2)}
                       </div>
                     )}
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900">{testimonial.patientName}</span>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-0.5">
-                          {Array.from({ length: 5 }).map((_, j) => (
-                            <Star
-                              key={j}
-                              className={`w-3.5 h-3.5 ${
-                                j < testimonial.rating
-                                  ? 'text-amber-400 fill-amber-400'
-                                  : 'text-slate-200'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                    <span className="text-sm font-semibold text-slate-900">
+                      {testimonial.patientName}
+                    </span>
                   </div>
                 </div>
               ))}
-              {testimonials.length === 0 && (
-                <div className="text-center py-12">
+              {displayedTestimonials.length === 0 && (
+                <div className="col-span-full text-center py-16">
                   <p className="text-slate-400 text-sm">No testimonials yet.</p>
                 </div>
               )}
