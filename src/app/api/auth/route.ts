@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { setAdminSession, getAdminToken } from '@/lib/auth'
+import { createSessionToken } from '@/lib/auth'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 
@@ -33,8 +33,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Invalid password' }, { status: 401 })
     }
 
-    const token = getAdminToken()
-    setAdminSession(token)
+    const token = await createSessionToken()
 
     return NextResponse.json({ success: true, token })
   } catch (error) {

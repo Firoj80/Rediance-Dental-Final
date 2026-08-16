@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const serviceCreateSchema = z.object({
@@ -20,16 +20,16 @@ const serviceCreateSchema = z.object({
 
 const serviceUpdateSchema = serviceCreateSchema.partial().omit({ slug: true })
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
-    requireAuth(_request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const services = await db.service.findMany({
       orderBy: { displayOrder: 'asc' },
     })
     return NextResponse.json(services)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error fetching admin services:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -37,7 +37,8 @@ export async function GET(_request: Request) {
 
 export async function POST(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = serviceCreateSchema.safeParse(body)
@@ -69,7 +70,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(service, { status: 201 })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error creating service:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -77,7 +77,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
 
@@ -110,7 +111,6 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(service)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating service:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

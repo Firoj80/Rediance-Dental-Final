@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
-    requireAuth(_request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const settings = await db.clinicSettings.findFirst()
     if (!settings) {
@@ -19,7 +20,6 @@ export async function GET(_request: Request) {
       adminPassword: adminPassword ? '********' : null,
     })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error fetching settings:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -27,7 +27,8 @@ export async function GET(_request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
 
@@ -57,7 +58,6 @@ export async function PUT(request: Request) {
       adminPassword: adminPassword ? '********' : null,
     })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating settings:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

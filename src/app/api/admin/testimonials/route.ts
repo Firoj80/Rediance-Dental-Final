@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const testimonialCreateSchema = z.object({
@@ -14,16 +14,16 @@ const testimonialCreateSchema = z.object({
 
 const testimonialUpdateSchema = testimonialCreateSchema.partial()
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
-    requireAuth(_request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const testimonials = await db.testimonial.findMany({
       orderBy: { displayOrder: 'asc' },
     })
     return NextResponse.json(testimonials)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error fetching admin testimonials:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -31,7 +31,8 @@ export async function GET(_request: Request) {
 
 export async function POST(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = testimonialCreateSchema.safeParse(body)
@@ -58,7 +59,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(testimonial, { status: 201 })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error creating testimonial:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -66,7 +66,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
 
@@ -94,7 +95,6 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(testimonial)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating testimonial:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

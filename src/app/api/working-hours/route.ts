@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const workingHourSchema = z.object({
@@ -30,7 +30,8 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = z.array(workingHourSchema).safeParse(body)
@@ -79,7 +80,6 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(workingHours)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating working hours:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

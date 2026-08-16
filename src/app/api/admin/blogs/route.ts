@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const blogCreateSchema = z.object({
@@ -19,16 +19,16 @@ const blogCreateSchema = z.object({
 
 const blogUpdateSchema = blogCreateSchema.partial().omit({ slug: true })
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
-    requireAuth(_request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const blogs = await db.blogPost.findMany({
       orderBy: { createdAt: 'desc' },
     })
     return NextResponse.json(blogs)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error fetching admin blogs:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -36,7 +36,8 @@ export async function GET(_request: Request) {
 
 export async function POST(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = blogCreateSchema.safeParse(body)
@@ -74,7 +75,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(blog, { status: 201 })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error creating blog:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -82,7 +82,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
 
@@ -121,7 +122,6 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(blog)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating blog:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

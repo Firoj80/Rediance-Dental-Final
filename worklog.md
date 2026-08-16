@@ -211,3 +211,39 @@ Stage Summary:
 - Specific date blocking continues to work via Blocked Dates admin page
 - Both mechanisms work together: calendar disables off-days + blocked dates, API also enforces them
 - Lint clean (0 errors)
+
+---
+Task ID: 7
+Agent: Sub-agent
+Task: Fix auth pattern in all API routes — migrate from throw-based requireAuth to return-based checkAuth
+
+Work Log:
+- Updated `src/lib/auth.ts` (prior to this task): added `checkAuth()` that returns `NextResponse | null` instead of throwing; kept `requireAuth()` as legacy wrapper
+- Updated 12 route files to replace `requireAuth(request)` with `const authError = await checkAuth(request); if (authError) return authError`
+- Removed all `if (error instanceof NextResponse) return error` lines from catch blocks (no longer needed since auth errors aren't thrown)
+- Changed `_request` parameter names to `request` in GET handlers that were using the underscore prefix just for the auth call
+- Verified zero `requireAuth` references remain in `src/app/api/**/*.ts`
+- Verified zero `instanceof NextResponse` catch patterns remain in route files
+- `bun run lint` passes with 0 errors
+
+Files updated:
+1. `src/app/api/blocked-dates/route.ts` — POST + DELETE (2 handlers)
+2. `src/app/api/working-hours/route.ts` — PUT (1 handler)
+3. `src/app/api/appointments/[id]/route.ts` — PATCH (1 handler)
+4. `src/app/api/admin/testimonials/[id]/route.ts` — DELETE (1 handler)
+5. `src/app/api/admin/testimonials/route.ts` — GET + POST + PUT (3 handlers)
+6. `src/app/api/admin/blogs/[id]/route.ts` — DELETE (1 handler)
+7. `src/app/api/admin/blogs/route.ts` — GET + POST + PUT (3 handlers)
+8. `src/app/api/admin/services/[id]/route.ts` — DELETE (1 handler)
+9. `src/app/api/admin/services/route.ts` — GET + POST + PUT (3 handlers)
+10. `src/app/api/admin/gallery/[id]/route.ts` — DELETE (1 handler)
+11. `src/app/api/admin/gallery/route.ts` — GET + POST + PUT (3 handlers)
+12. `src/app/api/admin/settings/route.ts` — GET + PUT (2 handlers)
+
+Stage Summary:
+- All 12 route files migrated from throw-based `requireAuth` to return-based `checkAuth` pattern
+- 22 total handler functions updated across the 12 files
+- 22 `instanceof NextResponse` catch guard lines removed
+- Eliminates unreliable `throw NextResponse` behavior in Turbopack
+- Lint clean (0 errors)
+- `src/lib/auth.ts` was NOT modified (already correct with both exports)

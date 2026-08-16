@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const VALID_STATUSES = ['Pending', 'Confirmed', 'Completed', 'Cancelled', 'No Show'] as const
@@ -14,7 +14,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const { id } = await params
     const body = await request.json()
@@ -34,7 +35,6 @@ export async function PATCH(
 
     return NextResponse.json(appointment)
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error updating appointment:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

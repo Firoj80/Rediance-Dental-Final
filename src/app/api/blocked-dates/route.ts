@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { requireAuth } from '@/lib/auth'
+import { checkAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 const blockedDateSchema = z.object({
@@ -22,7 +22,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = blockedDateSchema.safeParse(body)
@@ -49,7 +50,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(blockedDate, { status: 201 })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error creating blocked date:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
@@ -57,7 +57,8 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    requireAuth(request)
+    const authError = await checkAuth(request)
+    if (authError) return authError
 
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
@@ -69,7 +70,6 @@ export async function DELETE(request: Request) {
     await db.blockedDate.delete({ where: { id } })
     return NextResponse.json({ success: true })
   } catch (error) {
-    if (error instanceof NextResponse) return error
     console.error('Error deleting blocked date:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
