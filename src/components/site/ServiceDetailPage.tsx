@@ -6,14 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
-import { useInView } from '@/hooks/use-in-view'
 import ReactMarkdown from 'react-markdown'
 
 export function ServiceDetailPage({ slug }: { slug: string }) {
   const [service, setService] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
-  const { ref, inView } = useInView()
 
   useEffect(() => {
     async function fetchService() {
@@ -103,10 +101,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
       {/* Content */}
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={ref}
-            className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-          >
+          <div className="animate-fade-up">
             {/* Image */}
             {service.image && (
               <div className="rounded-xl overflow-hidden mb-10">

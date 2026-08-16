@@ -6,14 +6,11 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
 import { useSiteStore } from '@/lib/store'
-import { useInView } from '@/hooks/use-in-view'
 import ReactMarkdown from 'react-markdown'
 
 export function AboutPage() {
   const clinicData = useSiteStore((s) => s.clinicData)
   const clinicLoading = useSiteStore((s) => s.clinicLoading)
-  const { ref, inView } = useInView()
-
   const settings = clinicData?.settings?.[0]
   const doctorName = settings?.doctorName || 'Dr. Shahid Raza'
   const qualification = settings?.doctorQualification || 'BDS, MDS'
@@ -63,10 +60,7 @@ export function AboutPage() {
       {/* Doctor Section */}
       <section className="py-16 lg:py-24 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={ref}
-            className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center animate-fade-up">
             {/* Doctor image */}
             <div className="relative">
               <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center overflow-hidden">
