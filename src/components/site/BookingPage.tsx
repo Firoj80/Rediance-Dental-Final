@@ -42,28 +42,28 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
         <div key={label} className="flex items-center">
           <div
             className={cn(
-              'flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-medium transition-all duration-300',
+              'flex items-center gap-1.5 px-3.5 py-2 rounded text-xs font-medium transition-all duration-300',
               i < currentStep
-                ? 'bg-emerald-700 text-white'
+                ? 'bg-teal text-teal-text'
                 : i === currentStep
-                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                : 'bg-slate-50 text-slate-400'
+                ? 'bg-teal/10 text-teal border border-teal/20'
+                : 'bg-surface-variant text-subtle'
             )}
           >
             <span className={cn(
-              'w-5 h-5 rounded-full flex items-center justify-center text-[10px] border transition-all duration-300',
+              'w-5 h-5 rounded flex items-center justify-center text-[10px] border transition-all duration-300',
               i < currentStep
-                ? 'bg-emerald-600 text-white border-emerald-600'
+                ? 'bg-teal-dark text-teal-text border-teal-dark'
                 : i === currentStep
-                ? 'bg-emerald-700 text-white border-emerald-700'
-                : 'bg-white text-slate-400 border-slate-200'
+                ? 'bg-teal text-teal-text border-teal'
+                : 'bg-surface-high text-subtle border-border-subtle'
             )}>
               {i < currentStep ? <Check className="w-3 h-3" /> : i + 1}
             </span>
             <span className="hidden sm:inline">{label}</span>
           </div>
           {i < STEP_LABELS.length - 1 && (
-            <div className={cn('w-6 sm:w-10 h-px transition-colors duration-300', i < currentStep ? 'bg-emerald-700' : 'bg-slate-200')} />
+            <div className={cn('w-6 sm:w-10 h-px transition-colors duration-300', i < currentStep ? 'bg-teal' : 'bg-surface-variant')} />
           )}
         </div>
       ))}
@@ -253,13 +253,13 @@ export function BookingPage() {
     setFormErrors({})
   }
 
-  const inputClasses = 'w-full h-11 px-4 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-colors placeholder:text-slate-400'
+  const inputClasses = 'w-full h-11 px-4 text-sm rounded-xl border border-border-subtle bg-surface focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal/20 transition-colors text-foreground placeholder:text-subtle'
 
   // Render service selection
   const renderStepService = () => (
     <div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Service</h3>
-      <p className="text-sm text-slate-500 mb-6">Choose the service you&apos;d like to book.</p>
+      <h3 className="text-lg font-semibold text-heading mb-1">Select a Service</h3>
+      <p className="text-sm text-body mb-6">Choose the service you&apos;d like to book.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {services.map((service) => (
@@ -267,22 +267,22 @@ export function BookingPage() {
             key={service.id}
             onClick={() => handleServiceSelect(service)}
             className={cn(
-              'rounded-xl border-2 p-4 cursor-pointer transition-all text-left',
+              'rounded-xl border p-4 cursor-pointer transition-all text-left',
               selectedService?.id === service.id
-                ? 'border-emerald-500 bg-emerald-50/50 ring-2 ring-emerald-500/10'
-                : 'border-slate-100 hover:border-emerald-300'
+                ? 'border-teal bg-teal/5'
+                : 'border-border-subtle hover:border-teal/20'
             )}
           >
             <div className="flex items-center gap-3">
               <div className={cn(
                 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors',
-                selectedService?.id === service.id ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-400'
+                selectedService?.id === service.id ? 'bg-teal text-teal-text' : 'bg-surface-variant text-subtle'
               )}>
                 <Stethoscope className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <p className="font-medium text-slate-900 text-sm">{service.name}</p>
-                <p className="text-xs text-slate-400">{service.duration} min</p>
+                <p className="font-medium text-heading text-sm">{service.name}</p>
+                <p className="text-xs text-subtle">{service.duration} min</p>
               </div>
             </div>
           </button>
@@ -300,11 +300,11 @@ export function BookingPage() {
   // Render date selection
   const renderStepDate = () => (
     <div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Date</h3>
-      <p className="text-sm text-slate-500 mb-6">Choose your preferred appointment date.</p>
+      <h3 className="text-lg font-semibold text-heading mb-1">Select a Date</h3>
+      <p className="text-sm text-body mb-6">Choose your preferred appointment date.</p>
 
       <div className="flex justify-center">
-        <div className="rounded-2xl border border-slate-200 p-3">
+        <div className="rounded-xl border border-border-subtle p-3 bg-surface-low">
           <CalendarComponent
             mode="single"
             selected={selectedDate}
@@ -321,7 +321,7 @@ export function BookingPage() {
       </div>
 
       {selectedDate && (
-        <p className="text-sm text-center text-slate-500 mt-4">
+        <p className="text-sm text-center text-body mt-4">
           Selected: {selectedDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       )}
@@ -337,8 +337,8 @@ export function BookingPage() {
   // Render time selection
   const renderStepTime = () => (
     <div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Time</h3>
-      <p className="text-sm text-slate-500 mb-6">
+      <h3 className="text-lg font-semibold text-heading mb-1">Select a Time</h3>
+      <p className="text-sm text-body mb-6">
         Available slots for {selectedDate?.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
         {selectedService && ` (${selectedService.name})`}
       </p>
@@ -346,17 +346,17 @@ export function BookingPage() {
       {slotsLoading ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="h-11 rounded-xl" />
+            <Skeleton key={i} className="h-11 rounded-xl bg-surface-variant" />
           ))}
         </div>
       ) : slots.length === 0 ? (
         <div className="text-center py-10">
-          <Clock className="w-10 h-10 text-slate-200 mx-auto mb-3" />
-          <p className="text-slate-500 text-sm">No available slots for this date.</p>
-          <p className="text-xs text-slate-400 mt-1">Please go back and select a different date.</p>
+          <Clock className="w-10 h-10 text-surface-variant mx-auto mb-3" />
+          <p className="text-body text-sm">No available slots for this date.</p>
+          <p className="text-xs text-subtle mt-1">Please go back and select a different date.</p>
           <button
             onClick={handleBack}
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-teal hover:text-teal-dark transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Change Date
@@ -372,10 +372,10 @@ export function BookingPage() {
               className={cn(
                 'rounded-xl border p-3 text-center cursor-pointer transition-all text-sm',
                 !slot.available
-                  ? 'border-slate-100 line-through text-slate-300 cursor-not-allowed bg-slate-50'
+                  ? 'border-border-subtle line-through text-subtle cursor-not-allowed bg-surface-high'
                   : selectedTime === slot.time
-                  ? 'border-emerald-500 bg-emerald-700 text-white shadow-sm shadow-emerald-700/15'
-                  : 'border-slate-200 hover:border-emerald-300 text-slate-700 hover:bg-emerald-50/30'
+                  ? 'border-teal bg-teal text-teal-text'
+                  : 'border-border-subtle hover:border-teal text-foreground hover:bg-surface-high'
               )}
             >
               {formatTime(slot.time)}
@@ -395,39 +395,39 @@ export function BookingPage() {
   // Render patient details + summary + confirm button (combined step)
   const renderStepDetails = () => (
     <div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">Your Details</h3>
-      <p className="text-sm text-slate-500 mb-5">Please provide your contact information to confirm.</p>
+      <h3 className="text-lg font-semibold text-heading mb-1">Your Details</h3>
+      <p className="text-sm text-body mb-5">Please provide your contact information to confirm.</p>
 
       {/* Selection summary */}
-      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+      <div className="bg-surface-low rounded-xl p-4 border border-border-subtle mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-surface-variant text-teal flex items-center justify-center shrink-0">
               <Stethoscope className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Service</p>
-              <p className="text-sm font-medium text-slate-900 truncate">{selectedService?.name}</p>
+              <p className="text-[10px] text-subtle uppercase tracking-wider font-semibold">Service</p>
+              <p className="text-sm font-medium text-heading truncate">{selectedService?.name}</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-surface-variant text-teal flex items-center justify-center shrink-0">
               <CalendarDays className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Date</p>
-              <p className="text-sm font-medium text-slate-900 truncate">
+              <p className="text-[10px] text-subtle uppercase tracking-wider font-semibold">Date</p>
+              <p className="text-sm font-medium text-heading truncate">
                 {selectedDate?.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-surface-variant text-teal flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Time</p>
-              <p className="text-sm font-medium text-slate-900">{selectedTime ? formatTime(selectedTime) : ''}</p>
+              <p className="text-[10px] text-subtle uppercase tracking-wider font-semibold">Time</p>
+              <p className="text-sm font-medium text-heading">{selectedTime ? formatTime(selectedTime) : ''}</p>
             </div>
           </div>
         </div>
@@ -436,7 +436,7 @@ export function BookingPage() {
       {/* Patient form */}
       <div className="space-y-4">
         <div>
-          <label htmlFor="bk-name" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="bk-name" className="flex items-center gap-1.5 text-sm font-medium text-body mb-1.5">
             <User className="w-3.5 h-3.5" /> Full Name <span className="text-red-400">*</span>
           </label>
           <input
@@ -450,7 +450,7 @@ export function BookingPage() {
           {formErrors.name && <p className="text-xs text-red-500 mt-1">{formErrors.name}</p>}
         </div>
         <div>
-          <label htmlFor="bk-phone" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="bk-phone" className="flex items-center gap-1.5 text-sm font-medium text-body mb-1.5">
             <Phone className="w-3.5 h-3.5" /> Phone Number <span className="text-red-400">*</span>
           </label>
           <input
@@ -464,7 +464,7 @@ export function BookingPage() {
           {formErrors.phone && <p className="text-xs text-red-500 mt-1">{formErrors.phone}</p>}
         </div>
         <div>
-          <label htmlFor="bk-email" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="bk-email" className="flex items-center gap-1.5 text-sm font-medium text-body mb-1.5">
             <Mail className="w-3.5 h-3.5" /> Email (Optional)
           </label>
           <input
@@ -477,7 +477,7 @@ export function BookingPage() {
           />
         </div>
         <div>
-          <label htmlFor="bk-message" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="bk-message" className="flex items-center gap-1.5 text-sm font-medium text-body mb-1.5">
             <MessageSquare className="w-3.5 h-3.5" /> Message (Optional)
           </label>
           <textarea
@@ -493,8 +493,8 @@ export function BookingPage() {
 
       {/* Error from booking attempt */}
       {bookingResult && !bookingResult.success && (
-        <div className="mt-4 p-4 rounded-xl bg-red-50 border border-red-200">
-          <p className="text-sm text-red-600 flex items-center gap-1.5">
+        <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+          <p className="text-sm text-red-400 flex items-center gap-1.5">
             <AlertCircle className="w-4 h-4" /> {bookingResult.error}
           </p>
         </div>
@@ -505,29 +505,29 @@ export function BookingPage() {
   // Render success
   const renderSuccess = () => (
     <div className="text-center py-10">
-      <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-6">
-        <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+      <div className="w-20 h-20 rounded-xl bg-teal/10 flex items-center justify-center mx-auto mb-6">
+        <CheckCircle2 className="w-10 h-10 text-teal" />
       </div>
-      <h2 className="text-2xl font-bold text-slate-900 mb-2">Appointment Booked!</h2>
-      <p className="text-slate-500 mb-2">Your appointment has been successfully scheduled.</p>
+      <h2 className="text-2xl font-bold text-heading mb-2">Appointment Booked!</h2>
+      <p className="text-body mb-2">Your appointment has been successfully scheduled.</p>
       {bookingResult?.id && (
-        <p className="text-sm text-slate-500 mb-8">
-          Booking ID: <span className="font-mono font-medium text-slate-900">{bookingResult.id}</span>
+        <p className="text-sm text-body mb-8">
+          Booking ID: <span className="font-mono font-medium text-heading">{bookingResult.id}</span>
         </p>
       )}
-      <p className="text-sm text-slate-500 mb-10 max-w-sm mx-auto">
+      <p className="text-sm text-body mb-10 max-w-sm mx-auto">
         You can reach us at {clinicData?.phone || 'our clinic phone'} for any changes or queries.
       </p>
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={resetBooking}
-          className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full px-6 py-2.5 text-sm font-medium transition-colors"
+          className="border border-border-subtle text-muted-foreground hover:text-foreground hover:bg-surface-high rounded px-6 py-2.5 text-sm font-medium transition-colors"
         >
           Book Another
         </button>
         <button
           onClick={() => { window.location.hash = '#/' }}
-          className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 py-2.5 text-sm transition-all shadow-lg shadow-emerald-700/15 hover:-translate-y-0.5"
+          className="bg-teal hover:bg-teal-dark text-teal-text font-semibold rounded px-8 py-2.5 text-sm transition-all"
         >
           Back to Home
         </button>
@@ -540,29 +540,29 @@ export function BookingPage() {
       {/* Compact Page Header */}
       <section className="page-header">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
-          <span className="section-label text-emerald-600 mb-3 block">Book Appointment</span>
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+          <span className="section-label text-teal mb-3 block">Book Appointment</span>
+          <h1 className="text-3xl lg:text-4xl font-bold text-heading tracking-tight">
             Schedule Your Visit
           </h1>
         </div>
       </section>
 
       {/* Booking Form */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-10 lg:py-14 bg-surface">
         <div className="max-w-2xl mx-auto px-5 sm:px-8 lg:px-10">
           {currentStep < 4 ? (
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm shadow-slate-900/3">
+            <div className="bg-surface-low rounded-xl border border-border-subtle p-6 sm:p-8">
               <StepIndicator currentStep={currentStep} />
 
               {renderStepByStep()}
 
               {/* Footer: Back + Confirm (only on details step) */}
-              <div className="mt-6 pt-4 border-t border-slate-100">
+              <div className="mt-6 pt-4 border-t border-border-subtle">
                 <div className="flex items-center justify-between">
                   <button
                     onClick={handleBack}
                     disabled={currentStep === 0}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-full px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Back
@@ -572,7 +572,7 @@ export function BookingPage() {
                     <button
                       onClick={handleConfirm}
                       disabled={submitting}
-                      className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 py-3 shadow-lg shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 disabled:opacity-50"
+                      className="bg-teal hover:bg-teal-dark text-teal-text font-semibold rounded px-8 py-3 transition-all inline-flex items-center gap-2 disabled:opacity-50"
                     >
                       {submitting ? (
                         <>

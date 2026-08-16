@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, ArrowRight, CalendarDays, Newspaper } from 'lucide-react'
+import { Search, ArrowRight, Newspaper } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
@@ -37,29 +37,29 @@ export function BlogListingPage() {
       {/* Compact Page Header */}
       <section className="page-header">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
-          <span className="section-label text-emerald-600 mb-3 block">Blog</span>
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+          <span className="section-label text-teal mb-3 block">Blog</span>
+          <h1 className="text-3xl lg:text-4xl font-bold text-heading tracking-tight">
             Our Blog
           </h1>
-          <p className="text-slate-500 text-[15px] mt-2">
+          <p className="text-body text-[15px] mt-2">
             Tips, guides, and news about dental health and wellness.
           </p>
         </div>
       </section>
 
       {/* Blog Listing */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-10 lg:py-14 bg-surface">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Search & Filter */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-subtle" />
               <input
                 type="text"
                 placeholder="Search articles..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-colors placeholder:text-slate-400"
+                className="w-full h-11 pl-11 pr-4 text-sm rounded-xl border border-border-subtle bg-surface-low focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal/20 transition-colors text-foreground placeholder:text-subtle"
               />
             </div>
             {categories.length > 2 && (
@@ -69,10 +69,10 @@ export function BlogListingPage() {
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
                     className={
-                      `px-4 py-2 text-sm font-medium transition-all duration-200 rounded-full
+                      `px-4 py-2 text-sm font-medium transition-all duration-200 rounded
                       ${activeCategory === cat
-                        ? 'bg-emerald-700 text-white shadow-sm shadow-emerald-700/15'
-                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                        ? 'bg-teal text-teal-text'
+                        : 'text-body hover:text-teal'
                       }`
                     }
                   >
@@ -86,7 +86,7 @@ export function BlogListingPage() {
           {clinicLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-48 rounded-2xl" />
+                <Skeleton key={i} className="h-48 rounded-xl bg-surface-variant" />
               ))}
             </div>
           ) : (
@@ -96,7 +96,7 @@ export function BlogListingPage() {
                   key={post.id}
                   onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
                   className={
-                    `bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover
+                    `bg-surface-low rounded-xl border border-border-subtle overflow-hidden card-hover
                     flex flex-col sm:flex-row cursor-pointer group
                     transition-all duration-500
                     ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`
@@ -104,7 +104,7 @@ export function BlogListingPage() {
                   style={{ transitionDelay: `${(i % 6) * 80}ms` }}
                 >
                   {/* Image side */}
-                  <div className="sm:w-56 h-44 sm:h-auto bg-slate-100 flex-shrink-0">
+                  <div className="sm:w-56 h-44 sm:h-auto bg-surface-high flex-shrink-0">
                     {post.featuredImage ? (
                       <img
                         src={post.featuredImage}
@@ -112,8 +112,8 @@ export function BlogListingPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-slate-50 to-emerald-50/30 flex items-center justify-center">
-                        <Newspaper className="w-8 h-8 text-slate-300" />
+                      <div className="w-full h-full bg-surface-high flex items-center justify-center">
+                        <Newspaper className="w-8 h-8 text-surface-variant" />
                       </div>
                     )}
                   </div>
@@ -121,14 +121,14 @@ export function BlogListingPage() {
                   {/* Content side */}
                   <div className="p-5 sm:p-6 flex flex-col justify-center">
                     {post.category && (
-                      <span className="text-emerald-600 text-[10px] font-bold uppercase tracking-wider mb-2">
+                      <span className="text-teal text-[10px] font-bold uppercase tracking-wider mb-2">
                         {post.category}
                       </span>
                     )}
-                    <h2 className="text-base font-semibold text-slate-900 line-clamp-2 group-hover:text-emerald-700 transition-colors cursor-pointer mb-2 leading-snug">
+                    <h2 className="text-base font-semibold text-heading line-clamp-2 group-hover:text-teal transition-colors cursor-pointer mb-2 leading-snug">
                       {post.title}
                     </h2>
-                    <p className="text-xs text-slate-400 mb-3">
+                    <p className="text-xs text-subtle mb-3">
                       {post.publishedAt
                         ? new Date(post.publishedAt).toLocaleDateString('en-IN', {
                             day: 'numeric',
@@ -139,7 +139,7 @@ export function BlogListingPage() {
                       {post.author && post.publishedAt ? ' · ' : ''}
                       {post.author || ''}
                     </p>
-                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal hover:text-teal-dark transition-colors">
                       Read More <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -147,7 +147,7 @@ export function BlogListingPage() {
               ))}
               {filtered.length === 0 && (
                 <div className="col-span-full text-center py-16">
-                  <p className="text-slate-400 text-sm">No articles found.</p>
+                  <p className="text-subtle text-sm">No articles found.</p>
                 </div>
               )}
             </div>

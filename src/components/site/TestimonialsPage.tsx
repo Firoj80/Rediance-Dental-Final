@@ -17,22 +17,22 @@ export function TestimonialsPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-4 lg:py-6">
+      <section className="bg-surface-low border-b border-border-subtle py-4 lg:py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="section-label text-emerald-600 mb-3 block">Testimonials</span>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <span className="section-label text-teal mb-3 block">Testimonials</span>
+          <h1 className="text-3xl font-bold text-heading tracking-tight">
             Patient Reviews
           </h1>
         </div>
       </section>
 
       {/* Testimonials Grid */}
-      <section className="py-8 lg:py-12 bg-slate-50">
+      <section className="py-8 lg:py-12 bg-surface-lowest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {clinicLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-64 rounded-2xl" />
+                <Skeleton key={i} className="h-64 rounded-xl bg-surface-variant" />
               ))}
             </div>
           ) : (
@@ -40,13 +40,13 @@ export function TestimonialsPage() {
               {displayedTestimonials.map((testimonial, i) => (
                 <div
                   key={testimonial.id}
-                  className={`bg-white rounded-2xl p-6 border border-slate-100 relative transition-all duration-500 flex flex-col h-full ${
+                  className={`bg-surface-low rounded-xl p-6 border border-border-subtle relative transition-all duration-500 flex flex-col h-full ${
                     inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                   }`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
                   {/* Decorative quote mark */}
-                  <span className="absolute top-4 right-5 text-emerald-100 text-5xl font-serif leading-none select-none">
+                  <span className="absolute top-4 right-5 text-teal/10 text-5xl font-serif leading-none select-none">
                     &ldquo;
                   </span>
 
@@ -57,28 +57,28 @@ export function TestimonialsPage() {
                         key={j}
                         className={`w-4 h-4 ${
                           j < testimonial.rating
-                            ? 'text-amber-400 fill-amber-400'
-                            : 'text-slate-200'
+                            ? 'text-teal fill-teal'
+                            : 'text-surface-variant'
                         }`}
                       />
                     ))}
                   </div>
 
                   {/* Review text */}
-                  <p className="text-slate-600 leading-relaxed relative z-10 text-sm flex-1 line-clamp-5">
+                  <p className="text-muted-foreground leading-relaxed relative z-10 text-sm flex-1 line-clamp-5">
                     {testimonial.review}
                   </p>
 
                   {/* Bottom: avatar + name */}
-                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-slate-100 relative z-10">
+                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border-subtle relative z-10">
                     {testimonial.photo ? (
                       <img
                         src={testimonial.photo}
                         alt={testimonial.patientName}
-                        className="rounded-full w-10 h-10 object-cover"
+                        className="rounded-lg w-10 h-10 object-cover"
                       />
                     ) : (
-                      <div className="bg-emerald-100 text-emerald-700 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0">
+                      <div className="bg-surface-variant text-teal w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold shrink-0">
                         {testimonial.patientName
                           .split(' ')
                           .map((n) => n[0])
@@ -86,7 +86,7 @@ export function TestimonialsPage() {
                           .substring(0, 2)}
                       </div>
                     )}
-                    <span className="text-sm font-semibold text-slate-900">
+                    <span className="text-sm font-semibold text-heading">
                       {testimonial.patientName}
                     </span>
                   </div>
@@ -94,7 +94,7 @@ export function TestimonialsPage() {
               ))}
               {displayedTestimonials.length === 0 && (
                 <div className="col-span-full text-center py-16">
-                  <p className="text-slate-400 text-sm">No testimonials yet.</p>
+                  <p className="text-subtle text-sm">No testimonials yet.</p>
                 </div>
               )}
             </div>

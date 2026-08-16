@@ -28,6 +28,7 @@ export interface ClinicData {
     statPatients: string | null
     statServices: string | null
     statRating: string | null
+    heroImage: string | null
     homeSeoTitle: string | null
     homeSeoDescription: string | null
   }[]

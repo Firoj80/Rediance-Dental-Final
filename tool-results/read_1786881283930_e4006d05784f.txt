@@ -1,3 +1,104 @@
+   100→   100→  - Dynamic document title based on current route
+   101→   101→  - Sticky footer with flex layout
+   102→   102→- Updated `src/app/page.tsx` — Server component wrapper importing SiteApp, with `export const dynamic = 'force-dynamic'` to prevent static prerendering (since SPA uses window)
+   103→   103→- Updated `src/app/layout.tsx` — Updated metadata to Radiance Dental Care branding
+   104→   104→
+   105→   105→Design Rules Implemented:
+   106→   106→- No excessive animations: fade-up via IntersectionObserver, CSS-only card-hover and img-zoom, staggered delays
+   107→   107→- Framer Motion only for page transitions (150ms fade)
+   108→   108→- Animated counters only on viewport entry
+   109→   109→- Color scheme: CSS variables (primary/teal, muted/warm neutrals) throughout
+   110→   110→- Typography: font-sans, strong hierarchy
+   111→   111→- Whitespace: py-16 lg:py-24 section padding
+   112→   112→- shadcn/ui components: Button, Card, Badge, Input, Textarea, Label, Sheet, Dialog, Skeleton, Separator, Tabs, Carousel, Calendar
+   113→   113→- Responsive: mobile-first with sm/md/lg breakpoints
+   114→   114→- Sticky footer on every page
+   115→   115→- prefers-reduced-motion handled via globals.css
+   116→   116→- Skeleton loading states while fetching data
+   117→   117→- Mobile CTA persistent bottom bar
+   118→   118→
+   119→   119→Stage Summary:
+   120→   120→- Complete public SPA with 26 new files, 0 lint errors, 0 build errors
+   121→   121→- Hash-based client-side routing with 11 routes
+   122→   122→- All data fetched from API endpoints (data-driven)
+   123→   123→- Multi-step appointment booking flow with real API integration
+   124→   124→- Contact form submits to /api/contact
+   125→   125→- Blog content rendered via react-markdown
+   126→   126→- Gallery lightbox with Dialog component
+   127→   127→
+   128→   128→---
+   129→   129→Task ID: 4
+   130→   130→Agent: fullstack-developer
+   131→   131→Task: Build complete admin panel at /doctor route
+   132→   132→
+   133→   133→Work Log:
+   134→   134→- Created `src/lib/admin-fetch.ts` — Authenticated fetch helper that reads `admin-token` from localStorage, adds `Authorization: Bearer` header, handles 401 by clearing token and reloading
+   135→   135→- Created `src/components/admin/AdminLogin.tsx` — Centered login card with Stethoscope icon, password field, error display, loading state; POSTs to /api/auth, stores token on success
+   136→   136→- Created `src/components/admin/AdminSidebar.tsx` — 9 navigation items (Dashboard, Appointments, Services, Blog, Gallery, Testimonials, Working Hours, Blocked Dates, Settings) with lucide icons, teal active highlight, mobile overlay with Sheet-like behavior, logout button
+   137→   137→- Created `src/components/admin/AdminLayout.tsx` — Flex layout with fixed sidebar (64px wide, collapsible on mobile), top bar with hamburger menu + page title, scrollable main content area
+   138→   138→- Created `src/app/doctor/page.tsx` — Main admin page using lazy useState initializer to check localStorage token; SPA-style internal navigation via state; routes to login or layout based on auth status
+   139→   139→- Created `src/components/admin/Dashboard.tsx` — 4 stat cards (Today's Appointments, Pending, Confirmed, Completed) with icons and color coding; upcoming appointments table (next 10, sorted by date/time) with Confirm/Complete/Cancel action buttons; color-coded status badges
+   140→   140→- Created `src/components/admin/AppointmentsManager.tsx` — 7 filter tabs (All, Today, Pending, Confirmed, Completed, Cancelled, No Show); search by patient name; full table with ID, Patient, Phone, Service, Date, Time, Status; dropdown menu for status changes; expandable row details (email, message, booking time); pagination with page controls
+   141→   141→- Created `src/components/admin/ServicesManager.tsx` — Table with name (featured badge), slug, price, duration, active toggle; Dialog form for create/edit (name, auto-slug, descriptions, price, duration, image URL, display order, featured/active toggles); delete confirmation; active/inactive toggle from list; slug auto-generated from name on create
+   142→   142→- Created `src/components/admin/BlogManager.tsx` — Table with title, category, author, published toggle; Dialog form for create/edit (title, auto-slug, category, author, tags, featured image, markdown content textarea, SEO fields, published toggle); Save Draft and Publish buttons; click row to edit; delete confirmation
+   143→   143→- Created `src/components/admin/GalleryManager.tsx` — 4-column responsive grid with image cards; hover overlay shows title, category, Hide/Show and Delete buttons; upload Dialog with title, image URL, category Select (Clinic/Doctor/Team/Treatment/Facilities), visible toggle; delete confirmation
+   144→   144→- Created `src/components/admin/TestimonialsManager.tsx` — Card list with patient name, star rating component (interactive 1-5), review text (line-clamped), published toggle, edit/delete buttons; Dialog form for create/edit with interactive star rating selector, photo URL; delete confirmation
+   145→   145→- Created `src/components/admin/WorkingHoursManager.tsx` — 7 day rows (Mon-Sun), each with enable/disable Switch; per-day session list with time inputs (type=time); Add Session button per day; Remove Session button; Save All button sends full array to PUT /api/working-hours; handles days not yet in DB (creates on-the-fly in state)
+   146→   146→- Created `src/components/admin/BlockedDatesManager.tsx` — Table with date and reason columns; Add Blocked Date Dialog with date input + reason input; delete per row via DELETE /api/blocked-dates?id=
+   147→   147→- Created `src/components/admin/SettingsManager.tsx` — 4 card sections: General (read-only clinic info from /api/clinic with Lock icon), Doctor (editable name, qualification, experience, photo, specializations, bio), Appointment Settings (slot duration, advance days), Trust Stats (years, patients, services, rating); Save Settings button for doctor/appointment/stats via PUT /api/admin/settings; Change Password section with current/new/confirm fields, show/hide toggle, validates current password via /api/auth before updating
+   148→   148→
+   149→   149→Design Rules Implemented:
+   150→   150→- Teal primary color scheme consistent with public site (bg-primary, text-primary-foreground for active nav)
+   151→   151→- Warm stone neutrals (bg-warm-50) for page background
+   152→   152→- shadcn/ui components used throughout: Table, Card, Dialog, Sheet, Input, Textarea, Button, Badge, Switch, Tabs, Select, Label, Separator, Skeleton, AlertDialog, DropdownMenu
+   153→   153→- lucide-react icons for all navigation items and actions
+   154→   154→- Sonner toast notifications for all CRUD operations
+   155→   155→- Skeleton loaders during data fetches
+   156→   156→- Empty states for all list views
+   157→   157→- Mobile responsive: collapsible sidebar with overlay, responsive table columns (hidden on smaller screens), responsive grid layouts
+   158→   158→- Clean, functional admin UI — no excessive decoration
+   159→   159→
+   160→   160→Stage Summary:
+   161→   161→- Complete admin panel with 14 new files, 0 lint errors, 0 TypeScript errors, build passes
+   162→   162→- Password-based authentication with localStorage token persistence
+   163→   163→- 9 admin views: Dashboard, Appointments, Services, Blog, Gallery, Testimonials, Working Hours, Blocked Dates, Settings
+   164→   164→- Full CRUD operations for Services, Blog Posts, Gallery, Testimonials
+   165→   165→- Appointment status management with filtering and search
+   166→   166→- Working hours editor with per-day enable/disable and multi-session support
+   167→   167→- Settings page for doctor info, appointment config, trust stats, and password change
+   168→   168→- All API calls authenticated via admin-fetch helper
+   169→   169→
+   170→   170→---
+   171→   171→Task ID: 5
+   172→   172→Agent: Main Orchestrator
+   173→   173→Task: Fix SSR issues, polish, and verify full system
+   174→   174→
+   175→   175→Work Log:
+   176→   176→- Fixed SSR crash: `window is not defined` in useHashRouter useState initializer by adding `typeof window` guard
+   177→   177→- Fixed Next.js 16 restriction: `ssr: false` with `next/dynamic` not allowed in Server Components — made page.tsx a client component
+   178→   178→- Fixed React lint error: `set-state-in-effect` in useHashRouter — refactored to use `useSyncExternalStore` for hash-based routing
+   179→   179→- Verified all API endpoints return 200 with correct data via curl testing
+   180→   180→- Verified appointment booking flow: create → double-booking 409 → slot marked BOOKED
+   181→   181→- Verified admin auth: password Siwan@321 returns valid token
+   182→   182→- Verified admin settings: returns doctor info correctly
+   183→   183→- Updated robots.txt to disallow /doctor and /api paths
+   184→   184→- Updated next.config.ts with allowedDevOrigins for preview panel compatibility
+   185→   185→- Cleaned up temporary research files (clinic-data.json, search-results.json, etc.)
+   186→   186→- Final lint: 0 errors, 0 warnings
+   187→   187→
+   188→   188→Stage Summary:
+   189→   189→- All SSR/hydration issues resolved
+   190→   190→- Lint clean (0 errors)
+   191→   191→- Full end-to-end flow verified via API testing
+   192→   192→- 94 source files total: 23 API routes, 11 admin components, 20 public site components, 5 lib/hook files
+   193→   193→- System verified: clinic data, services, testimonials, blogs, appointment booking, double-booking protection, admin auth, admin settings
+   194→   194→
+   195→   195→---
+   196→   196→Task ID: 6
+   197→   197→Agent: Main Orchestrator
+   198→   198→Task: Fix appointment slot bug, add dynamic weekly off-day support, improve admin UI
+   199→   199→
+   200→   200→Work Log:
    201→   201→- Fixed timezone bug in BookingPage.tsx: `toISOString().split('T')[0]` converted to UTC shifting dates for IST users. Replaced with `toLocalDateString()` helper using local timezone methods.
    202→   202→- Fixed hardcoded Sunday-only calendar disable: calendar now fetches working hours from `/api/working-hours` and dynamically disables non-enabled days (recurring weekly off days) in the calendar picker.
    203→   203→- Both `fetchSlots` and `handleConfirm` now use `toLocalDateString()` instead of `toISOString().split('T')[0]`.
@@ -402,4 +503,187 @@
    602→   602→- Section order: Hero → Trust Strip → Services → Why Choose Us → Doctor → Testimonials → Gallery → Blog → CTA → Contact
    603→   603→- Color usage: emerald-700 for primary actions (book button), amber reserved for accents (stars, badges)
    604→   604→- VLM overall score: 8/10 (up from previous iterations)
-   605→   605→
+   605→   605→---
+   606→   606→Task ID: 3
+   607→   607→Agent: fullstack-design-redesign
+   608→   608→Task: Full website redesign inspired by real dental clinic websites
+   609→   609→
+   610→   610→Work Log:
+   611→   611→- Redesigned globals.css: warm off-white bg (#FAFBFC), refined scrollbar width, slower animations (600-800ms), added .page-header utility class
+   612→   612→- Redesigned SiteHeader: transparent on hero → glassmorphism blur on scroll, phone number in desktop nav, round-full Book CTA, rounded-xl hamburger
+   613→   613→- Redesigned HeroSection: full-bleed dark emerald gradient hero (or image overlay), amber-300 headline accent, white CTAs with hover lift, floating stat cards on large screens
+   614→   614→- Redesigned ServicesPreview: left-aligned section header, removed duration display, hover-reveal Learn More link, rounded-2xl icon containers with color transition
+   615→   615→- Redesigned WhyChooseUs: 4+8 column grid (heading left, cards right), replaced Affordable Prices with Family Friendly, warmer descriptions
+   616→   616→- Redesigned DoctorSection: blockquote-style bio with left border, larger specializations pills, round-full Book CTA with lift
+   617→   617→- Redesigned TestimonialsPreview: Quote icon at card top, stars after text, larger carousel nav buttons with shadows
+   618→   618→- Redesigned GalleryPreview: header row with inline View Full Gallery button, enhanced hover overlay with title/category reveal
+   619→   619→- Redesigned BlogPreview: header row with inline View All Posts link, Newspaper placeholder icon, group-hover title color change
+   620→   620→- Redesigned CTASection: deeper emerald-800 bg, dot pattern, decorative blur shapes, round-full CTAs, bordered phone link
+   621→   621→- Redesigned ContactSection: left-aligned section header, rounded-2xl contact items, Follow us label for social links
+   622→   622→- Redesigned SiteFooter: gradient accent line (emerald→amber) at top, hover arrow-up-right on footer links, Book CTA in bottom bar
+   623→   623→- Redesigned AboutPage: blockquote doctor bio, icon-based Mission/Vision/Values cards (Target/Eye/Heart icons), round-full CTAs
+   624→   624→- Redesigned ServicesPage: icon-based card tops when no service image, removed duration/price from cards, link-based cards
+   625→   625→- Redesigned ServiceDetailPage: duration in info bar only (no price), round-full CTAs, emerald-50 bottom CTA card
+   626→   626→- Redesigned GalleryPage: rounded-2xl grid items, gradient hover overlay, pill-style category filters
+   627→   627→- Redesigned BlogListingPage: pill-style active filter, Newspaper placeholder, emerald shadow on active pills
+   628→   628→- Redesigned BlogDetailPage: emerald-50 CTA card with border, round-full button
+   629→   629→- Redesigned ContactPage: round-full submit button, rounded-2xl form card, rounded-2xl contact info items
+   630→   630→- Redesigned BookingPage: round-full step indicators, emerald-tinted active step, removed all price displays, rounded-xl time slots, round-full action buttons
+   631→   631→
+   632→   632→Stage Summary:
+   633→   633→- All 20+ page components redesigned with premium dental clinic aesthetic
+   634→   634→- Removed all price displays from services and booking pages
+   635→   635→- Removed duration display from service cards (kept in ServiceDetail and Booking for contextual use)
+   636→   636→- Lint passes cleanly (0 errors, 0 warnings)
+   637→   637→- No API routes, Prisma schema, admin components, store, or protected components were modified
+   638→   638→---
+   639→   639→Task ID: 3
+   640→   640→Agent: Main Orchestrator + fullstack-design-redesign
+   641→   641→Task: Full website redesign + hero image upload + price removal
+   642→   642→
+   643→   643→Work Log:
+   644→   644→- Added heroImage field to Prisma ClinicSettings schema, pushed to DB
+   645→   645→- Added heroImage upload section in admin SettingsManager (ImageUploader component)
+   646→   646→- Removed ALL prices from ServicesPreview, ServicesPage (ServiceCard), ServiceDetailPage
+   647→   647→- Redesigned ALL 20+ page components via full-stack agent delegation
+   648→   648→- Fixed mobile text truncation in HeroSection (removed substring(0,200), added line-clamp-3)
+   649→   649→- Browser-verified: Home (8/10 VLM), About (8/10), Services (8/10), Contact (form + map working)
+   650→   650→- Lint: 0 errors
+   651→   651→
+   652→   652→Stage Summary:
+   653→   653→- Full website redesigned with premium dental clinic aesthetic
+   654→   654→- Design rated 8/10 by VLM — "looks like a legitimate dental practice website"
+   655→   655→- Hero section: dark emerald gradient with image overlay support, floating stat cards
+   656→   656→- Services: NO prices displayed anywhere, clean 3-column grid
+   657→   657→- All CTAs use rounded-full pill buttons
+   658→   658→- Hero image uploadable from admin settings
+   659→   659→- All inner pages (About, Services, Gallery, Testimonials, Blog, Contact, Booking) redesigned
+   660→   660→---
+   661→   661→Task ID: 15
+   662→   662→Agent: Main Orchestrator
+   663→   663→Task: Center all page titles + redesign booking flow with auto-advance
+   664→   664→
+   665→   665→Work Log:
+   666→   666→- Added explicit `text-center` to inner wrapper divs of all page headers: AboutPage, ServicesPage, ServiceDetailPage, GalleryPage, TestimonialsPage, BlogListingPage, BlogDetailPage, ContactPage, BookingPage
+   667→   667→- Fixed loading skeleton headers in ServiceDetailPage and BlogDetailPage to also be centered (added `mx-auto` to Skeleton elements)
+   668→   668→- Added `justify-center` to BlogDetailPage meta info flex container for centered author/date display
+   669→   669→- Redesigned BookingPage flow: removed 5-step model (Service→Date→Time→Details→Confirm), replaced with 4-step model (Service→Date→Time→Details+Confirm)
+   670→   670→- Steps 0-2 (Service, Date, Time) now auto-advance on selection — no "Continue" button needed
+   671→   671→- Step 3 (Details) combines patient info form + selection summary card + single "Confirm Appointment" button
+   672→   672→- Removed `ArrowRight`, `Separator` imports; added `CalendarDays` import
+   673→   673→- Updated STEP_LABELS from 5 items to 4
+   674→   674→- Success step changed from step 5 to step 4
+   675→   675→- Fixed multiple JSX comment syntax errors (missing closing `}`)
+   676→   676→- Browser-verified: auto-advance works through all steps, textAlign=center confirmed on multiple pages
+   677→   677→
+   678→   678→Stage Summary:
+   679→   679→- All page titles confirmed centered via CSS `text-center` + explicit class
+   680→   680→- Booking flow: 3 auto-advancing steps + 1 details step with Confirm Appointment button
+   681→   681→- No lint errors, dev server runs clean
+   682→   682→
+   683→   683→---
+   684→   684→Task ID: 10
+   685→   685→Agent: Main Orchestrator
+   686→   686→Task: Redesign all homepage components to cinematic dark photography-driven style (matching thetoothdoctors.org)
+   687→   687→
+   688→   688→Work Log:
+   689→   689→- Redesigned HeroSection.tsx: Full-bleed cinematic hero with min-h-[700px]/lg:min-h-[85vh], dark gradient overlay (from-black/80 via-black/50 to-black/20), text positioned at bottom-left, text-5xl sm:text-6xl lg:text-7xl headings, amber-500 pill CTA button, removed all floating stat cards, added "Welcome to {clinic name}" label tag, dark emerald gradient fallback with radial glow shapes
+   690→   690→- Redesigned ServicesPreview.tsx: Dark bg-slate-950 section, glassmorphism cards (bg-white/5 border-white/10 backdrop-blur-sm), amber icon backgrounds, white text headings, amber CTA button, text-3xl sm:text-4xl lg:text-5xl headings
+   691→   691→- Redesigned WhyChooseUs.tsx: Transformed into "How It Works" process section with 3 tall rounded-2xl cards (min-h-[320px]), dark emerald gradient backgrounds with different shades, large step numbers in white/6, amber icons, white title + white/50 description, hover scale animation
+   692→   692→- Redesigned DoctorSection.tsx: Split-screen layout with rounded-3xl container, left panel for doctor photo (h-[400px] lg:h-[600px]), right panel bg-slate-900 with white text, amber qualification, emerald border-left quote, glassmorphism specialization pills (bg-white/10 border-white/10), amber Book Appointment button
+   693→   693→- Redesigned TestimonialsPreview.tsx: Dark bg-slate-950 section, glassmorphism testimonial cards (bg-white/5 border-white/10), amber stars, dark carousel navigation buttons, white author text
+   694→   694→- Redesigned CTASection.tsx: Full-bleed dark cinematic CTA with large emerald gradient blur shapes, text-4xl sm:text-5xl heading with amber accent span, py-28 lg:py-36 padding, amber primary CTA button with glow shadow
+   695→   695→- Redesigned GalleryPreview.tsx: Dark bg-slate-950 section, white headings, amber CTA button, darker hover overlay gradient, dark placeholder backgrounds
+   696→   696→- Restyled TrustStrip.tsx: Dark bg-slate-950 background, border-y border-white/10, white text stats, amber stars, white/10 dividers
+   697→   697→- Restyled BlogPreview.tsx: Dark bg-slate-950, glassmorphism blog cards, amber category badges, dark image placeholder gradients, amber read links
+   698→   698→- Restyled ContactSection.tsx: Dark bg-slate-950, white headings, glassmorphism contact items with amber icons, amber hover states, dark map border
+   699→   699→- All data fetching (useSiteStore) and hash-based navigation preserved unchanged
+   700→   700→- All animation utilities (animate-fade-up, stagger-1/2/3/4, useInView) preserved
+   701→   701→- Section labels now use text-amber-400 for consistency across dark theme
+   702→   702→- Brand identity: emerald green (#047857) + amber-500 warm accent
+   703→   703→- ESLint: zero errors
+   704→   704→- Dev server: clean compilation, no errors
+   705→   705→
+   706→   706→Stage Summary:
+   707→   707→- Transformed homepage from clean/light clinical to dark, cinematic, premium dental aesthetic
+   708→   708→- Color palette: slate-950 dark backgrounds, white text, amber-400 labels/accents, emerald subtle glows
+   709→   709→- Typography: Larger headings (up to text-7xl for hero), tight leading
+   710→   710→- Spacing: More generous section padding (py-24 lg:py-32) matching cinematic reference
+   711→   711→- Components redesigned: HeroSection, ServicesPreview, WhyChooseUs → How It Works, DoctorSection, TestimonialsPreview, CTASection, GalleryPreview, TrustStrip, BlogPreview, ContactSection
+   712→   712→- All business logic, data fetching, and navigation preserved
+   713→   713→
+   714→   714→---
+   715→   715→Task ID: 16
+   716→   716→Agent: Main Orchestrator
+   717→   717→Task: Redesign homepage to match thetoothdoctors.org style
+   718→   718→
+   719→   719→Work Log:
+   720→   720→- Analyzed reference website (thetoothdoctors.org) via web-reader + VLM screenshots
+   721→   721→- Identified key design patterns: cinematic dark hero, photography-driven, warm accent CTAs, dark/light alternation, glassmorphism cards
+   722→   722→- Delegated full redesign of all 10 homepage components to full-stack agent
+   723→   723→- Added CSS utilities: .dark-texture (noise overlay), .glass-card (glassmorphism)
+   724→   724→- Applied dark-texture to Hero, Services, Testimonials, CTA sections
+   725→   725→- Improved hero gradient fallback with diagonal light streak
+   726→   726→- Fixed JSX parsing error by using Fragment instead of wrapper div in ternary
+   727→   727→- VLM final review: 8/10 - 'successfully achieves a premium, cinematic, dark-themed aesthetic'
+   728→   728→
+   729→   729→Stage Summary:
+   730→   730→- Homepage transformed from light clinical to dark cinematic design
+   731→   731→- All 10 components redesigned: Hero, Services, WhyChooseUs (now How It Works), Doctor, Testimonials, CTA, Gallery, TrustStrip, Blog, Contact
+   732→   732→- Design system: slate-950 dark sections, amber-500 warm CTAs, glassmorphism cards, noise texture overlays
+   733→   733→- Zero lint errors, zero runtime errors
+   734→   734→---
+   735→   735→Task ID: 3-g
+   736→   736→Agent: Main Orchestrator
+   737→   737→Task: Reduce gaps between sections on every page
+   738→   738→
+   739→   739→Work Log:
+   740→   740→- Analyzed spacing patterns across all homepage sections (8 components) and inner pages (7 pages)
+   741→   741→- Homepage sections: reduced `py-24 lg:py-32` → `py-16 lg:py-20` (128px → 80px on lg, 37.5% reduction)
+   742→   742→- CTA section: reduced `py-28 lg:py-36` → `py-16 lg:py-20`
+   743→   743→- Section header margins: reduced `mb-16` → `mb-10` across all homepage sections
+   744→   744→- CTA section internal margins: `mb-6` → `mb-4`, `mb-12` → `mb-8`
+   745→   745→- Page header CSS class (.page-header): `py-8 lg:py-12` → `py-5 lg:py-7` (72px → 42px on lg)
+   746→   746→- Inner page content sections: `py-14 lg:py-20` → `py-10 lg:py-14` (80px → 56px on lg)
+   747→   747→- TestimonialsPage header: `py-6 lg:py-8` → `py-4 lg:py-6`, content: `py-10 lg:py-16` → `py-8 lg:py-12`
+   748→   748→- BlogDetailPage & ServiceDetailPage: `py-10 lg:py-16` → `py-8 lg:py-12`, internal `mb-10`/`mb-14` → `mb-8`/`mb-10`
+   749→   749→- BookingPage: `py-14 lg:py-20` → `py-10 lg:py-14`
+   750→   750→- Reduced `mb-12` → `mb-8` in various filter/search bars
+   751→   751→- Ran lint — 0 errors
+   752→   752→- Browser-verified: homepage, about, services, blog, testimonials, contact pages — all spacing correctly reduced
+   753→   753→
+   754→   754→Stage Summary:
+   755→   755→- 16 files modified total: globals.css + 8 homepage components + 7 inner pages
+   756→   756→- Homepage section gap reduced from 128px to 80px (lg) — 37.5% tighter
+   757→   757→- Inner page header reduced from 72px to 42px (lg) — 42% tighter
+   758→   758→- Inner page content gap reduced from 80px to 56px (lg) — 30% tighter
+   759→   759→- All pages render correctly with no visual or console errors
+   760→   760→
+   761→   761→---
+   762→   762→Task ID: 4-a
+   763→   763→Agent: fullstack-developer
+   764→   764→Task: Redesign homepage components to match dark Material Design 3 reference
+   765→   765→
+   766→   766→Work Log:
+   767→   767→- Added missing `--color-border-subtle` to globals.css @theme inline block for Tailwind class support
+   768→   768→- Fixed missing `heroImage` field in store.ts ClinicSettings type (exists in DB schema)
+   769→   769→- Rewrote HeroSection.tsx: full viewport height, bg-[#0a111a] dark overlay on hero image, left-aligned text, "AWARD-WINNING DENTAL CARE" teal label, filled teal CTA + outlined button with border-[#8e9196], teal trust badges with bg-surface-variant icons, no amber/emerald/glassmorphism
+   770→   770→- Rewrote TrustStrip.tsx: 3-column grid with divide-x borders, teal numbers via useAnimatedCounter, uppercase tracking-wider labels, bg-surface-lowest border-y
+   771→   771→- Rewrote ServicesPreview.tsx: "EXPERIENCE A NEW STANDARD OF CARE" uppercase heading, image+text cards with bg-surface-low rounded-xl border-border-subtle, icon in h-48 image area, teal "Popular" badges, teal learn-more links, no glassmorphism/amber
+   772→   772→- Rewrote WhyChooseUs.tsx: "WHY US | OUR APPROACH" heading with teal pipe separator, 3 centered steps (Diagnosis, Planning, Support) with w-16 h-16 circle icons bg-surface-variant text-teal, bg-surface-lowest section
+   773→   773→- Rewrote DoctorSection.tsx: "THE EXPERTS BEHIND YOUR ORAL HEALTH" heading, single centered card (max-w-lg) with photo h-64, teal quote border, teal qualification text, surface-variant specializations pills, teal CTA button
+   774→   774→- Rewrote TestimonialsPreview.tsx: "REVIEWS FROM OUR CLIENTS" heading, 5 teal filled stars, italic quote text, bg-surface-low p-8 rounded-xl cards, teal carousel buttons
+   775→   775→- Rewrote BlogPreview.tsx: "LATEST FROM OUR BLOG" heading, dark cards bg-surface-low rounded-xl with img-zoom, teal category badges, teal "Read" links, no glassmorphism
+   776→   776→- Rewrote CTASection.tsx: clean bg-surface-lowest section, "Ready for a Healthier Smile?" with text-teal highlight, filled teal + outlined buttons, no gradient blurs
+   777→   777→- Rewrote ContactSection.tsx: bg-surface-low contact cards with teal icons, teal social link hovers, rounded-xl map container
+   778→   778→
+   779→   779→Stage Summary:
+   780→   780→- All 9 homepage components redesigned to dark Material Design 3 theme
+   781→   781→- Teal (#59dad1) accent color used throughout — no amber/emerald remaining
+   782→   782→- No glassmorphism — all flat solid dark backgrounds with subtle borders
+   783→   783→- Cards use bg-surface-low rounded-xl border border-border-subtle pattern
+   784→   784→- Buttons use bg-teal text-teal-text rounded (not rounded-full) — Material style
+   785→   785→- Section headings all uppercase with tracking-tight text-heading
+   786→   786→- All data bindings (useSiteStore, clinicData) and hooks (useInView, useAnimatedCounter) preserved
+   787→   787→- TypeScript passes cleanly on all rewritten files
+   788→   788→

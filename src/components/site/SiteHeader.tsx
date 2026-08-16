@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Stethoscope, Menu, X, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
-import { cn } from '@/lib/utils'
 import { useSiteStore } from '@/lib/store'
 
 const NAV_LINKS = [
@@ -19,15 +18,8 @@ const NAV_LINKS = [
 ]
 
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const clinicData = useSiteStore((s) => s.clinicData)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   const handleNav = (hash: string) => {
     setMobileOpen(false)
@@ -35,14 +27,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-        scrolled
-          ? 'bg-white/90 backdrop-blur-2xl shadow-[0_1px_20px_rgb(0_0_0/0.04)]'
-          : 'bg-transparent'
-      )}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a111a]/80 backdrop-blur-md transition-all duration-500">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         <div className="flex items-center justify-between h-16 lg:h-[72px]">
           {/* Logo */}
@@ -58,19 +43,16 @@ export function SiteHeader() {
                 className="h-9 w-auto max-w-[140px] object-contain"
               />
             ) : (
-              <div className="w-9 h-9 rounded-xl bg-emerald-700 flex items-center justify-center shadow-sm shadow-emerald-700/20">
-                <Stethoscope className="w-[18px] h-[18px] text-white" />
+              <div className="w-9 h-9 rounded-xl bg-teal flex items-center justify-center">
+                <Stethoscope className="w-[18px] h-[18px] text-teal-text" />
               </div>
             )}
             {!clinicData?.logo && (
               <div className="flex flex-col">
-                <span className={cn(
-                  'font-bold text-sm leading-tight tracking-tight transition-colors',
-                  scrolled ? 'text-slate-900' : 'text-slate-900'
-                )}>
+                <span className="font-bold text-sm leading-tight tracking-tight text-heading">
                   {clinicData?.name || 'Radiance Dental'}
                 </span>
-                <span className="hidden sm:block text-[10px] leading-tight text-slate-400 font-medium">
+                <span className="hidden sm:block text-[10px] leading-tight text-subtle font-medium">
                   {clinicData?.tagline || 'Dental Care & Facial Trauma Centre'}
                 </span>
               </div>
@@ -83,10 +65,7 @@ export function SiteHeader() {
               <button
                 key={link.hash}
                 onClick={() => handleNav(link.hash)}
-                className={cn(
-                  'relative px-3.5 py-2 text-[13px] font-medium transition-colors duration-200',
-                  scrolled ? 'text-slate-500 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900',
-                )}
+                className="px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-[#c4c6cf] hover:text-teal transition-colors duration-200"
               >
                 {link.label}
               </button>
@@ -98,10 +77,7 @@ export function SiteHeader() {
             {clinicData?.phone && (
               <a
                 href={`tel:${clinicData.phone.replace(/\s/g, '')}`}
-                className={cn(
-                  'flex items-center gap-2 text-[13px] font-medium transition-colors',
-                  scrolled ? 'text-slate-500 hover:text-emerald-700' : 'text-slate-500 hover:text-emerald-700'
-                )}
+                className="flex items-center gap-2 text-[13px] font-medium text-teal transition-colors"
               >
                 <Phone className="w-3.5 h-3.5" />
                 <span className="hidden xl:inline">{clinicData.phone}</span>
@@ -110,7 +86,7 @@ export function SiteHeader() {
             <Button
               size="sm"
               onClick={() => handleNav('#/book')}
-              className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-full px-6 font-medium shadow-sm shadow-emerald-700/15 transition-all hover:shadow-md hover:shadow-emerald-700/20"
+              className="bg-teal hover:bg-teal-dark text-teal-text rounded px-6 font-medium transition-all"
             >
               Book Appointment
             </Button>
@@ -119,23 +95,18 @@ export function SiteHeader() {
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button
-                className={cn(
-                  'lg:hidden p-2 rounded-xl transition-colors',
-                  scrolled ? 'text-slate-700 hover:bg-slate-100' : 'text-slate-700 hover:bg-slate-100'
-                )}
-              >
+              <button className="lg:hidden p-2 rounded-xl text-[#c4c6cf] hover:text-teal hover:bg-surface-variant transition-colors">
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] p-0 bg-white">
+            <SheetContent side="right" className="w-[280px] p-0 bg-surface-low">
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100">
-                  <span className="text-sm font-bold text-slate-900 tracking-tight">Menu</span>
+                <div className="flex items-center justify-between px-6 h-16 border-b border-border-subtle">
+                  <span className="text-sm font-bold text-heading tracking-tight">Menu</span>
                   <button
                     onClick={() => setMobileOpen(false)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                    className="p-2 rounded-xl text-subtle hover:text-heading hover:bg-surface-variant transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -145,24 +116,24 @@ export function SiteHeader() {
                     <button
                       key={link.hash}
                       onClick={() => handleNav(link.hash)}
-                      className="w-full text-left px-6 py-3 text-sm font-medium text-slate-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all duration-150"
+                      className="w-full text-left px-6 py-3 text-sm font-medium text-body hover:text-teal hover:bg-surface-variant transition-all duration-150"
                     >
                       {link.label}
                     </button>
                   ))}
                 </nav>
-                <div className="p-5 border-t border-slate-100 space-y-3">
+                <div className="p-5 border-t border-border-subtle space-y-3">
                   {clinicData?.phone && (
                     <a
                       href={`tel:${clinicData.phone.replace(/\s/g, '')}`}
-                      className="flex items-center gap-2.5 text-sm text-slate-600 font-medium"
+                      className="flex items-center gap-2.5 text-sm text-teal font-medium"
                     >
-                      <Phone className="w-4 h-4 text-emerald-600" />
+                      <Phone className="w-4 h-4" />
                       {clinicData.phone}
                     </a>
                   )}
                   <Button
-                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white rounded-full font-semibold shadow-sm"
+                    className="w-full bg-teal hover:bg-teal-dark text-teal-text rounded font-semibold"
                     onClick={() => handleNav('#/book')}
                   >
                     Book Appointment

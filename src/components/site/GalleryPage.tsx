@@ -36,16 +36,16 @@ export function GalleryPage() {
       <div className="pt-20">
         <section className="page-header">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-            <Skeleton className="h-3 w-16 mb-3" />
-            <Skeleton className="h-8 w-48 mb-2" />
-            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-3 w-16 mb-3 bg-surface-variant" />
+            <Skeleton className="h-8 w-48 mb-2 bg-surface-variant" />
+            <Skeleton className="h-4 w-64 bg-surface-variant" />
           </div>
         </section>
-        <section className="py-10 lg:py-14 bg-white">
+        <section className="py-10 lg:py-14 bg-surface">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="aspect-square rounded-2xl" />
+                <Skeleton key={i} className="aspect-square rounded-xl bg-surface-variant" />
               ))}
             </div>
           </div>
@@ -59,18 +59,18 @@ export function GalleryPage() {
       {/* Compact Page Header */}
       <section className="page-header">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
-          <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-2">
+          <span className="section-label text-teal mb-3 block">Gallery</span>
+          <h1 className="text-3xl lg:text-4xl font-bold text-heading tracking-tight mb-2">
             Our Gallery
           </h1>
-          <p className="text-slate-500 text-[15px]">
+          <p className="text-body text-[15px]">
             Explore our clinic, facilities, and treatment results.
           </p>
         </div>
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-10 lg:py-14 bg-surface">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Category Filter Pills */}
           {categories.length > 2 && (
@@ -80,10 +80,10 @@ export function GalleryPage() {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={`
-                    px-5 py-2.5 text-sm font-medium transition-all duration-200 rounded-full
+                    px-5 py-2.5 text-sm font-medium transition-all duration-200 rounded
                     ${activeCategory === cat
-                      ? 'bg-emerald-700 text-white shadow-sm shadow-emerald-700/15'
-                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                      ? 'bg-teal text-teal-text'
+                      : 'text-body hover:text-teal'
                     }
                   `}
                 >
@@ -100,7 +100,7 @@ export function GalleryPage() {
                 key={img.id}
                 onClick={() => setLightboxImage(img)}
                 className={`
-                  aspect-square rounded-2xl overflow-hidden group relative cursor-pointer
+                  aspect-square rounded-xl overflow-hidden group relative cursor-pointer
                   transition-all duration-600
                   ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}
                 `}
@@ -109,22 +109,22 @@ export function GalleryPage() {
                 {img.image ? (
                   <>
                     <img src={img.image} alt={img.title || 'Gallery image'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a111a]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-4">
                       <span className="text-white text-sm font-medium truncate">
                         {img.title || ''}
                       </span>
                     </div>
                   </>
                 ) : (
-                  <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                    <Camera className="w-10 h-10 text-slate-300" />
+                  <div className="w-full h-full bg-surface-low flex items-center justify-center">
+                    <Camera className="w-10 h-10 text-surface-variant" />
                   </div>
                 )}
               </button>
             ))}
             {filtered.length === 0 && (
               <div className="col-span-full text-center py-16">
-                <p className="text-slate-400 text-sm">No images in this category.</p>
+                <p className="text-subtle text-sm">No images in this category.</p>
               </div>
             )}
           </div>
@@ -133,7 +133,7 @@ export function GalleryPage() {
 
       {/* Lightbox Dialog */}
       <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden rounded-2xl">
+        <DialogContent className="max-w-4xl p-0 overflow-hidden rounded-xl bg-surface-low border-border-subtle">
           <DialogTitle className="sr-only">{lightboxImage?.title || 'Gallery Image'}</DialogTitle>
           {lightboxImage && (
             <div>
@@ -144,15 +144,15 @@ export function GalleryPage() {
                   className="w-full max-h-[80vh] object-contain"
                 />
               ) : (
-                <div className="aspect-[4/3] bg-slate-100 flex items-center justify-center">
-                  <Camera className="w-16 h-16 text-slate-300" />
+                <div className="aspect-[4/3] bg-surface-low flex items-center justify-center">
+                  <Camera className="w-16 h-16 text-surface-variant" />
                 </div>
               )}
               {lightboxImage.title && (
-                <div className="p-5 border-t border-slate-100">
-                  <p className="font-medium text-slate-900">{lightboxImage.title}</p>
+                <div className="p-5 border-t border-border-subtle">
+                  <p className="font-medium text-foreground">{lightboxImage.title}</p>
                   {lightboxImage.category && (
-                    <p className="text-sm text-slate-400 mt-0.5">{lightboxImage.category}</p>
+                    <p className="text-sm text-subtle mt-0.5">{lightboxImage.category}</p>
                   )}
                 </div>
               )}

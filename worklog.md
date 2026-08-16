@@ -757,3 +757,87 @@ Stage Summary:
 - Inner page header reduced from 72px to 42px (lg) — 42% tighter
 - Inner page content gap reduced from 80px to 56px (lg) — 30% tighter
 - All pages render correctly with no visual or console errors
+
+---
+Task ID: 4-a
+Agent: fullstack-developer
+Task: Redesign homepage components to match dark Material Design 3 reference
+
+Work Log:
+- Added missing `--color-border-subtle` to globals.css @theme inline block for Tailwind class support
+- Fixed missing `heroImage` field in store.ts ClinicSettings type (exists in DB schema)
+- Rewrote HeroSection.tsx: full viewport height, bg-[#0a111a] dark overlay on hero image, left-aligned text, "AWARD-WINNING DENTAL CARE" teal label, filled teal CTA + outlined button with border-[#8e9196], teal trust badges with bg-surface-variant icons, no amber/emerald/glassmorphism
+- Rewrote TrustStrip.tsx: 3-column grid with divide-x borders, teal numbers via useAnimatedCounter, uppercase tracking-wider labels, bg-surface-lowest border-y
+- Rewrote ServicesPreview.tsx: "EXPERIENCE A NEW STANDARD OF CARE" uppercase heading, image+text cards with bg-surface-low rounded-xl border-border-subtle, icon in h-48 image area, teal "Popular" badges, teal learn-more links, no glassmorphism/amber
+- Rewrote WhyChooseUs.tsx: "WHY US | OUR APPROACH" heading with teal pipe separator, 3 centered steps (Diagnosis, Planning, Support) with w-16 h-16 circle icons bg-surface-variant text-teal, bg-surface-lowest section
+- Rewrote DoctorSection.tsx: "THE EXPERTS BEHIND YOUR ORAL HEALTH" heading, single centered card (max-w-lg) with photo h-64, teal quote border, teal qualification text, surface-variant specializations pills, teal CTA button
+- Rewrote TestimonialsPreview.tsx: "REVIEWS FROM OUR CLIENTS" heading, 5 teal filled stars, italic quote text, bg-surface-low p-8 rounded-xl cards, teal carousel buttons
+- Rewrote BlogPreview.tsx: "LATEST FROM OUR BLOG" heading, dark cards bg-surface-low rounded-xl with img-zoom, teal category badges, teal "Read" links, no glassmorphism
+- Rewrote CTASection.tsx: clean bg-surface-lowest section, "Ready for a Healthier Smile?" with text-teal highlight, filled teal + outlined buttons, no gradient blurs
+- Rewrote ContactSection.tsx: bg-surface-low contact cards with teal icons, teal social link hovers, rounded-xl map container
+
+Stage Summary:
+- All 9 homepage components redesigned to dark Material Design 3 theme
+- Teal (#59dad1) accent color used throughout — no amber/emerald remaining
+- No glassmorphism — all flat solid dark backgrounds with subtle borders
+- Cards use bg-surface-low rounded-xl border border-border-subtle pattern
+- Buttons use bg-teal text-teal-text rounded (not rounded-full) — Material style
+- Section headings all uppercase with tracking-tight text-heading
+- All data bindings (useSiteStore, clinicData) and hooks (useInView, useAnimatedCounter) preserved
+- TypeScript passes cleanly on all rewritten files
+---
+Task ID: 4-b
+Agent: fullstack-developer
+Task: Update all inner pages + header/footer to dark Material Design 3 teal theme
+
+Work Log:
+- Rewrote SiteHeader.tsx: always-dark bg-[#0a111a]/80 backdrop-blur-md (removed scroll state toggle), nav links text-[#c4c6cf] hover:text-teal uppercase tracking-wider text-xs, CTA bg-teal text-teal-text rounded, logo icon bg-teal, mobile sheet bg-surface-low, removed cn/useEffect imports
+- Rewrote SiteFooter.tsx: bg-surface-lowest border-t border-border-subtle (no gradient accent line), headings text-heading uppercase tracking-wider text-xs, link hover text-teal, social icons bg-surface-variant hover:bg-teal hover:text-teal-text, working hours text-body/text-foreground, bottom CTA bg-teal rounded, copyright text-subtle
+- Rewrote MobileCTA.tsx: bg-[#0a111a]/90 backdrop-blur-xl border-t border-border-subtle, phone button bg-surface-variant text-teal, book button bg-teal text-teal-text rounded-lg
+- Rewrote AboutPage.tsx: sections bg-surface/bg-surface-lowest alternating, section-labels text-teal, headings text-heading, body text-body, doctor photo border-border-subtle, experience badge bg-surface-variant text-teal, quote border-teal/30, spec pills bg-surface-variant text-body border-border-subtle, CTA bg-teal rounded, M/V/V cards bg-surface-low border-border-subtle rounded-xl, icon bg-surface-variant text-teal, skeletons bg-surface-variant
+- Rewrote ServicesPage.tsx: section bg-surface, search input bg-surface-low border-border-subtle text-foreground, service cards bg-surface-low rounded-xl border-border-subtle, headings text-heading, description text-muted-foreground, Learn More text-teal, Popular badge bg-teal/10 text-teal border-teal/20, icon area bg-surface-high/bg-surface-variant text-teal, skeletons bg-surface-variant
+- Rewrote ServiceDetailPage.tsx: breadcrumb text-subtle hover:text-teal, section bg-surface, duration bar bg-surface-low border-border-subtle rounded-xl, book button bg-teal rounded, bottom CTA bg-surface-low border-border-subtle rounded-xl, not-found button bg-teal rounded
+- Rewrote GalleryPage.tsx: section bg-surface, category pills active=bg-teal text-teal-text/inactive=text-body hover:text-teal, hover overlay from-[#0a111a]/60, lightbox bg-surface-low border-border-subtle, image placeholder bg-surface-low, skeletons bg-surface-variant
+- Rewrote TestimonialsPage.tsx: custom dark header bg-surface-low border-b border-border-subtle, content bg-surface-lowest, cards bg-surface-low rounded-xl border-border-subtle, stars text-teal fill-teal, review text text-muted-foreground, author text-heading, avatar bg-surface-variant text-teal rounded-lg, skeletons bg-surface-variant
+- Rewrote BlogListingPage.tsx: section bg-surface, search bg-surface-low border-border-subtle text-foreground, category pills active=bg-teal text-teal-text, cards bg-surface-low rounded-xl border-border-subtle, category text-teal, heading text-heading hover:text-teal, Read More text-teal, skeletons bg-surface-variant, removed unused CalendarDays import
+- Rewrote BlogDetailPage.tsx: section bg-surface, breadcrumb text-subtle hover:text-teal, tags bg-surface-variant text-body rounded, separators border-border-subtle, CTA card bg-surface-low border-border-subtle rounded-xl, book button bg-teal rounded, skeletons bg-surface-variant
+- Rewrote ContactPage.tsx: section bg-surface, form container bg-surface-low border-border-subtle rounded-xl, inputs bg-surface border-border-subtle text-foreground focus:border-teal, send button bg-teal rounded, contact info cards bg-surface-low border-border-subtle hover:bg-surface-variant, icon boxes bg-surface-variant text-teal, social links bg-surface-variant hover:bg-teal hover:text-teal-text, map border-border-subtle, skeletons bg-surface-variant
+- Rewrote BookingPage.tsx: section bg-surface, booking card bg-surface-low border-border-subtle rounded-xl, step indicator completed=bg-teal text-teal-text/active=bg-teal/10 text-teal border-teal/20/inactive=bg-surface-variant text-subtle, service cards border-border-subtle selected=border-teal bg-teal/5, calendar bg-surface-low border-border-subtle, time slots selected=bg-teal text-teal-text/available=border-border-subtle text-foreground hover:border-teal, inputs bg-surface border-border-subtle, confirm bg-teal rounded, back text-muted-foreground hover:text-foreground, success icon bg-teal/10, error card bg-red-500/10
+- Verified .page-header CSS class already dark (bg-surface-low border-b border-border-subtle) from task 4-a
+- Build passes with zero errors
+
+Stage Summary:
+- All 12 files updated to dark Material Design 3 theme with teal (#59dad1) accents
+- Zero amber, zero emerald, zero white backgrounds — all dark surfaces
+- No glassmorphism — solid dark backgrounds throughout
+- Borders: only border-border-subtle (rgba white 0.08) or border-teal/20 for active states
+- Buttons: bg-teal text-teal-text with `rounded` (not rounded-full) — Material Design 3 style
+- Skeleton components use bg-surface-variant for dark theme consistency
+- All existing data bindings, hooks, imports, and functionality preserved
+- Build: zero errors, zero warnings
+---
+Task ID: 4
+Agent: Main Orchestrator
+Task: Redesign homepage + entire website to dark Material Design 3 theme with teal accents
+
+Work Log:
+- Analyzed reference website (The Tooth Doctors) HTML to extract color system, layout structure, and design patterns
+- Defined new dark color system in globals.css: surface (#10131a), surface-low (#181c22), teal accent (#59dad1), heading color (#d5e4f7)
+- Added custom @theme colors: --color-surface, --color-surface-low, --color-teal, --color-heading, --color-body, --color-subtle, etc.
+- Updated .page-header CSS to dark theme (bg-surface-low, border-border-subtle)
+- Updated .theme-card, .card-hover, .prose-dental for dark theme
+- Dispatched 2 parallel agents: homepage redesign (4-a) and inner pages theme update (4-b)
+- Agent 4-a rewrote 9 homepage components matching reference layout
+- Agent 4-b updated 12 non-homepage components (header, footer, mobile CTA, 7 inner pages, booking)
+- Manually fixed GalleryPreview.tsx (missed by agent) - complete rewrite to dark theme
+- Fixed remaining hover:bg-white/5 in HeroSection and CTASection
+- Final verification: 0 emerald/amber references in any site component, clean lint
+
+Stage Summary:
+- Entire website converted from emerald/amber light+dark hybrid to dark Material Design 3 theme
+- Color system: dark navy backgrounds (#10131a, #181c22, #0b0e14) with teal (#59dad1) accent
+- All CTAs use bg-teal text-teal-text with Material Design rounded corners (not rounded-full)
+- All cards use bg-surface-low border-border-subtle rounded-xl (no glassmorphism)
+- All headings use text-heading (#d5e4f7), body text uses text-body (#c4c6cf)
+- Homepage redesigned: hero with dark overlay, stats strip, image cards, circle icon steps, flat testimonial cards
+- 22 site component files updated total
