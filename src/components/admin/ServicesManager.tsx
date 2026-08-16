@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 
 type Service = {
   id: string;
@@ -318,14 +319,14 @@ export default function ServicesManager() {
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label>Image URL</Label>
-              <Input
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-                placeholder="https://..."
-              />
-            </div>
+            <ImageUploader
+              value={form.image || null}
+              onChange={(url) => setForm({ ...form, image: url || '' })}
+              category="service"
+              label="Service Image"
+              previewClassName="h-40"
+              hint="Upload an image or paste a URL for the service"
+            />
             <div className="space-y-2">
               <Label>Display Order</Label>
               <Input

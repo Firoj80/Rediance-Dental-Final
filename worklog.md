@@ -331,3 +331,29 @@ Stage Summary:
 - Logo shows in header, favicon updates browser tab icon
 - All admin managers (Settings, Gallery, Blog, Testimonials) support drag-and-drop uploads
 - Lint clean (0 errors, 0 warnings)
+
+---
+Task ID: 12
+Agent: Main Orchestrator
+Task: Add service image upload + "Or paste URL" fallback to ImageUploader across all admin managers
+
+Work Log:
+- Added `service` to ImageUploader category type union (now 7 categories)
+- Added `service` to upload API ALLOWED_TYPES (PNG, JPG, WebP, GIF, SVG)
+- Replaced plain `<Input>` URL field in ServicesManager.tsx with `<ImageUploader>` component
+- Enhanced ImageUploader with "Or paste a URL" toggle button showing a URL input + Set button
+- URL fallback available on ALL ImageUploader instances (Settings, Services, Gallery, Blog, Testimonials)
+- Added `Link` icon import from lucide-react, `Input` component import from shadcn/ui
+- `handleRemove` now also resets urlValue and showUrlInput state
+
+Files updated:
+1. `src/components/admin/ImageUploader.tsx` — added `service` category, `Link` icon, `Input` import, `showUrlInput`/`urlValue` state, `handleUrlSubmit`, URL input toggle UI
+2. `src/app/api/admin/upload/route.ts` — added `service` to ALLOWED_TYPES
+3. `src/components/admin/ServicesManager.tsx` — replaced Image URL input with ImageUploader (category="service", previewClassName="h-40")
+
+Stage Summary:
+- ALL 7 image fields across the website now support file upload (drag & drop + click)
+- Services was the last remaining manager using plain URL input — now migrated
+- Every ImageUploader instance also has an "Or paste a URL" fallback for external image URLs
+- Lint clean (0 errors)
+- Verified via agent browser: Services dialog shows upload area + URL toggle, Settings/Gallery/Blog all working

@@ -12,6 +12,7 @@ const ALLOWED_TYPES: Record<string, string[]> = {
   blog: ['image/png', 'image/jpeg', 'image/webp', 'image/gif'],
   doctor: ['image/png', 'image/jpeg', 'image/webp'],
   testimonial: ['image/png', 'image/jpeg', 'image/webp'],
+  service: ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'],
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB

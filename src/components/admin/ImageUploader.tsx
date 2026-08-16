@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
+import { Upload, X, ImageIcon, Loader2, Link } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { adminFetch } from '@/lib/admin-fetch'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -10,7 +11,7 @@ import { cn } from '@/lib/utils'
 type ImageUploaderProps = {
   value: string | null
   onChange: (url: string | null) => void
-  category: 'logo' | 'favicon' | 'gallery' | 'blog' | 'doctor' | 'testimonial'
+  category: 'logo' | 'favicon' | 'gallery' | 'blog' | 'doctor' | 'testimonial' | 'service'
   label: string
   className?: string
   previewClassName?: string
@@ -28,6 +29,8 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
+  const [showUrlInput, setShowUrlInput] = useState(false)
+  const [urlValue, setUrlValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const uploadFile = async (file: File) => {
@@ -90,6 +93,17 @@ export function ImageUploader({
 
   const handleRemove = () => {
     onChange(null)
+    setUrlValue('')
+    setShowUrlInput(false)
+  }
+
+  const handleUrlSubmit = () => {
+    const trimmed = urlValue.trim()
+    if (!trimmed) return
+    onChange(trimmed)
+    setUrlValue('')
+    setShowUrlInput(false)
+    toast.success('Image URL set')
   }
 
   const accept = '.png,.jpg,.jpeg,.webp,.gif,.svg,.ico'
@@ -156,6 +170,34 @@ export function ImageUploader({
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {!value && !uploading && (
+        <div className="flex items-center justify-center">
+          <button
+            type="button"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            onClick={(e) => { e.stopPropagation(); setShowUrlInput(!showUrlInput) }}
+          >
+            <Link className="h-3 w-3" />
+            {showUrlInput ? 'Hide URL input' : 'Or paste a URL'}
+          </button>
+        </div>
+      )}
+
+      {showUrlInput && !value && (
+        <div className="flex gap-2">
+          <Input
+            value={urlValue}
+            onChange={(e) => setUrlValue(e.target.value)}
+            placeholder="https://example.com/image.png"
+            className="h-8 text-sm"
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleUrlSubmit() } }}
+          />
+          <Button type="button" size="sm" variant="outline" className="h-8 px-3" onClick={handleUrlSubmit}>
+            Set
+          </Button>
         </div>
       )}
 
