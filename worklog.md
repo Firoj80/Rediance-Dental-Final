@@ -357,3 +357,182 @@ Stage Summary:
 - Every ImageUploader instance also has an "Or paste a URL" fallback for external image URLs
 - Lint clean (0 errors)
 - Verified via agent browser: Services dialog shows upload area + URL toggle, Settings/Gallery/Blog all working
+
+---
+Task ID: 4
+Agent: frontend-styling-expert
+Task: Redesign SiteHeader, SiteFooter, MobileCTA
+
+Work Log:
+- **SiteHeader.tsx**: Redesigned from generic sticky header to refined, premium look
+  - Reduced height: h-14 mobile, h-16 desktop (was h-16/h-18)
+  - Replaced transparent hero state with `bg-white/80 backdrop-blur-xl` (lighter, modern glassmorphism)
+  - Scrolled state: `bg-white/95 backdrop-blur-xl shadow-[0_1px_3px_rgb(0_0_0/0.05)]` — ultra-subtle shadow
+  - Logo: tracking-tight text, smaller icon (h-8), tagline hidden on mobile (sm:block only), removed color-switching complexity — always uses emerald-700 icon + slate-900 text
+  - Nav links: subtle underline hover via `after:scale-x-0 → after:scale-x-100` pseudo-element, text-sm font-medium text-slate-600
+  - CTA button: amber-500/amber-600 (was primary teal) — creates visual pop against emerald theme, rounded-lg, hover shadow
+  - Mobile Sheet: left-border accent on hover (`border-l-2 border-emerald-500` + `bg-emerald-50/50`) instead of full bg highlight
+  - Mobile Sheet: added close X button, cleaner border styling, consistent amber CTA
+- **SiteFooter.tsx**: Redesigned dark footer with premium slate-900 palette
+  - Background: `bg-slate-900` (was `bg-foreground`)
+  - Top accent: `border-t-2 border-emerald-500` — thin emerald line
+  - Brand section: clinic name in white with emerald dot separator before tagline (removed Stethoscope icon block)
+  - Social icons: minimal, no bg circles, text-slate-500 → hover:text-emerald-400 (removed white/10 circle bg)
+  - Quick Links: clean list, hover:text-emerald-400 transition
+  - Contact Info: small emerald-500 icons, text-slate-400
+  - Working Hours: now data-driven from store (was hardcoded), with enabled days showing times, disabled days listed as "Closed: ..."
+  - Responsive: 1-col mobile, 2-col md, 4-col lg (was always 4-col on md+)
+  - Bottom bar: centered copyright, text-xs text-slate-500, thin border-t
+  - Removed Separator import (used plain border-t instead), removed Stethoscope import
+- **MobileCTA.tsx**: Redesigned fixed bottom bar
+  - Background: `bg-white/90 backdrop-blur-xl border-t border-slate-200/60` — subtle glass effect
+  - Added safe area inset padding for notched phones: `pb-[max(0.75rem,env(safe-area-inset-bottom))]`
+  - Added phone icon circle before CTA: `w-10 h-10 rounded-full bg-emerald-50 text-emerald-600` (uses clinic phone from store)
+  - CTA button: amber-500/amber-600, rounded-xl, font-semibold, flex-1 with flex layout
+  - Removed shadcn Button import, uses plain button for full control
+  - Removed shadow-md (was too heavy), uses shadow-sm
+
+Stage Summary:
+- All 3 components redesigned with premium, professional visual language
+- Consistent design system: emerald for brand accents, amber for CTAs, slate for text hierarchy
+- All existing functionality preserved: hash routing, Zustand store, scroll detection, home page detection, working hours display
+- Lint clean (0 errors)
+- Key design differentiators: underline nav hover, amber CTA pop, left-border mobile menu hover, data-driven footer hours, emerald accent border on footer
+
+---
+Task ID: 5
+Agent: frontend-styling-expert
+Task: Redesign HeroSection, ClinicIntro, CTASection
+
+Work Log:
+- Read worklog and all three target files to understand existing logic, store shape, and hooks used
+- Confirmed store provides clinicData.settings[0] with statYears, statPatients, statServices, statRating; and clinicData.phone
+- Confirmed useInView hook used by ClinicIntro; HeroSection and CTASection do not use it
+- Confirmed all existing type errors are pre-existing (unrelated files); zero new errors introduced
+- Rewrote HeroSection.tsx: "Split Tone" layout with dark emerald-900 left 60% and amber-50 right 40% divided by diagonal clip-path. Dark side has section label, heading with amber "Passion", description from store, amber CTA + outline CTA. Right side has decorative emerald ring + amber circle. Amber dot pattern on dark side. Mobile stacks vertically, decorative side hidden.
+- Rewrote ClinicIntro.tsx: "Minimal Trust Banner" with left-aligned layout, 3px×60px emerald accent bar beside heading, text-based "Learn more about us →" link (not button), trust indicators row with separator pipes using store data (statYears, statPatients) with fallbacks. Preserved useInView animation hook.
+- Rewrote CTASection.tsx: "Warm Invitation" on amber-50 background with low-opacity emerald circles as decoration, amber CTA button with ArrowRight icon, phone number text link below using clinicData.phone with fallback.
+- All three files: preserved hash routing (#/book, #/services, #/about), Zustand store usage, animate-fade-up, transition-all duration-500 patterns
+
+Stage Summary:
+- All 3 hero/home sections redesigned with premium, non-templated visual design
+- HeroSection: diagonal split between emerald-900 and amber-50, artistic ring decoration, amber CTA emphasis
+- ClinicIntro: left-aligned minimal trust banner with emerald accent bar and data-driven stats row
+- CTASection: warm amber-50 invitation section with subtle emerald circle decorations and phone link
+- Zero new TypeScript errors introduced; all existing store/navigation logic preserved
+- Design differentiators: diagonal clip-path hero split, amber-on-dark CTA contrast, left-aligned trust bar, warm CTA section
+
+---
+Task ID: 6
+Agent: frontend-styling-expert
+Task: Redesign ServicesPreview, WhyChooseUs, DoctorSection, StatsSection
+
+Work Log:
+- Read all 4 existing component files, store.ts (data interfaces), use-in-view.ts (hooks), globals.css (animations, utility classes)
+- Confirmed available animations: animate-fade-up, animate-slide-left, animate-slide-right, animate-float, stagger-1..6, card-hover, section-label
+- Verified all pre-existing TypeScript errors are in unrelated files (examples, skills, next.config, SiteApp favicon)
+- Rewrote ServicesPreview.tsx: "Service Showcase" — left-aligned header with section-label, 3-col grid of `rounded-2xl border border-slate-100 card-hover` cards. Removed old aspect-[4/3] icon placeholder area. Each card has: numbered emerald circle badge (01-06), service name, line-clamped description, price/duration in emerald + "Learn More →" link separated by border-t. Top 2 cards get amber "Popular" badge. Amber CTA button at bottom. All store/navigation/useInView preserved.
+- Rewrote WhyChooseUs.tsx: "Bento Feature Grid" — left-aligned header. Layout changed from 6 identical centered cards to bento: tall featured card ("Experienced Doctor") with emerald-50 gradient + 48px icon + patient avatar row on left, 2 stacked right cards with horizontal icon+text layout, 3 equal bottom-row cards. All cards use `rounded-2xl border border-slate-100 card-hover`. Staggered entrance delays. All 6 features data preserved exactly.
+- Rewrote DoctorSection.tsx: "Doctor Spotlight" — left-aligned label, name, qualification, amber experience badge, bio, slate-100 pill specializations, emerald-700 CTA button. Left: rounded-3xl overflow-hidden with emerald→amber gradient + User icon placeholder (h-280/h-480). Split direction animations (slide-left for photo, slide-right for content). Skeleton loading state preserved. All store/navigation/useInView preserved.
+- Rewrote StatsSection.tsx: "Numbers That Matter" — emerald-900 (#064E3B) dark background with thin amber gradient line at top. 4-column (2x2 mobile) grid with border-r dividers. Clean stat display: large white bold numbers, emerald-300/80 uppercase tracking-widest labels. Removed decorative blurred shapes and icon circles. useAnimatedCounter hook preserved for 3 stats; rating shown as X/5.
+
+Stage Summary:
+- All 4 sections redesigned with premium, non-templated visual design following the emerald/amber/slate design system
+- ServicesPreview: clean numbered cards without icon placeholders, amber popular badges, price in emerald
+- WhyChooseUs: asymmetric bento grid (1 tall + 2 stacked + 3 row) breaking the 6-card monotony
+- DoctorSection: rounded-3xl photo with emerald→amber gradient, amber experience badge, pill specializations
+- StatsSection: dark emerald-900 with amber accent line, minimal typography-only stats, no decorative clutter
+- Zero new TypeScript errors introduced; all store data, navigation, animation hooks preserved
+
+---
+Task ID: 7
+Agent: frontend-styling-expert
+Task: Redesign TestimonialsPreview, GalleryPreview, BlogPreview, ContactSection
+
+Work Log:
+- TestimonialsPreview: Left-aligned header with section-label "Testimonials", cards restyled to bg-slate-50 rounded-2xl with large decorative emerald quote mark, photo-or-initials avatar, amber-400 star ratings, emerald text link "View All Testimonials →" below carousel, smaller/cleaner prev/next arrows
+- GalleryPreview: bg-slate-50 (#F8FAFC), left-aligned header, masonry-like grid with first image row-span-2 tall, tighter gap-3, gradient placeholders (emerald-100→amber-50), hover overlay with Camera icon, amber "View Gallery" CTA button matching services pattern
+- BlogPreview: Left-aligned header, horizontal card layout (image left sm:w-48, content right) on desktop, vertical on mobile, emerald category text, slate-900 title with hover-to-emerald transition, date+author in slate-400, full card click navigates to blog detail
+- ContactSection: Left-aligned header, two-column layout (info left + map right), clean info rows with emerald-50 icon containers, label in uppercase slate-400 + value in slate-700, social icons as rounded-full slate-100 hover-emerald, map in rounded-2xl border container with h-[250px]/lg:h-[400px] responsive heights, placeholder MapPin on slate-50 when no map
+- All files: section padding standardized to py-20 lg:py-28, all functionality preserved (store, navigation, useInView, carousel, map URL logic)
+
+Stage Summary:
+- 4 home page sections redesigned to match premium emerald/amber/slate design system
+- All sections use left-aligned headers with section-label + bold heading pattern
+- Gallery uses masonry-like grid with first image spanning 2 rows
+- Blog uses unique horizontal card layout (image-left, content-right)
+- Contact uses clean info rows instead of card blocks, with responsive map heights
+- Zero TypeScript errors; all data bindings and navigation preserved
+
+---
+Task ID: 8-a
+Agent: frontend-styling-expert
+Task: Redesign AboutPage, ServicesPage, ServiceDetailPage, GalleryPage
+
+Work Log:
+- AboutPage: Replaced full-height emerald hero with compact white page header (section-label + title + subtitle). Clinic description section uses left-aligned prose-dental with useInView animation. Doctor section now matches home DoctorSection exactly: two-column, rounded-3xl photo area (280/480px), gradient placeholder, section-label, amber experience badge, slate-100 spec pills, emerald CTA. Mission/Vision/Values uses 3-column grid with bg-slate-50 rounded-2xl cards, large emerald-700/20 numbers (01/02/03), staggered animation delays.
+- ServicesPage: Compact white header showing service count. Search bar restyled to rounded-xl border-slate-200 with emerald-500 focus. Service cards match ServicesPreview style: bg-white rounded-2xl border-slate-100, h-40 image at top with rounded-t-2xl overflow-hidden img-zoom, amber "Popular" badge, text-lg font-semibold title, line-clamp-2 description, emerald-700 price + slate-400 duration, "Learn More →" link. Removed old icon-based placeholder pattern.
+- ServiceDetailPage: Compact white header with breadcrumb "← Services" link. Full-width rounded-2xl h-64/h-80 image with img-zoom. Meta row as bg-slate-50 rounded-xl flex bar: emerald-700 price, clock duration, amber CTA. Full description with prose-dental markdown. Bottom "Ready to book?" card in emerald-50 with amber CTA button.
+- GalleryPage: Compact white header. Custom pill-style category tabs replacing Tabs UI component: active=bg-emerald-700 text-white, inactive=text-slate-500 hover-bg-slate-100. Grid uses gap-3 tight spacing. Image cards: rounded-xl with group relative, hover dark overlay bg-black/30 with title text. Gradient placeholder (emerald-100→amber-50). Lightbox dialog content area rounded-2xl.
+- All files: pt-20 preserved, all store usage/useInView/navigation/hash routing/markdown rendering/filtering/lightbox preserved.
+
+Stage Summary:
+- 4 inner pages redesigned with compact white page headers replacing full-color heroes
+- All pages follow consistent pattern: section-label → title → subtitle/breadcrumb
+- AboutPage doctor section matches home DoctorSection visual language exactly
+- ServicesPage cards match home ServicesPreview card style
+- GalleryPage uses custom pill tabs and hover overlays with tight grid
+- ServiceDetailPage has clean meta row + bottom CTA card pattern
+- All functionality preserved: store, hooks, markdown, filters, lightbox, navigation
+
+---
+Task ID: 8-b
+Agent: frontend-styling-expert
+Task: Redesign TestimonialsPage, BlogListingPage, BlogDetailPage, ContactPage, BookingPage
+
+Work Log:
+- TestimonialsPage: Replaced full-color hero with compact white header (section-label + title). Cards now use `bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100` with large decorative emerald quote mark (matching home TestimonialsPreview). Bottom row shows avatar circle (initials/photo) + name + amber-400 star rating. Spacing changed to `space-y-5`. Kept all store usage, useInView, staggered animation.
+- BlogListingPage: Compact white header. Replaced shadcn Input/Tabs with custom search input (`rounded-xl border-slate-200 focus:border-emerald-500`) and pill-style category filters (active: `bg-emerald-700 text-white rounded-full`). Blog cards changed from vertical to horizontal layout (image left, content right) matching home BlogPreview. Grid changed to `grid-cols-1 lg:grid-cols-2 gap-5`. Content shows category (emerald uppercase), title, date+author, "Read More →" link. Removed unused shadcn imports (Input, Badge, Tabs, TabsList, TabsTrigger).
+- BlogDetailPage: Compact header with breadcrumb "← Blog" + title + author/date + category badge (`bg-amber-50 text-amber-700`). Featured image now `rounded-2xl overflow-hidden h-64 lg:h-96`. Tags shown as `bg-slate-100 text-slate-600 text-xs px-3 py-1.5 rounded-full` pills. Bottom CTA card with emerald-50 background and amber CTA button. Kept all fetch, markdown, loading/404 states.
+- ContactPage: Compact white header. Two-column layout: LEFT has clean form with `rounded-xl border-slate-200 focus:border-emerald-500` inputs and amber CTA submit button with shadow. Success state uses emerald-themed styling. RIGHT has contact info rows with emerald icon containers (`bg-emerald-50`) matching home ContactSection style, social icons (`bg-slate-100 hover:bg-emerald-50`), and map in `rounded-2xl` container. Replaced shadcn Button/Input/Textarea/Label with native HTML elements for consistent styling.
+- BookingPage: Compact white header. Step indicator refined: active/completed = `bg-emerald-700 text-white` with checkmark icon for completed, future = `bg-slate-200 text-slate-400`, connecting lines use emerald-700/slate-200. Step content area: `bg-white rounded-2xl border border-slate-100 p-6 sm:p-8`. Service grid uses `border-2 border-slate-100 hover:border-emerald-500`, selected state `border-emerald-500 bg-emerald-50 ring-2 ring-emerald-500/20`. Calendar wrapped in `rounded-xl border-slate-200` container. Time slots use `rounded-lg border border-slate-200 hover:border-emerald-500 p-3 text-center`, selected `border-emerald-500 bg-emerald-700 text-white`, booked `line-through text-slate-300 cursor-not-allowed bg-slate-50`. Patient form uses matching `rounded-xl border-slate-200 focus:border-emerald-500` inputs. Success step: emerald circle checkmark + amber CTA. Nav buttons: back = outline `border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg`, next/confirm = amber CTA. Removed unused shadcn Card/CardContent/CardHeader/CardTitle/Badge/Button/Input/Textarea/Label imports.
+
+Stage Summary:
+- 5 inner pages redesigned to match premium design system
+- All pages now use compact white page headers instead of full-color heroes
+- Consistent use of emerald/amber/slate color tokens throughout
+- All form inputs standardized to rounded-xl with emerald focus states
+- Amber CTA buttons with shadow used for primary actions across all pages
+- Zero new type errors introduced (all 6 errors are pre-existing in unrelated files)
+- All store usage, API calls, navigation, form logic, and hooks preserved intact
+
+---
+Task ID: 13
+Agent: Main Orchestrator
+Task: Complete visual redesign — eliminate "AI slop" look
+
+Work Log:
+- Analyzed current design via VLM AI critic — received 6.5/10 rating with specific issues: generic teal gradients, identical 3-column card grids, centered headings pattern, monotonous spacing, no visual personality
+- Designed new "Radiance" design system: deep emerald (#047857) + warm amber (#D97706) palette, Plus Jakarta Sans typography, slate neutrals
+- Rewrote globals.css with new color tokens, refined animations (slideInLeft/Right, float, shimmer), better card-hover and img-zoom transitions
+- Updated layout.tsx to use Plus Jakarta Sans (replacing Geist)
+- Launched 5 parallel frontend-styling-expert agents to redesign all 20+ components:
+  - Agent 4: SiteHeader (glassmorphism, amber CTA, underline nav hover), SiteFooter (slate-900 with emerald accent line), MobileCTA (phone icon + amber button)
+  - Agent 5: HeroSection (diagonal split emerald/cream), ClinicIntro (left-aligned with emerald accent bar + trust indicators), CTASection (warm amber-50)
+  - Agent 6: ServicesPreview (numbered emerald badges, rounded-2xl cards), WhyChooseUs (bento grid with tall featured card), DoctorSection (rounded-3xl photo, amber pills, spec tags), StatsSection (emerald-900 with amber accent line)
+  - Agent 7: TestimonialsPreview (decorative quote marks, emerald avatars), GalleryPreview (masonry-like grid), BlogPreview (horizontal cards), ContactSection (two-column with icon rows)
+  - Agent 8-a: AboutPage, ServicesPage, ServiceDetailPage, GalleryPage (compact page headers, consistent card styles)
+  - Agent 8-b: TestimonialsPage, BlogListingPage, BlogDetailPage, ContactPage, BookingPage (refined step indicators, pill-style tabs, emerald selected states)
+- Post-agent fixes: Rewrote HeroSection to remove template-feeling diagonal split + abstract blobs → clean full-width dark emerald with subtle radial light and trust micro-bar. Removed decorative blobs from CTASection.
+- VLM AI critic re-evaluation: 6.5/10 → 8/10 on homepage, 8/10 on services page, 7/10 on booking page
+- All inner pages verified via agent-browser snapshot + VLM
+- Admin panel confirmed working unchanged
+- bun run lint: 0 errors
+
+Stage Summary:
+- Complete visual overhaul of 20+ components across the entire website
+- New design system: emerald/amber/slate palette, Plus Jakarta Sans, intentional visual language
+- AI critic rating improved from 6.5/10 to 8/10
+- Key design changes: left-aligned section headers, bento grid layouts, horizontal blog cards, pill-style filter tabs, glassmorphism header, amber CTAs that pop against emerald
+- Zero lint errors, all functionality preserved
+

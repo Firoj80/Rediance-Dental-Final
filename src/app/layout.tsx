@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -15,12 +16,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Radiance Dental Care & Facial Trauma Centre",
-  description: "Comprehensive dental care in Siwan, Bihar. Dr. Shahid Raza provides modern dental treatments with gentle care and affordable prices.",
-  keywords: ["dental", "dentist", "Siwan", "Bihar", "dental care", "oral health", "Dr. Shahid Raza"],
+  description:
+    "Comprehensive dental care in Siwan, Bihar. Dr. Shahid Raza provides modern dental treatments with gentle care and affordable prices.",
+  keywords: [
+    "dental",
+    "dentist",
+    "Siwan",
+    "Bihar",
+    "dental care",
+    "oral health",
+    "Dr. Shahid Raza",
+  ],
   authors: [{ name: "Radiance Dental Care" }],
   openGraph: {
     title: "Radiance Dental Care & Facial Trauma Centre",
-    description: "Comprehensive dental care in Siwan, Bihar with modern technology and gentle treatment.",
+    description:
+      "Comprehensive dental care in Siwan, Bihar with modern technology and gentle treatment.",
     type: "website",
   },
   twitter: {
@@ -38,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${jakarta.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />

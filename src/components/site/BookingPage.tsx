@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
-  Calendar,
   Clock,
   CheckCircle2,
   Stethoscope,
@@ -14,14 +13,9 @@ import {
   MessageSquare,
   Loader2,
   AlertCircle,
+  Check,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useSiteStore, type ServiceData } from '@/lib/store'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
@@ -44,26 +38,31 @@ const STEP_LABELS = ['Service', 'Date', 'Time', 'Details', 'Confirm']
 
 function StepIndicator({ currentStep }: { currentStep: number }) {
   return (
-    <div className="flex items-center justify-center gap-1 mb-8">
+    <div className="flex items-center justify-center gap-0 mb-8">
       {STEP_LABELS.map((label, i) => (
         <div key={label} className="flex items-center">
           <div
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
               i < currentStep
-                ? 'bg-primary text-white'
+                ? 'bg-emerald-700 text-white'
                 : i === currentStep
-                ? 'bg-primary/10 text-primary border border-primary/20'
-                : 'bg-muted text-muted-foreground'
+                ? 'bg-emerald-700 text-white'
+                : 'bg-slate-200 text-slate-400'
             )}
           >
-            <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] border bg-white text-foreground">
-              {i < currentStep ? '✓' : i + 1}
+            <span className={cn(
+              'w-5 h-5 rounded-full flex items-center justify-center text-[10px] border',
+              i <= currentStep
+                ? 'bg-emerald-700 text-white border-emerald-700'
+                : 'bg-white text-slate-400 border-slate-300'
+            )}>
+              {i < currentStep ? <Check className="w-3 h-3" /> : i + 1}
             </span>
             <span className="hidden sm:inline">{label}</span>
           </div>
           {i < STEP_LABELS.length - 1 && (
-            <div className={cn('w-6 h-0.5', i < currentStep ? 'bg-primary' : 'bg-muted')} />
+            <div className={cn('w-6 sm:w-10 h-0.5', i < currentStep ? 'bg-emerald-700' : 'bg-slate-200')} />
           )}
         </div>
       ))}
@@ -246,11 +245,13 @@ export function BookingPage() {
     setFormErrors({})
   }
 
+  const inputClasses = 'w-full h-11 px-4 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-colors placeholder:text-slate-400'
+
   // Render service selection
   const renderStepService = () => (
     <div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">Select a Service</h3>
-      <p className="text-sm text-muted-foreground mb-6">Choose the service you&apos;d like to book.</p>
+      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Service</h3>
+      <p className="text-sm text-slate-500 mb-6">Choose the service you&apos;d like to book.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {services.map((service) => (
@@ -258,24 +259,24 @@ export function BookingPage() {
             key={service.id}
             onClick={() => setSelectedService(service)}
             className={cn(
-              'p-4 rounded-xl border text-left transition-all',
+              'rounded-xl border-2 p-4 cursor-pointer transition-all text-left',
               selectedService?.id === service.id
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
-                : 'border-border hover:border-primary/30 hover:bg-muted/50'
+                ? 'border-emerald-500 bg-emerald-50 ring-2 ring-emerald-500/20'
+                : 'border-slate-100 hover:border-emerald-500'
             )}
           >
             <div className="flex items-center gap-3">
               <div className={cn(
                 'w-10 h-10 rounded-lg flex items-center justify-center shrink-0',
-                selectedService?.id === service.id ? 'bg-primary text-white' : 'bg-muted'
+                selectedService?.id === service.id ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-400'
               )}>
                 <Stethoscope className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <p className="font-medium text-foreground text-sm">{service.name}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <p className="font-medium text-slate-900 text-sm">{service.name}</p>
+                <div className="flex items-center gap-2 text-xs text-slate-400">
                   <span>{service.duration} min</span>
-                  {service.price != null && <span>• ₹{service.price}</span>}
+                  {service.price != null && <span>· ₹{service.price}</span>}
                 </div>
               </div>
             </div>
@@ -284,7 +285,7 @@ export function BookingPage() {
       </div>
 
       {formErrors.service && (
-        <p className="text-sm text-destructive mt-3 flex items-center gap-1">
+        <p className="text-sm text-red-500 mt-3 flex items-center gap-1">
           <AlertCircle className="w-3.5 h-3.5" /> {formErrors.service}
         </p>
       )}
@@ -294,35 +295,37 @@ export function BookingPage() {
   // Render date selection
   const renderStepDate = () => (
     <div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">Select a Date</h3>
-      <p className="text-sm text-muted-foreground mb-6">Choose your preferred appointment date.</p>
+      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Date</h3>
+      <p className="text-sm text-slate-500 mb-6">Choose your preferred appointment date.</p>
 
       <div className="flex justify-center">
-        <CalendarComponent
-          mode="single"
-          selected={selectedDate}
-          onSelect={(date) => {
-            setSelectedDate(date)
-            setSelectedTime('')
-          }}
-          disabled={[
-            { before: new Date(new Date().setHours(0, 0, 0, 0)) },
-            ...(offDays.length > 0 ? [{ dayOfWeek: offDays }] : []),
-            ...blockedDates,
-          ]}
-          toDate={maxDate}
-          className="rounded-xl border"
-        />
+        <div className="rounded-xl border border-slate-200 p-2">
+          <CalendarComponent
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => {
+              setSelectedDate(date)
+              setSelectedTime('')
+            }}
+            disabled={[
+              { before: new Date(new Date().setHours(0, 0, 0, 0)) },
+              ...(offDays.length > 0 ? [{ dayOfWeek: offDays }] : []),
+              ...blockedDates,
+            ]}
+            toDate={maxDate}
+            className="rounded-xl"
+          />
+        </div>
       </div>
 
       {selectedDate && (
-        <p className="text-sm text-center text-muted-foreground mt-4">
+        <p className="text-sm text-center text-slate-500 mt-4">
           Selected: {selectedDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       )}
 
       {formErrors.date && (
-        <p className="text-sm text-destructive mt-3 flex items-center gap-1 justify-center">
+        <p className="text-sm text-red-500 mt-3 flex items-center gap-1 justify-center">
           <AlertCircle className="w-3.5 h-3.5" /> {formErrors.date}
         </p>
       )}
@@ -332,8 +335,8 @@ export function BookingPage() {
   // Render time selection
   const renderStepTime = () => (
     <div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">Select a Time</h3>
-      <p className="text-sm text-muted-foreground mb-6">
+      <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Time</h3>
+      <p className="text-sm text-slate-500 mb-6">
         Available time slots for {selectedDate?.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
         {selectedService && ` (${selectedService.name})`}
       </p>
@@ -346,9 +349,9 @@ export function BookingPage() {
         </div>
       ) : slots.length === 0 ? (
         <div className="text-center py-8">
-          <Clock className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-muted-foreground">No available slots for this date.</p>
-          <p className="text-xs text-muted-foreground mt-1">Please select a different date.</p>
+          <Clock className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+          <p className="text-slate-500">No available slots for this date.</p>
+          <p className="text-xs text-slate-400 mt-1">Please select a different date.</p>
         </div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -358,12 +361,12 @@ export function BookingPage() {
               disabled={!slot.available}
               onClick={() => setSelectedTime(slot.time)}
               className={cn(
-                'h-11 rounded-lg text-sm font-medium transition-all',
+                'rounded-lg border p-3 text-center cursor-pointer transition-all text-sm',
                 !slot.available
-                  ? 'bg-muted/50 text-muted-foreground/40 cursor-not-allowed line-through'
+                  ? 'border-slate-100 line-through text-slate-300 cursor-not-allowed bg-slate-50'
                   : selectedTime === slot.time
-                  ? 'bg-primary text-white ring-1 ring-primary/20'
-                  : 'bg-muted hover:bg-primary/10 hover:text-primary text-foreground'
+                  ? 'border-emerald-500 bg-emerald-700 text-white'
+                  : 'border-slate-200 hover:border-emerald-500 text-slate-700'
               )}
             >
               {formatTime(slot.time)}
@@ -373,7 +376,7 @@ export function BookingPage() {
       )}
 
       {formErrors.time && (
-        <p className="text-sm text-destructive mt-3 flex items-center gap-1">
+        <p className="text-sm text-red-500 mt-3 flex items-center gap-1">
           <AlertCircle className="w-3.5 h-3.5" /> {formErrors.time}
         </p>
       )}
@@ -383,59 +386,62 @@ export function BookingPage() {
   // Render patient info
   const renderStepDetails = () => (
     <div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">Your Details</h3>
-      <p className="text-sm text-muted-foreground mb-6">Please provide your contact information.</p>
+      <h3 className="text-lg font-semibold text-slate-900 mb-1">Your Details</h3>
+      <p className="text-sm text-slate-500 mb-6">Please provide your contact information.</p>
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="bk-name" className="flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5" /> Full Name *
-          </Label>
-          <Input
+          <label htmlFor="bk-name" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+            <User className="w-3.5 h-3.5" /> Full Name <span className="text-red-400">*</span>
+          </label>
+          <input
             id="bk-name"
+            type="text"
             value={patientInfo.name}
             onChange={(e) => setPatientInfo({ ...patientInfo, name: e.target.value })}
             placeholder="Your full name"
-            className={formErrors.name ? 'border-destructive' : ''}
+            className={cn(inputClasses, formErrors.name ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : '')}
           />
-          {formErrors.name && <p className="text-xs text-destructive mt-1">{formErrors.name}</p>}
+          {formErrors.name && <p className="text-xs text-red-500 mt-1">{formErrors.name}</p>}
         </div>
         <div>
-          <Label htmlFor="bk-phone" className="flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5" /> Phone Number *
-          </Label>
-          <Input
+          <label htmlFor="bk-phone" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+            <Phone className="w-3.5 h-3.5" /> Phone Number <span className="text-red-400">*</span>
+          </label>
+          <input
             id="bk-phone"
             type="tel"
             value={patientInfo.phone}
             onChange={(e) => setPatientInfo({ ...patientInfo, phone: e.target.value })}
             placeholder="Your phone number"
-            className={formErrors.phone ? 'border-destructive' : ''}
+            className={cn(inputClasses, formErrors.phone ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : '')}
           />
-          {formErrors.phone && <p className="text-xs text-destructive mt-1">{formErrors.phone}</p>}
+          {formErrors.phone && <p className="text-xs text-red-500 mt-1">{formErrors.phone}</p>}
         </div>
         <div>
-          <Label htmlFor="bk-email" className="flex items-center gap-1.5">
+          <label htmlFor="bk-email" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
             <Mail className="w-3.5 h-3.5" /> Email (Optional)
-          </Label>
-          <Input
+          </label>
+          <input
             id="bk-email"
             type="email"
             value={patientInfo.email}
             onChange={(e) => setPatientInfo({ ...patientInfo, email: e.target.value })}
             placeholder="Your email address"
+            className={inputClasses}
           />
         </div>
         <div>
-          <Label htmlFor="bk-message" className="flex items-center gap-1.5">
+          <label htmlFor="bk-message" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
             <MessageSquare className="w-3.5 h-3.5" /> Message (Optional)
-          </Label>
-          <Textarea
+          </label>
+          <textarea
             id="bk-message"
             value={patientInfo.message}
             onChange={(e) => setPatientInfo({ ...patientInfo, message: e.target.value })}
             placeholder="Any specific concerns or notes"
             rows={3}
+            className={`${inputClasses} h-auto py-3 resize-none`}
           />
         </div>
       </div>
@@ -445,45 +451,45 @@ export function BookingPage() {
   // Render confirmation
   const renderStepConfirm = () => (
     <div>
-      <h3 className="text-lg font-semibold text-foreground mb-1">Review & Confirm</h3>
-      <p className="text-sm text-muted-foreground mb-6">Please verify your appointment details.</p>
+      <h3 className="text-lg font-semibold text-slate-900 mb-1">Review & Confirm</h3>
+      <p className="text-sm text-slate-500 mb-6">Please verify your appointment details.</p>
 
       <div className="space-y-4">
-        <div className="p-4 rounded-xl bg-muted/50">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-slate-50 rounded-xl p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Service</p>
-              <p className="font-medium text-foreground text-sm">{selectedService?.name}</p>
-              <p className="text-xs text-muted-foreground">{selectedService?.duration} min {selectedService?.price != null ? `• ₹${selectedService.price}` : ''}</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Service</p>
+              <p className="font-medium text-slate-900 text-sm">{selectedService?.name}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{selectedService?.duration} min {selectedService?.price != null ? `· ₹${selectedService.price}` : ''}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Date & Time</p>
-              <p className="font-medium text-foreground text-sm">
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Date & Time</p>
+              <p className="font-medium text-slate-900 text-sm">
                 {selectedDate?.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
-              <p className="text-xs text-muted-foreground">{selectedTime ? formatTime(selectedTime) : ''}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{selectedTime ? formatTime(selectedTime) : ''}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Patient Name</p>
-              <p className="font-medium text-foreground text-sm">{patientInfo.name}</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Patient Name</p>
+              <p className="font-medium text-slate-900 text-sm">{patientInfo.name}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Phone</p>
-              <p className="font-medium text-foreground text-sm">{patientInfo.phone}</p>
-              {patientInfo.email && <p className="text-xs text-muted-foreground">{patientInfo.email}</p>}
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Phone</p>
+              <p className="font-medium text-slate-900 text-sm">{patientInfo.phone}</p>
+              {patientInfo.email && <p className="text-xs text-slate-500 mt-0.5">{patientInfo.email}</p>}
             </div>
           </div>
           {patientInfo.message && (
-            <div className="mt-4">
-              <p className="text-xs text-muted-foreground mb-1">Message</p>
-              <p className="text-sm text-foreground">{patientInfo.message}</p>
+            <div className="mt-4 pt-4 border-t border-slate-200">
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Message</p>
+              <p className="text-sm text-slate-700">{patientInfo.message}</p>
             </div>
           )}
         </div>
 
         {bookingResult && !bookingResult.success && (
-          <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20">
-            <p className="text-sm text-destructive flex items-center gap-1.5">
+          <div className="p-4 rounded-xl bg-red-50 border border-red-200">
+            <p className="text-sm text-red-600 flex items-center gap-1.5">
               <AlertCircle className="w-4 h-4" /> {bookingResult.error}
             </p>
           </div>
@@ -495,95 +501,98 @@ export function BookingPage() {
   // Render success
   const renderSuccess = () => (
     <div className="text-center py-8">
-      <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
-        <CheckCircle2 className="w-10 h-10 text-green-500" />
+      <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-6">
+        <CheckCircle2 className="w-10 h-10 text-emerald-600" />
       </div>
-      <h2 className="text-2xl font-bold text-foreground mb-2">Appointment Booked!</h2>
-      <p className="text-muted-foreground mb-2">Your appointment has been successfully scheduled.</p>
+      <h2 className="text-2xl font-bold text-slate-900 mb-2">Appointment Booked!</h2>
+      <p className="text-slate-500 mb-2">Your appointment has been successfully scheduled.</p>
       {bookingResult?.id && (
-        <p className="text-sm text-muted-foreground mb-6">
-          Booking ID: <span className="font-mono font-medium text-foreground">{bookingResult.id}</span>
+        <p className="text-sm text-slate-500 mb-6">
+          Booking ID: <span className="font-mono font-medium text-slate-900">{bookingResult.id}</span>
         </p>
       )}
-      <p className="text-sm text-muted-foreground mb-8 max-w-sm mx-auto">
+      <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto">
         You can reach us at {clinicData?.phone || 'our clinic phone'} for any changes or queries.
       </p>
       <div className="flex items-center justify-center gap-3">
-        <Button variant="outline" onClick={resetBooking}>
+        <button
+          onClick={resetBooking}
+          className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+        >
           Book Another
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={() => { window.location.hash = '#/' }}
-          className="bg-primary hover:bg-primary/90 text-white"
+          className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors"
         >
           Back to Home
-        </Button>
+        </button>
       </div>
     </div>
   )
 
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="bg-primary py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">Book an Appointment</h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
-            Schedule your visit in just a few steps.
-          </p>
+      {/* Compact Page Header */}
+      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="section-label text-emerald-600 mb-3 block">Book Appointment</span>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+            Schedule Your Visit
+          </h1>
         </div>
       </section>
 
       {/* Booking Form */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           {currentStep < 5 ? (
-            <Card>
-              <CardContent className="pt-6">
-                <StepIndicator currentStep={currentStep} />
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8">
+              <StepIndicator currentStep={currentStep} />
 
-                {renderStepByStep()}
+              {renderStepByStep()}
 
-                <Separator className="my-6" />
+              <Separator className="my-6" />
 
-                <div className="flex items-center justify-between">
-                  <Button
-                    variant="ghost"
-                    onClick={handleBack}
-                    disabled={currentStep === 0}
-                    className="text-muted-foreground"
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={handleBack}
+                  disabled={currentStep === 0}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2 border border-slate-200 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back
+                </button>
+
+                {currentStep < 4 ? (
+                  <button
+                    onClick={handleNext}
+                    className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors inline-flex items-center gap-1.5"
                   >
-                    <ArrowLeft className="w-4 h-4" />
-                    Back
-                  </Button>
-
-                  {currentStep < 4 ? (
-                    <Button onClick={handleNext} className="bg-primary hover:bg-primary/90 text-white">
-                      Continue
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleConfirm}
-                      disabled={submitting}
-                      className="bg-primary hover:bg-primary/90 text-white"
-                    >
-                      {submitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Booking...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-4 h-4" />
-                          Confirm Appointment
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    Continue
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleConfirm}
+                    disabled={submitting}
+                    className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors inline-flex items-center gap-1.5 disabled:opacity-50"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Booking...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4" />
+                        Confirm Appointment
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
           ) : (
             renderSuccess()
           )}

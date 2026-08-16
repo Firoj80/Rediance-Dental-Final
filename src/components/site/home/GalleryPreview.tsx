@@ -1,7 +1,6 @@
 'use client'
 
 import { Camera, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
 
@@ -14,45 +13,60 @@ export function GalleryPreview() {
   const previewImages = galleryImages.slice(0, 6)
 
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="py-20 lg:py-28 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">Our Gallery</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Take a look at our clinic and the results we deliver.
-          </p>
+        {/* Section Header — Left Aligned */}
+        <div className="mb-12">
+          <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            A Glimpse of Our Clinic
+          </h2>
         </div>
 
-        <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-4">
+        {/* Masonry-like grid */}
+        <div
+          ref={ref}
+          className="grid grid-cols-2 lg:grid-cols-3 gap-3"
+        >
           {previewImages.map((img, i) => (
             <div
               key={img.id}
-              className={`aspect-square rounded-xl overflow-hidden img-zoom transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`group relative overflow-hidden rounded-xl transition-all duration-500 ${
+                i === 0 ? 'row-span-2 min-h-[280px] sm:min-h-[360px]' : 'min-h-[140px] sm:min-h-[170px]'
+              } ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               {img.image ? (
-                <img
-                  src={img.image}
-                  alt={img.title || 'Gallery image'}
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  <img
+                    src={img.image}
+                    alt={img.title || 'Gallery image'}
+                    className="rounded-xl object-cover w-full h-full img-zoom"
+                  />
+                  {/* Hover overlay with Camera icon */}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-center justify-center">
+                    <Camera className="w-8 h-8 text-white/90" />
+                  </div>
+                </>
               ) : (
-                <div className="w-full h-full bg-teal-50 flex items-center justify-center">
-                  <Camera className="w-10 h-10 text-teal-200" />
+                <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 rounded-xl flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-emerald-300" />
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {galleryImages.length > 6 && (
-          <div className="text-center mt-10">
-            <Button variant="outline" onClick={() => { window.location.hash = '#/gallery' }}>
-              View All
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+        {/* Bottom CTA — amber button like services */}
+        <div className="mt-10">
+          <button
+            onClick={() => { window.location.hash = '#/gallery' }}
+            className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"
+          >
+            View Gallery
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </section>
   )

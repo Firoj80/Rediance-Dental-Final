@@ -1,10 +1,8 @@
 'use client'
 
-import { ArrowRight, CalendarDays } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
+import { CalendarDays } from 'lucide-react'
 
 export function BlogPreview() {
   const blogPosts = useSiteStore((s) => s.blogPosts)
@@ -16,62 +14,70 @@ export function BlogPreview() {
   const latestPosts = blogPosts.slice(0, 3)
 
   return (
-    <section className="py-16 lg:py-24 bg-muted/40">
+    <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">Latest from Our Blog</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Tips, news, and insights about dental health.
-          </p>
+        {/* Section Header — Left Aligned */}
+        <div className="mb-12">
+          <span className="section-label text-emerald-600 mb-3 block">Blog</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            Latest from Our Blog
+          </h2>
         </div>
 
-        <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Blog Cards Grid — horizontal cards */}
+        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {latestPosts.map((post, i) => (
             <article
               key={post.id}
-              className={`card-hover bg-white rounded-xl border overflow-hidden transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
+              className={`
+                bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover
+                flex flex-col sm:flex-row cursor-pointer
+                transition-all duration-500
+                ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+              `}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
-              {post.featuredImage ? (
-                <div className="img-zoom">
+              {/* Image side */}
+              <div className="sm:w-48 h-40 sm:h-auto bg-slate-100 flex-shrink-0">
+                {post.featuredImage ? (
                   <img
                     src={post.featuredImage}
                     alt={post.title}
-                    className="w-full aspect-[16/9] object-cover"
+                    className="w-full h-full object-cover"
                   />
-                </div>
-              ) : (
-                <div className="aspect-[16/9] bg-teal-50 flex items-center justify-center">
-                  <CalendarDays className="w-10 h-10 text-teal-200" />
-                </div>
-              )}
-              <div className="p-5">
-                {post.category && (
-                  <Badge variant="secondary" className="text-xs mb-2">{post.category}</Badge>
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-amber-50 flex items-center justify-center">
+                    <CalendarDays className="w-8 h-8 text-emerald-200" />
+                  </div>
                 )}
-                <h3 className="font-semibold text-foreground mb-2 line-clamp-2">{post.title}</h3>
-                <p className="text-xs text-muted-foreground mb-3">
-                  {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+              </div>
+
+              {/* Content side */}
+              <div className="p-5 flex flex-col justify-center">
+                {post.category && (
+                  <span className="text-emerald-600 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                    {post.category}
+                  </span>
+                )}
+                <h3 className="text-base font-semibold text-slate-900 line-clamp-2 hover:text-emerald-700 transition-colors cursor-pointer mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  {post.publishedAt
+                    ? new Date(post.publishedAt).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })
+                    : ''}
+                  {post.author && post.publishedAt ? ' · ' : ''}
+                  {post.author || ''}
                 </p>
-                <button
-                  onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                >
-                  Read More <ArrowRight className="w-3.5 h-3.5" />
-                </button>
               </div>
             </article>
           ))}
         </div>
-
-        {blogPosts.length > 3 && (
-          <div className="text-center mt-10">
-            <Button variant="outline" onClick={() => { window.location.hash = '#/blog' }}>
-              View All Posts
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   )

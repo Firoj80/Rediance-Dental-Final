@@ -2,10 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { Search, ArrowRight, CalendarDays } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSiteStore } from '@/lib/store'
 import { useInView } from '@/hooks/use-in-view'
 
@@ -37,88 +34,117 @@ export function BlogListingPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="bg-primary py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">Our Blog</h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
-            Tips, news, and insights about dental health and wellness.
-          </p>
+      {/* Compact Page Header */}
+      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="section-label text-emerald-600 mb-3 block">Blog</span>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+            Our Blog
+          </h1>
         </div>
       </section>
 
       {/* Blog Listing */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search & Filter */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
                 placeholder="Search articles..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="w-full h-10 pl-10 pr-4 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-colors placeholder:text-slate-400"
               />
             </div>
             {categories.length > 2 && (
-              <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-                <TabsList>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  {categories.slice(1).map((cat) => (
-                    <TabsTrigger key={cat} value={cat}>{cat}</TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`
+                      px-4 py-2 text-sm font-medium transition-colors rounded-full
+                      ${activeCategory === cat
+                        ? 'bg-emerald-700 text-white'
+                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                      }
+                    `}
+                  >
+                    {cat === 'all' ? 'All' : cat}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 
           {clinicLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-72 rounded-xl" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="h-44 rounded-2xl" />
               ))}
             </div>
           ) : (
-            <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div ref={ref} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {filtered.map((post, i) => (
                 <article
                   key={post.id}
-                  className={`card-hover bg-white rounded-xl border overflow-hidden transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
+                  className={`
+                    bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover
+                    flex flex-col sm:flex-row cursor-pointer
+                    transition-all duration-500
+                    ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+                  `}
                   style={{ transitionDelay: `${(i % 6) * 80}ms` }}
                 >
-                  {post.featuredImage ? (
-                    <div className="img-zoom">
-                      <img src={post.featuredImage} alt={post.title} className="w-full aspect-[16/9] object-cover" />
-                    </div>
-                  ) : (
-                    <div className="aspect-[16/9] bg-teal-50 flex items-center justify-center">
-                      <CalendarDays className="w-10 h-10 text-teal-200" />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      {post.category && (
-                        <Badge variant="secondary" className="text-xs">{post.category}</Badge>
-                      )}
-                    </div>
-                    <h2 className="font-semibold text-foreground mb-2 line-clamp-2">{post.title}</h2>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
-                      {post.author && ` • ${post.author}`}
+                  {/* Image side */}
+                  <div className="sm:w-56 h-44 sm:h-auto bg-slate-100 flex-shrink-0">
+                    {post.featuredImage ? (
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-amber-50 flex items-center justify-center">
+                        <CalendarDays className="w-8 h-8 text-emerald-200" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content side */}
+                  <div className="p-5 flex flex-col justify-center">
+                    {post.category && (
+                      <span className="text-emerald-600 text-xs font-semibold uppercase tracking-wider mb-1.5">
+                        {post.category}
+                      </span>
+                    )}
+                    <h2 className="text-base font-semibold text-slate-900 line-clamp-2 hover:text-emerald-700 transition-colors cursor-pointer mb-2">
+                      {post.title}
+                    </h2>
+                    <p className="text-xs text-slate-400 mb-3">
+                      {post.publishedAt
+                        ? new Date(post.publishedAt).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })
+                        : ''}
+                      {post.author && post.publishedAt ? ' · ' : ''}
+                      {post.author || ''}
                     </p>
-                    <button
-                      onClick={() => { window.location.hash = `#/blog/${post.slug}` }}
-                      className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                    >
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
                       Read More <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    </span>
                   </div>
                 </article>
               ))}
               {filtered.length === 0 && (
                 <div className="col-span-full text-center py-12">
-                  <p className="text-muted-foreground">No articles found.</p>
+                  <p className="text-slate-400 text-sm">No articles found.</p>
                 </div>
               )}
             </div>

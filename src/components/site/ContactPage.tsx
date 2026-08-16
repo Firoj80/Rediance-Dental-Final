@@ -2,10 +2,6 @@
 
 import { useState } from 'react'
 import { MapPin, Phone, Mail, Clock, Send, Facebook, Instagram, Youtube, CheckCircle2, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSiteStore } from '@/lib/store'
 import { toGoogleMapsEmbedUrl, isGoogleMapsShortUrl } from '@/lib/utils'
@@ -48,16 +44,17 @@ export function ContactPage() {
   if (clinicLoading) {
     return (
       <div className="pt-20">
-        <section className="bg-primary py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <Skeleton className="h-10 w-48 mx-auto" />
+        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Skeleton className="h-3 w-16 mb-3" />
+            <Skeleton className="h-9 w-48" />
           </div>
         </section>
-        <section className="py-16 lg:py-24 bg-muted/30">
+        <section className="py-16 lg:py-24 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <Skeleton className="h-96 rounded-xl" />
-              <Skeleton className="h-96 rounded-xl" />
+              <Skeleton className="h-96 rounded-2xl" />
+              <Skeleton className="h-96 rounded-2xl" />
             </div>
           </div>
         </section>
@@ -65,89 +62,111 @@ export function ContactPage() {
     )
   }
 
+  const rawMapUrl = clinicData?.googleMapsUrl
+  const embedUrl = rawMapUrl ? toGoogleMapsEmbedUrl(rawMapUrl) : null
+  const isShortUrl = rawMapUrl ? isGoogleMapsShortUrl(rawMapUrl) : false
+
+  const inputClasses = 'w-full h-11 px-4 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-colors placeholder:text-slate-400'
+
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="bg-primary py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">Contact Us</h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
-            Have questions? We&apos;d love to hear from you.
-          </p>
+      {/* Compact Page Header */}
+      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="section-label text-emerald-600 mb-3 block">Contact</span>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+            Contact Us
+          </h1>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-            {/* Contact Form */}
-            <div className="bg-white rounded-xl border p-6 lg:p-8">
+            {/* LEFT — Contact Form */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mb-4">
-                    <CheckCircle2 className="w-8 h-8 text-green-500" />
+                  <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">Message Sent!</h3>
-                  <p className="text-muted-foreground mb-6">Thank you for reaching out. We&apos;ll get back to you soon.</p>
-                  <Button variant="outline" onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', message: '' }) }}>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">Message Sent!</h3>
+                  <p className="text-slate-500 text-sm mb-6">Thank you for reaching out. We&apos;ll get back to you soon.</p>
+                  <button
+                    onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', message: '' }) }}
+                    className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                  >
                     Send Another Message
-                  </Button>
+                  </button>
                 </div>
               ) : (
                 <>
-                  <h2 className="text-xl font-bold text-foreground mb-6">Send Us a Message</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 mb-6">Send Us a Message</h2>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <Label htmlFor="name">Name *</Label>
-                      <Input
+                      <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
+                        Name <span className="text-red-400">*</span>
+                      </label>
+                      <input
                         id="name"
+                        type="text"
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         required
                         placeholder="Your full name"
+                        className={inputClasses}
                       />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="phone">Phone</Label>
-                        <Input
+                        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1.5">
+                          Phone
+                        </label>
+                        <input
                           id="phone"
                           type="tel"
                           value={form.phone}
                           onChange={(e) => setForm({ ...form, phone: e.target.value })}
                           placeholder="Your phone number"
+                          className={inputClasses}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
+                        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+                          Email
+                        </label>
+                        <input
                           id="email"
                           type="email"
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
                           placeholder="Your email address"
+                          className={inputClasses}
                         />
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="message">Message *</Label>
-                      <Textarea
+                      <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1.5">
+                        Message <span className="text-red-400">*</span>
+                      </label>
+                      <textarea
                         id="message"
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                         required
                         placeholder="How can we help you?"
                         rows={5}
+                        className={`${inputClasses} h-auto py-3 resize-none`}
                       />
                     </div>
                     {error && (
-                      <p className="text-sm text-destructive">{error}</p>
+                      <p className="text-sm text-red-500">{error}</p>
                     )}
-                    <Button
+                    <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full bg-primary hover:bg-primary/90 text-white"
+                      className="w-full h-11 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg shadow-lg shadow-amber-500/20 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {submitting ? 'Sending...' : (
                         <>
@@ -155,131 +174,131 @@ export function ContactPage() {
                           Send Message
                         </>
                       )}
-                    </Button>
+                    </button>
                   </form>
                 </>
               )}
             </div>
 
-            {/* Contact Info */}
+            {/* RIGHT — Contact Info + Map */}
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-foreground mb-2">Contact Information</h2>
-
+              {/* Info rows */}
               <div className="space-y-4">
                 {clinicData?.phone && (
-                  <a href={`tel:${clinicData.phone}`} className="flex items-start gap-3 p-4 rounded-xl bg-white border hover:border-primary/30 transition-colors group">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Phone className="w-5 h-5 text-primary" />
+                  <a href={`tel:${clinicData.phone}`} className="flex items-center gap-4 group cursor-pointer">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <Phone className="w-4.5 h-4.5 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Phone</p>
-                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{clinicData.phone}</p>
+                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Phone</p>
+                      <p className="text-slate-700 font-medium text-sm group-hover:text-emerald-700 transition-colors">{clinicData.phone}</p>
                     </div>
                   </a>
                 )}
                 {clinicData?.email && (
-                  <a href={`mailto:${clinicData.email}`} className="flex items-start gap-3 p-4 rounded-xl bg-white border hover:border-primary/30 transition-colors group">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Mail className="w-5 h-5 text-primary" />
+                  <a href={`mailto:${clinicData.email}`} className="flex items-center gap-4 group cursor-pointer">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <Mail className="w-4.5 h-4.5 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Email</p>
-                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{clinicData.email}</p>
+                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Email</p>
+                      <p className="text-slate-700 font-medium text-sm group-hover:text-emerald-700 transition-colors">{clinicData.email}</p>
                     </div>
                   </a>
                 )}
                 {clinicData?.address && (
-                  <div className="flex items-start gap-3 p-4 rounded-xl bg-white border">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <MapPin className="w-5 h-5 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <MapPin className="w-4.5 h-4.5 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Address</p>
-                      <p className="text-sm font-medium text-foreground">{clinicData.address}</p>
+                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Address</p>
+                      <p className="text-slate-700 font-medium text-sm">{clinicData.address}</p>
                     </div>
                   </div>
                 )}
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-white border">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5 text-primary" />
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                    <Clock className="w-4.5 h-4.5 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Working Hours</p>
-                    <p className="text-sm font-medium text-foreground">Monday - Saturday: 10:00 AM - 6:00 PM</p>
-                    <p className="text-sm text-muted-foreground">Sunday: Closed</p>
+                    <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Working Hours</p>
+                    <p className="text-slate-700 font-medium text-sm">Mon – Sat: 10AM – 6PM</p>
+                    <p className="text-slate-400 text-xs">Sunday: Closed</p>
                   </div>
                 </div>
               </div>
 
-              {/* Social */}
+              {/* Social links */}
               {(clinicData?.facebook || clinicData?.instagram || clinicData?.youtube) && (
-                <div className="pt-4">
-                  <p className="text-sm text-muted-foreground mb-3">Follow us</p>
-                  <div className="flex items-center gap-3">
-                    {clinicData?.facebook && (
-                      <a href={clinicData.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-                        <Facebook className="w-5 h-5" />
-                      </a>
-                    )}
-                    {clinicData?.instagram && (
-                      <a href={clinicData.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-                        <Instagram className="w-5 h-5" />
-                      </a>
-                    )}
-                    {clinicData?.youtube && (
-                      <a href={clinicData.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-                        <Youtube className="w-5 h-5" />
-                      </a>
-                    )}
-                  </div>
+                <div className="flex items-center gap-3 pt-2">
+                  {clinicData?.facebook && (
+                    <a
+                      href={clinicData.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-600 text-slate-400 transition-colors flex items-center justify-center"
+                    >
+                      <Facebook className="w-4 h-4" />
+                    </a>
+                  )}
+                  {clinicData?.instagram && (
+                    <a
+                      href={clinicData.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-600 text-slate-400 transition-colors flex items-center justify-center"
+                    >
+                      <Instagram className="w-4 h-4" />
+                    </a>
+                  )}
+                  {clinicData?.youtube && (
+                    <a
+                      href={clinicData.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-600 text-slate-400 transition-colors flex items-center justify-center"
+                    >
+                      <Youtube className="w-4 h-4" />
+                    </a>
+                  )}
                 </div>
               )}
 
               {/* Map */}
-              <div className="rounded-xl overflow-hidden border aspect-[4/3]">
-                {(function() {
-                  const rawMapUrl = clinicData?.googleMapsUrl
-                  const embedUrl = rawMapUrl ? toGoogleMapsEmbedUrl(rawMapUrl) : null
-                  const isShort = rawMapUrl ? isGoogleMapsShortUrl(rawMapUrl) : false
-                  if (embedUrl) {
-                    return (
-                      <iframe
-                        src={embedUrl}
-                        className="w-full h-full border-0"
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="Clinic Location"
-                      />
-                    )
-                  }
-                  if (rawMapUrl) {
-                    return (
-                      <a
-                        href={rawMapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full h-full bg-muted/50 flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-muted/80 transition-colors"
-                      >
-                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                          <MapPin className="w-7 h-7 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-foreground mb-1">View on Google Maps</p>
-                          <p className="text-xs text-muted-foreground">
-                            {isShort ? 'Click to open location' : 'Click to open the map'}
-                          </p>
-                        </div>
-                        <ExternalLink className="w-4 h-4 text-muted-foreground" />
-                      </a>
-                    )
-                  }
-                  return (
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
-                      <MapPin className="w-12 h-12 text-muted-foreground/30" />
+              <div className="rounded-2xl overflow-hidden border border-slate-100 h-[250px] lg:h-[320px]">
+                {embedUrl ? (
+                  <iframe
+                    src={embedUrl}
+                    className="w-full h-full border-0"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Clinic Location"
+                  />
+                ) : rawMapUrl ? (
+                  <a
+                    href={rawMapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full h-full bg-slate-50 flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-slate-100 transition-colors"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
+                      <MapPin className="w-7 h-7 text-emerald-600" />
                     </div>
-                  )
-                })()}
+                    <div>
+                      <p className="text-sm font-medium text-slate-900 mb-1">View on Google Maps</p>
+                      <p className="text-xs text-slate-400">
+                        {isShortUrl ? 'Click to open location' : 'Click to open the map'}
+                      </p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-slate-400" />
+                  </a>
+                ) : (
+                  <div className="w-full h-full bg-slate-50 flex items-center justify-center">
+                    <MapPin className="w-10 h-10 text-slate-300" />
+                  </div>
+                )}
               </div>
             </div>
           </div>

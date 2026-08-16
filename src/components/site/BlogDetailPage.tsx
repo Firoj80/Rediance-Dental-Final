@@ -1,9 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, CalendarDays, User, Tag } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { ArrowLeft, CalendarDays, User } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
 import ReactMarkdown from 'react-markdown'
@@ -36,15 +34,17 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   if (loading) {
     return (
       <div className="pt-20">
-        <section className="bg-primary py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Skeleton className="h-10 w-96 max-w-full mx-auto mb-4" />
-            <Skeleton className="h-6 w-48 mx-auto" />
+        {/* Compact header skeleton */}
+        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Skeleton className="h-3 w-20 mb-3" />
+            <Skeleton className="h-9 w-96 max-w-full mb-3" />
+            <Skeleton className="h-4 w-48" />
           </div>
         </section>
         <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <Skeleton className="h-64 rounded-xl" />
+            <Skeleton className="h-64 lg:h-96 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-3/4" />
@@ -56,14 +56,24 @@ export function BlogDetailPage({ slug }: { slug: string }) {
 
   if (notFound || !post) {
     return (
-      <div className="pt-20 min-h-[60vh] flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-2">Article Not Found</h1>
-          <p className="text-muted-foreground mb-6">The article you are looking for does not exist.</p>
-          <Button variant="outline" onClick={() => { window.location.hash = '#/blog' }}>
-            <ArrowLeft className="w-4 h-4" />
-            Back to Blog
-          </Button>
+      <div className="pt-20">
+        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span className="section-label text-emerald-600 mb-3 block">Blog</span>
+          </div>
+        </section>
+        <div className="min-h-[60vh] flex items-center justify-center bg-white">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">Article Not Found</h1>
+            <p className="text-slate-400 text-sm mb-6">The article you are looking for does not exist.</p>
+            <button
+              onClick={() => { window.location.hash = '#/blog' }}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Blog
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -71,35 +81,36 @@ export function BlogDetailPage({ slug }: { slug: string }) {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="bg-primary py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Compact Header with breadcrumb */}
+      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => { window.location.hash = '#/blog' }}
-            className="inline-flex items-center gap-1 text-sm text-white/60 hover:text-white mb-6 transition-colors"
+            className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-emerald-600 transition-colors mb-4"
           >
-            <ArrowLeft className="w-4 h-4" />
-            All Articles
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Blog
           </button>
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4 max-w-3xl mx-auto">{post.title}</h1>
-          <div className="flex items-center justify-center gap-4 text-white/70 text-sm">
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-4 max-w-3xl">
+            {post.title}
+          </h1>
+          <div className="flex flex-wrap items-center gap-3 text-sm">
             {post.author && (
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5 text-slate-500">
                 <User className="w-3.5 h-3.5" />
                 {post.author}
               </span>
             )}
             {post.publishedAt && (
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5 text-slate-500">
                 <CalendarDays className="w-3.5 h-3.5" />
                 {new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
               </span>
             )}
             {post.category && (
-              <Badge className="bg-white/10 text-white/80 hover:bg-white/20 border-0 text-xs">
-                <Tag className="w-3 h-3" />
+              <span className="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full">
                 {post.category}
-              </Badge>
+              </span>
             )}
           </div>
         </div>
@@ -110,8 +121,8 @@ export function BlogDetailPage({ slug }: { slug: string }) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up">
             {post.featuredImage && (
-              <div className="rounded-xl overflow-hidden mb-10">
-                <img src={post.featuredImage} alt={post.title} className="w-full aspect-[16/9] object-cover" />
+              <div className="rounded-2xl overflow-hidden h-64 lg:h-96 mb-8">
+                <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
               </div>
             )}
 
@@ -126,23 +137,31 @@ export function BlogDetailPage({ slug }: { slug: string }) {
                 <Separator className="my-8" />
                 <div className="flex flex-wrap gap-2">
                   {post.tags.split(',').map((tag: string) => (
-                    <Badge key={tag.trim()} variant="outline" className="text-xs">
+                    <span
+                      key={tag.trim()}
+                      className="bg-slate-100 text-slate-600 text-xs px-3 py-1.5 rounded-full"
+                    >
                       #{tag.trim()}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
               </>
             )}
 
-            <Separator className="my-8" />
+            <Separator className="my-10" />
 
-            <div className="text-center">
-              <Button
+            {/* CTA Card */}
+            <div className="bg-emerald-50 rounded-2xl p-6 sm:p-8 text-center">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Ready to take care of your smile?</h3>
+              <p className="text-sm text-slate-500 mb-5 max-w-md mx-auto">
+                Book an appointment with us today and experience the difference.
+              </p>
+              <button
                 onClick={() => { window.location.hash = '#/book' }}
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 shadow-lg shadow-amber-500/20 transition-colors"
               >
                 Book an Appointment
-              </Button>
+              </button>
             </div>
           </div>
         </div>

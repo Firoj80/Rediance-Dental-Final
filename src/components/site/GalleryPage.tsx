@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react'
 import { Camera, X } from 'lucide-react'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Dialog,
@@ -35,12 +34,15 @@ export function GalleryPage() {
   if (clinicLoading) {
     return (
       <div className="pt-20">
-        <section className="bg-primary py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <Skeleton className="h-10 w-48 mx-auto" />
+        {/* Compact header skeleton */}
+        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Skeleton className="h-3 w-16 mb-3" />
+            <Skeleton className="h-9 w-48 mb-2" />
+            <Skeleton className="h-4 w-64" />
           </div>
         </section>
-        <section className="py-16 lg:py-24 bg-muted/30">
+        <section className="py-16 lg:py-24 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {Array.from({ length: 8 }).map((_, i) => (
@@ -55,61 +57,83 @@ export function GalleryPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="bg-primary py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">Gallery</h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
+      {/* Compact Page Header */}
+      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
+            Our Gallery
+          </h1>
+          <p className="text-slate-500 text-sm">
             Explore our clinic, facilities, and treatment results.
           </p>
         </div>
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-16 lg:py-24 bg-muted/30">
+      <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Category Filter Pills */}
           {categories.length > 2 && (
-            <div className="flex justify-center mb-10">
-              <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-                <TabsList>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  {categories.slice(1).map((cat) => (
-                    <TabsTrigger key={cat} value={cat}>{cat}</TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
+            <div className="flex flex-wrap gap-2 mb-10">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`
+                    px-4 py-2 text-sm font-medium transition-colors rounded-full
+                    ${activeCategory === cat
+                      ? 'bg-emerald-700 text-white'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                    }
+                  `}
+                >
+                  {cat === 'all' ? 'All' : cat}
+                </button>
+              ))}
             </div>
           )}
 
+          {/* Image Grid */}
           <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {filtered.map((img, i) => (
               <button
                 key={img.id}
                 onClick={() => setLightboxImage(img)}
-                className={`aspect-square rounded-xl overflow-hidden img-zoom card-hover transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                className={`
+                  aspect-square rounded-xl overflow-hidden img-zoom group relative
+                  transition-all duration-500
+                  ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+                `}
                 style={{ transitionDelay: `${(i % 8) * 60}ms` }}
               >
                 {img.image ? (
                   <img src={img.image} alt={img.title || 'Gallery image'} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full bg-teal-50 flex items-center justify-center">
-                    <Camera className="w-10 h-10 text-teal-200" />
+                  <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 flex items-center justify-center">
+                    <Camera className="w-10 h-10 text-emerald-200" />
                   </div>
                 )}
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                  <span className="text-white text-xs font-medium truncate">
+                    {img.title || ''}
+                  </span>
+                </div>
               </button>
             ))}
             {filtered.length === 0 && (
               <div className="col-span-full text-center py-12">
-                <p className="text-muted-foreground">No images in this category.</p>
+                <p className="text-slate-400 text-sm">No images in this category.</p>
               </div>
             )}
           </div>
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* Lightbox Dialog */}
       <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden">
+        <DialogContent className="max-w-4xl p-0 overflow-hidden rounded-2xl">
           <DialogTitle className="sr-only">{lightboxImage?.title || 'Gallery Image'}</DialogTitle>
           {lightboxImage && (
             <div>
@@ -120,15 +144,15 @@ export function GalleryPage() {
                   className="w-full max-h-[80vh] object-contain"
                 />
               ) : (
-                <div className="aspect-[4/3] bg-teal-50 flex items-center justify-center">
-                  <Camera className="w-16 h-16 text-teal-200" />
+                <div className="aspect-[4/3] bg-gradient-to-br from-emerald-100 to-amber-50 flex items-center justify-center">
+                  <Camera className="w-16 h-16 text-emerald-200" />
                 </div>
               )}
               {lightboxImage.title && (
-                <div className="p-4 border-t">
-                  <p className="font-medium text-foreground">{lightboxImage.title}</p>
+                <div className="p-4 border-t border-slate-100">
+                  <p className="font-medium text-slate-900">{lightboxImage.title}</p>
                   {lightboxImage.category && (
-                    <p className="text-sm text-muted-foreground">{lightboxImage.category}</p>
+                    <p className="text-sm text-slate-400">{lightboxImage.category}</p>
                   )}
                 </div>
               )}
