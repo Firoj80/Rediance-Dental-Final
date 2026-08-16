@@ -602,3 +602,58 @@ Stage Summary:
 - Section order: Hero → Trust Strip → Services → Why Choose Us → Doctor → Testimonials → Gallery → Blog → CTA → Contact
 - Color usage: emerald-700 for primary actions (book button), amber reserved for accents (stars, badges)
 - VLM overall score: 8/10 (up from previous iterations)
+---
+Task ID: 3
+Agent: fullstack-design-redesign
+Task: Full website redesign inspired by real dental clinic websites
+
+Work Log:
+- Redesigned globals.css: warm off-white bg (#FAFBFC), refined scrollbar width, slower animations (600-800ms), added .page-header utility class
+- Redesigned SiteHeader: transparent on hero → glassmorphism blur on scroll, phone number in desktop nav, round-full Book CTA, rounded-xl hamburger
+- Redesigned HeroSection: full-bleed dark emerald gradient hero (or image overlay), amber-300 headline accent, white CTAs with hover lift, floating stat cards on large screens
+- Redesigned ServicesPreview: left-aligned section header, removed duration display, hover-reveal Learn More link, rounded-2xl icon containers with color transition
+- Redesigned WhyChooseUs: 4+8 column grid (heading left, cards right), replaced Affordable Prices with Family Friendly, warmer descriptions
+- Redesigned DoctorSection: blockquote-style bio with left border, larger specializations pills, round-full Book CTA with lift
+- Redesigned TestimonialsPreview: Quote icon at card top, stars after text, larger carousel nav buttons with shadows
+- Redesigned GalleryPreview: header row with inline View Full Gallery button, enhanced hover overlay with title/category reveal
+- Redesigned BlogPreview: header row with inline View All Posts link, Newspaper placeholder icon, group-hover title color change
+- Redesigned CTASection: deeper emerald-800 bg, dot pattern, decorative blur shapes, round-full CTAs, bordered phone link
+- Redesigned ContactSection: left-aligned section header, rounded-2xl contact items, Follow us label for social links
+- Redesigned SiteFooter: gradient accent line (emerald→amber) at top, hover arrow-up-right on footer links, Book CTA in bottom bar
+- Redesigned AboutPage: blockquote doctor bio, icon-based Mission/Vision/Values cards (Target/Eye/Heart icons), round-full CTAs
+- Redesigned ServicesPage: icon-based card tops when no service image, removed duration/price from cards, link-based cards
+- Redesigned ServiceDetailPage: duration in info bar only (no price), round-full CTAs, emerald-50 bottom CTA card
+- Redesigned GalleryPage: rounded-2xl grid items, gradient hover overlay, pill-style category filters
+- Redesigned BlogListingPage: pill-style active filter, Newspaper placeholder, emerald shadow on active pills
+- Redesigned BlogDetailPage: emerald-50 CTA card with border, round-full button
+- Redesigned ContactPage: round-full submit button, rounded-2xl form card, rounded-2xl contact info items
+- Redesigned BookingPage: round-full step indicators, emerald-tinted active step, removed all price displays, rounded-xl time slots, round-full action buttons
+
+Stage Summary:
+- All 20+ page components redesigned with premium dental clinic aesthetic
+- Removed all price displays from services and booking pages
+- Removed duration display from service cards (kept in ServiceDetail and Booking for contextual use)
+- Lint passes cleanly (0 errors, 0 warnings)
+- No API routes, Prisma schema, admin components, store, or protected components were modified
+---
+Task ID: 3
+Agent: Main Orchestrator + fullstack-design-redesign
+Task: Full website redesign + hero image upload + price removal
+
+Work Log:
+- Added heroImage field to Prisma ClinicSettings schema, pushed to DB
+- Added heroImage upload section in admin SettingsManager (ImageUploader component)
+- Removed ALL prices from ServicesPreview, ServicesPage (ServiceCard), ServiceDetailPage
+- Redesigned ALL 20+ page components via full-stack agent delegation
+- Fixed mobile text truncation in HeroSection (removed substring(0,200), added line-clamp-3)
+- Browser-verified: Home (8/10 VLM), About (8/10), Services (8/10), Contact (form + map working)
+- Lint: 0 errors
+
+Stage Summary:
+- Full website redesigned with premium dental clinic aesthetic
+- Design rated 8/10 by VLM — "looks like a legitimate dental practice website"
+- Hero section: dark emerald gradient with image overlay support, floating stat cards
+- Services: NO prices displayed anywhere, clean 3-column grid
+- All CTAs use rounded-full pill buttons
+- Hero image uploadable from admin settings
+- All inner pages (About, Services, Gallery, Testimonials, Blog, Contact, Booking) redesigned

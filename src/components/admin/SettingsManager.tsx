@@ -21,6 +21,7 @@ type Settings = {
   doctorBio: string | null;
   doctorPhoto: string | null;
   doctorSpecializations: string | null;
+  heroImage: string | null;
   defaultSlotDuration: number;
   bookingAdvanceDays: number;
   statYears: string | null;
@@ -118,6 +119,7 @@ export default function SettingsManager() {
           doctorBio: settings.doctorBio,
           doctorPhoto: settings.doctorPhoto,
           doctorSpecializations: settings.doctorSpecializations,
+          heroImage: settings.heroImage,
           defaultSlotDuration: settings.defaultSlotDuration,
           bookingAdvanceDays: settings.bookingAdvanceDays,
           statYears: settings.statYears,
@@ -315,6 +317,25 @@ export default function SettingsManager() {
             <Label>Bio</Label>
             <Textarea rows={4} value={settings.doctorBio || ''} onChange={(e) => updateSettingsField('doctorBio', e.target.value)} />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Hero Image */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <ImageIcon className="h-3.5 w-3.5" /> Hero Section Image
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <ImageUploader
+            value={settings.heroImage}
+            onChange={(url) => updateSettingsField('heroImage', url || '')}
+            category="hero"
+            label="Hero Image"
+            previewClassName="h-56"
+            hint="Recommended: 1200x800px, high-quality clinic or smile photo"
+          />
         </CardContent>
       </Card>
 

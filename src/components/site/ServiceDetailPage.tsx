@@ -34,17 +34,15 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
   if (loading) {
     return (
       <div className="pt-20">
-        {/* Compact header skeleton */}
-        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="page-header">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <Skeleton className="h-3 w-24 mb-3" />
-            <Skeleton className="h-9 w-72 mb-2" />
-            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-8 w-72 mb-2" />
           </div>
         </section>
-        <section className="py-10 lg:py-16 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <Skeleton className="h-64 rounded-2xl" />
+        <section className="py-14 lg:py-20 bg-white">
+          <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 space-y-4">
+            <Skeleton className="h-72 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-3/4" />
@@ -62,7 +60,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
           <p className="text-slate-500 mb-6">The service you are looking for does not exist.</p>
           <button
             onClick={() => { window.location.hash = '#/services' }}
-            className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"
+            className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Services
@@ -75,45 +73,38 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
   return (
     <div className="pt-20">
       {/* Compact Page Header with breadcrumb */}
-      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Breadcrumb */}
+      <section className="page-header">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="mb-4">
             <button
               onClick={() => { window.location.hash = '#/services' }}
               className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-emerald-700 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              Services
+              All Services
             </button>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
             {service.name}
           </h1>
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-8 lg:py-12 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-10 lg:py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="animate-fade-up">
             {/* Image */}
             {service.image && (
-              <div className="rounded-2xl overflow-hidden h-64 lg:h-80 mb-8 img-zoom">
+              <div className="rounded-2xl overflow-hidden h-64 lg:h-80 mb-10">
                 <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
               </div>
             )}
 
-            {/* Meta Row: price + duration + CTA */}
-            <div className="flex flex-wrap items-center gap-4 mb-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
-              {service.price != null && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 uppercase tracking-wide">Price</span>
-                  <span className="text-emerald-700 font-semibold text-lg">₹{service.price.toLocaleString('en-IN')}</span>
-                </div>
-              )}
+            {/* Duration info bar */}
+            <div className="flex flex-wrap items-center gap-4 mb-10 p-4 bg-slate-50 rounded-xl border border-slate-100">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 uppercase tracking-wide">Duration</span>
+                <span className="text-xs text-slate-400 uppercase tracking-wide font-medium">Estimated Duration</span>
                 <span className="flex items-center gap-1 text-sm text-slate-600 font-medium">
                   <Clock className="w-4 h-4 text-slate-400" />
                   {service.duration} minutes
@@ -122,7 +113,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
               <div className="ml-auto">
                 <button
                   onClick={() => { window.location.hash = '#/book' }}
-                  className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 text-sm transition-colors inline-flex items-center gap-2"
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-full px-6 py-2.5 text-sm transition-colors inline-flex items-center gap-2 shadow-sm shadow-emerald-700/15"
                 >
                   <CalendarPlus className="w-4 h-4" />
                   Book Appointment
@@ -132,22 +123,22 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
 
             {/* Full Description */}
             {service.fullDescription ? (
-              <div className="prose-dental mb-12">
+              <div className="prose-dental mb-14">
                 <ReactMarkdown>{service.fullDescription}</ReactMarkdown>
               </div>
             ) : service.shortDescription ? (
-              <p className="text-slate-500 leading-relaxed text-lg mb-12">{service.shortDescription}</p>
+              <p className="text-slate-500 leading-relaxed text-lg mb-14">{service.shortDescription}</p>
             ) : null}
 
             {/* Bottom CTA Card */}
-            <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-100 text-center">
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Ready to book?</h3>
-              <p className="text-sm text-slate-500 mb-6 max-w-md mx-auto">
-                Schedule your {service.name.toLowerCase()} appointment today. We look forward to seeing you.
+            <div className="bg-emerald-50 rounded-2xl p-8 sm:p-10 border border-emerald-100/50 text-center">
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Ready to book?</h3>
+              <p className="text-sm text-slate-500 mb-8 max-w-md mx-auto">
+                Schedule your {service.name.toLowerCase()} appointment today. We look forward to helping you.
               </p>
               <button
                 onClick={() => { window.location.hash = '#/book' }}
-                className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-8 py-3 text-sm transition-colors inline-flex items-center gap-2"
+                className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 h-12 text-sm transition-all shadow-lg shadow-emerald-700/15 hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center gap-2.5"
               >
                 <CalendarPlus className="w-4 h-4" />
                 Book Appointment

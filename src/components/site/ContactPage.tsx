@@ -44,17 +44,17 @@ export function ContactPage() {
   if (clinicLoading) {
     return (
       <div className="pt-20">
-        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="page-header">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <Skeleton className="h-3 w-16 mb-3" />
-            <Skeleton className="h-9 w-48" />
+            <Skeleton className="h-8 w-40" />
           </div>
         </section>
-        <section className="py-10 lg:py-16 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-14 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <Skeleton className="h-96 rounded-2xl" />
-              <Skeleton className="h-96 rounded-2xl" />
+              <Skeleton className="h-[500px] rounded-2xl" />
+              <Skeleton className="h-[500px] rounded-2xl" />
             </div>
           </div>
         </section>
@@ -71,38 +71,42 @@ export function ContactPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="page-header">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <span className="section-label text-emerald-600 mb-3 block">Contact</span>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
             Contact Us
           </h1>
+          <p className="text-slate-500 text-[15px] mt-2">
+            We'd love to hear from you. Send us a message anytime.
+          </p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-10 lg:py-16 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* LEFT — Contact Form */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8">
+            <div className="bg-slate-50/50 rounded-2xl border border-slate-100 p-7 sm:p-9">
               {submitted ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-5">
                     <CheckCircle2 className="w-8 h-8 text-emerald-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">Message Sent!</h3>
-                  <p className="text-slate-500 text-sm mb-6">Thank you for reaching out. We&apos;ll get back to you soon.</p>
+                  <p className="text-slate-500 text-sm mb-8">Thank you for reaching out. We'll get back to you soon.</p>
                   <button
                     onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', message: '' }) }}
-                    className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                    className="text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
                 <>
-                  <h2 className="text-lg font-semibold text-slate-900 mb-6">Send Us a Message</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 mb-2">Send Us a Message</h2>
+                  <p className="text-sm text-slate-400 mb-7">Fill out the form below and we'll respond promptly.</p>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -166,7 +170,7 @@ export function ContactPage() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full h-11 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg shadow-lg shadow-amber-500/20 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full shadow-lg shadow-emerald-700/15 transition-all flex items-center justify-center gap-2 disabled:opacity-50 hover:-translate-y-0.5"
                     >
                       {submitting ? 'Sending...' : (
                         <>
@@ -183,46 +187,46 @@ export function ContactPage() {
             {/* RIGHT — Contact Info + Map */}
             <div className="space-y-6">
               {/* Info rows */}
-              <div className="space-y-4">
+              <div className="space-y-1">
                 {clinicData?.phone && (
-                  <a href={`tel:${clinicData.phone}`} className="flex items-center gap-4 group cursor-pointer">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                      <Phone className="w-4.5 h-4.5 text-emerald-600" />
+                  <a href={`tel:${clinicData.phone}`} className="flex items-center gap-4 group cursor-pointer rounded-2xl p-4 hover:bg-slate-50 transition-colors">
+                    <div className="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <Phone className="w-4 h-4 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Phone</p>
+                      <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Phone</p>
                       <p className="text-slate-700 font-medium text-sm group-hover:text-emerald-700 transition-colors">{clinicData.phone}</p>
                     </div>
                   </a>
                 )}
                 {clinicData?.email && (
-                  <a href={`mailto:${clinicData.email}`} className="flex items-center gap-4 group cursor-pointer">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                      <Mail className="w-4.5 h-4.5 text-emerald-600" />
+                  <a href={`mailto:${clinicData.email}`} className="flex items-center gap-4 group cursor-pointer rounded-2xl p-4 hover:bg-slate-50 transition-colors">
+                    <div className="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <Mail className="w-4 h-4 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Email</p>
+                      <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Email</p>
                       <p className="text-slate-700 font-medium text-sm group-hover:text-emerald-700 transition-colors">{clinicData.email}</p>
                     </div>
                   </a>
                 )}
                 {clinicData?.address && (
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                      <MapPin className="w-4.5 h-4.5 text-emerald-600" />
+                  <div className="flex items-center gap-4 rounded-2xl p-4">
+                    <div className="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <MapPin className="w-4 h-4 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Address</p>
-                      <p className="text-slate-700 font-medium text-sm">{clinicData.address}</p>
+                      <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Address</p>
+                      <p className="text-slate-700 font-medium text-sm leading-relaxed">{clinicData.address}</p>
                     </div>
                   </div>
                 )}
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                    <Clock className="w-4.5 h-4.5 text-emerald-600" />
+                <div className="flex items-center gap-4 rounded-2xl p-4">
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-0.5">Working Hours</p>
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">Working Hours</p>
                     <p className="text-slate-700 font-medium text-sm">Mon – Sat: 10AM – 6PM</p>
                     <p className="text-slate-400 text-xs">Sunday: Closed</p>
                   </div>
@@ -231,7 +235,8 @@ export function ContactPage() {
 
               {/* Social links */}
               {(clinicData?.facebook || clinicData?.instagram || clinicData?.youtube) && (
-                <div className="flex items-center gap-3 pt-2">
+                <div className="flex items-center gap-2.5 pl-4">
+                  <span className="text-xs text-slate-400 font-medium mr-2">Follow us</span>
                   {clinicData?.facebook && (
                     <a
                       href={clinicData.facebook}
@@ -266,7 +271,7 @@ export function ContactPage() {
               )}
 
               {/* Map */}
-              <div className="rounded-2xl overflow-hidden border border-slate-100 h-[250px] lg:h-[320px]">
+              <div className="rounded-2xl overflow-hidden border border-slate-100 h-[260px] lg:h-[340px]">
                 {embedUrl ? (
                   <iframe
                     src={embedUrl}
@@ -281,13 +286,13 @@ export function ContactPage() {
                     href={rawMapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full h-full bg-slate-50 flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-slate-100 transition-colors"
+                    className="w-full h-full bg-slate-50 flex flex-col items-center justify-center gap-3 text-center p-8 hover:bg-slate-100 transition-colors"
                   >
                     <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
-                      <MapPin className="w-7 h-7 text-emerald-600" />
+                      <MapPin className="w-6 h-6 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-900 mb-1">View on Google Maps</p>
+                      <p className="text-sm font-semibold text-slate-900 mb-1">View on Google Maps</p>
                       <p className="text-xs text-slate-400">
                         {isShortUrl ? 'Click to open location' : 'Click to open the map'}
                       </p>

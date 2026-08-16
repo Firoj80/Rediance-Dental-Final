@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Stethoscope, Menu, X } from 'lucide-react'
+import { Stethoscope, Menu, X, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
@@ -24,7 +24,7 @@ export function SiteHeader() {
   const clinicData = useSiteStore((s) => s.clinicData)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -37,14 +37,14 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         scrolled
-          ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_3px_rgb(0_0_0/0.06)]'
-          : 'bg-white/80 backdrop-blur-md'
+          ? 'bg-white/90 backdrop-blur-2xl shadow-[0_1px_20px_rgb(0_0_0/0.04)]'
+          : 'bg-transparent'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 lg:h-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="flex items-center justify-between h-16 lg:h-[72px]">
           {/* Logo */}
           <Link
             href="/"
@@ -55,36 +55,37 @@ export function SiteHeader() {
               <img
                 src={clinicData.logo}
                 alt={clinicData.name || 'Logo'}
-                className="h-8 w-auto max-w-[130px] object-contain"
+                className="h-9 w-auto max-w-[140px] object-contain"
               />
             ) : (
-              <div className={cn(
-                'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
-                'bg-emerald-700'
-              )}>
-                <Stethoscope className="w-4.5 h-4.5 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-emerald-700 flex items-center justify-center shadow-sm shadow-emerald-700/20">
+                <Stethoscope className="w-[18px] h-[18px] text-white" />
               </div>
             )}
-            <div className="flex flex-col">
-              <span className="font-semibold text-sm leading-tight tracking-tight text-slate-900">
-                {clinicData?.name || 'Radiance Dental'}
-              </span>
-              <span className="hidden sm:block text-[10px] leading-tight tracking-tight text-slate-400">
-                {clinicData?.tagline || 'Dental Care & Facial Trauma Centre'}
-              </span>
-            </div>
+            {!clinicData?.logo && (
+              <div className="flex flex-col">
+                <span className={cn(
+                  'font-bold text-sm leading-tight tracking-tight transition-colors',
+                  scrolled ? 'text-slate-900' : 'text-slate-900'
+                )}>
+                  {clinicData?.name || 'Radiance Dental'}
+                </span>
+                <span className="hidden sm:block text-[10px] leading-tight text-slate-400 font-medium">
+                  {clinicData?.tagline || 'Dental Care & Facial Trauma Centre'}
+                </span>
+              </div>
+            )}
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {NAV_LINKS.map((link) => (
               <button
                 key={link.hash}
                 onClick={() => handleNav(link.hash)}
                 className={cn(
-                  'relative px-3 py-2 text-sm font-medium text-slate-600 transition-colors',
-                  'after:absolute after:bottom-0.5 after:left-3 after:right-3 after:h-px after:bg-slate-900 after:scale-x-0 after:origin-left after:transition-transform after:duration-200',
-                  'hover:text-slate-900 hover:after:scale-x-100'
+                  'relative px-3.5 py-2 text-[13px] font-medium transition-colors duration-200',
+                  scrolled ? 'text-slate-500 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900',
                 )}
               >
                 {link.label}
@@ -93,11 +94,23 @@ export function SiteHeader() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-4">
+            {clinicData?.phone && (
+              <a
+                href={`tel:${clinicData.phone.replace(/\s/g, '')}`}
+                className={cn(
+                  'flex items-center gap-2 text-[13px] font-medium transition-colors',
+                  scrolled ? 'text-slate-500 hover:text-emerald-700' : 'text-slate-500 hover:text-emerald-700'
+                )}
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span className="hidden xl:inline">{clinicData.phone}</span>
+              </a>
+            )}
             <Button
               size="sm"
               onClick={() => handleNav('#/book')}
-              className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg px-5 font-medium shadow-sm hover:shadow-md transition-shadow"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-full px-6 font-medium shadow-sm shadow-emerald-700/15 transition-all hover:shadow-md hover:shadow-emerald-700/20"
             >
               Book Appointment
             </Button>
@@ -108,43 +121,48 @@ export function SiteHeader() {
             <SheetTrigger asChild>
               <button
                 className={cn(
-                  'lg:hidden p-2 rounded-lg transition-colors',
-                  'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  'lg:hidden p-2 rounded-xl transition-colors',
+                  scrolled ? 'text-slate-700 hover:bg-slate-100' : 'text-slate-700 hover:bg-slate-100'
                 )}
               >
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 p-0 bg-white">
+            <SheetContent side="right" className="w-[280px] p-0 bg-white">
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between px-5 h-14 border-b border-slate-100">
-                  <span className="text-sm font-semibold text-slate-900 tracking-tight">Menu</span>
+                <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100">
+                  <span className="text-sm font-bold text-slate-900 tracking-tight">Menu</span>
                   <button
                     onClick={() => setMobileOpen(false)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                    className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <nav className="flex-1 py-3 overflow-y-auto">
+                <nav className="flex-1 py-2 overflow-y-auto">
                   {NAV_LINKS.map((link) => (
                     <button
                       key={link.hash}
                       onClick={() => handleNav(link.hash)}
-                      className={cn(
-                        'w-full text-left px-5 py-2.5 text-sm font-medium transition-all duration-150',
-                        'text-slate-500 hover:text-emerald-700',
-                        'border-l-2 border-transparent hover:border-l-emerald-500 hover:bg-emerald-50/50'
-                      )}
+                      className="w-full text-left px-6 py-3 text-sm font-medium text-slate-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all duration-150"
                     >
                       {link.label}
                     </button>
                   ))}
                 </nav>
-                <div className="p-4 border-t border-slate-100">
+                <div className="p-5 border-t border-slate-100 space-y-3">
+                  {clinicData?.phone && (
+                    <a
+                      href={`tel:${clinicData.phone.replace(/\s/g, '')}`}
+                      className="flex items-center gap-2.5 text-sm text-slate-600 font-medium"
+                    >
+                      <Phone className="w-4 h-4 text-emerald-600" />
+                      {clinicData.phone}
+                    </a>
+                  )}
                   <Button
-                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold shadow-sm"
+                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white rounded-full font-semibold shadow-sm"
                     onClick={() => handleNav('#/book')}
                   >
                     Book Appointment

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Camera, X } from 'lucide-react'
+import { Camera } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Dialog,
@@ -34,19 +34,18 @@ export function GalleryPage() {
   if (clinicLoading) {
     return (
       <div className="pt-20">
-        {/* Compact header skeleton */}
-        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="page-header">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <Skeleton className="h-3 w-16 mb-3" />
-            <Skeleton className="h-9 w-48 mb-2" />
+            <Skeleton className="h-8 w-48 mb-2" />
             <Skeleton className="h-4 w-64" />
           </div>
         </section>
-        <section className="py-10 lg:py-16 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <section className="py-14 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="aspect-square rounded-xl" />
+                <Skeleton key={i} className="aspect-square rounded-2xl" />
               ))}
             </div>
           </div>
@@ -58,32 +57,32 @@ export function GalleryPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="page-header">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-2">
             Our Gallery
           </h1>
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-500 text-[15px]">
             Explore our clinic, facilities, and treatment results.
           </p>
         </div>
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-10 lg:py-16 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Category Filter Pills */}
           {categories.length > 2 && (
-            <div className="flex flex-wrap gap-2 mb-10 justify-center">
+            <div className="flex flex-wrap gap-2 mb-12">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={`
-                    px-4 py-2 text-sm font-medium transition-colors rounded-full
+                    px-5 py-2.5 text-sm font-medium transition-all duration-200 rounded-full
                     ${activeCategory === cat
-                      ? 'bg-emerald-700 text-white'
+                      ? 'bg-emerald-700 text-white shadow-sm shadow-emerald-700/15'
                       : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
                     }
                   `}
@@ -95,35 +94,36 @@ export function GalleryPage() {
           )}
 
           {/* Image Grid */}
-          <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filtered.map((img, i) => (
               <button
                 key={img.id}
                 onClick={() => setLightboxImage(img)}
                 className={`
-                  aspect-square rounded-xl overflow-hidden img-zoom group relative
-                  transition-all duration-500
-                  ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+                  aspect-square rounded-2xl overflow-hidden group relative cursor-pointer
+                  transition-all duration-600
+                  ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}
                 `}
                 style={{ transitionDelay: `${(i % 8) * 60}ms` }}
               >
                 {img.image ? (
-                  <img src={img.image} alt={img.title || 'Gallery image'} className="w-full h-full object-cover" />
+                  <>
+                    <img src={img.image} alt={img.title || 'Gallery image'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-4">
+                      <span className="text-white text-sm font-medium truncate">
+                        {img.title || ''}
+                      </span>
+                    </div>
+                  </>
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 flex items-center justify-center">
-                    <Camera className="w-10 h-10 text-emerald-200" />
+                  <div className="w-full h-full bg-slate-100 flex items-center justify-center">
+                    <Camera className="w-10 h-10 text-slate-300" />
                   </div>
                 )}
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                  <span className="text-white text-xs font-medium truncate">
-                    {img.title || ''}
-                  </span>
-                </div>
               </button>
             ))}
             {filtered.length === 0 && (
-              <div className="col-span-full text-center py-12">
+              <div className="col-span-full text-center py-16">
                 <p className="text-slate-400 text-sm">No images in this category.</p>
               </div>
             )}
@@ -144,15 +144,15 @@ export function GalleryPage() {
                   className="w-full max-h-[80vh] object-contain"
                 />
               ) : (
-                <div className="aspect-[4/3] bg-gradient-to-br from-emerald-100 to-amber-50 flex items-center justify-center">
-                  <Camera className="w-16 h-16 text-emerald-200" />
+                <div className="aspect-[4/3] bg-slate-100 flex items-center justify-center">
+                  <Camera className="w-16 h-16 text-slate-300" />
                 </div>
               )}
               {lightboxImage.title && (
-                <div className="p-4 border-t border-slate-100">
+                <div className="p-5 border-t border-slate-100">
                   <p className="font-medium text-slate-900">{lightboxImage.title}</p>
                   {lightboxImage.category && (
-                    <p className="text-sm text-slate-400">{lightboxImage.category}</p>
+                    <p className="text-sm text-slate-400 mt-0.5">{lightboxImage.category}</p>
                   )}
                 </div>
               )}

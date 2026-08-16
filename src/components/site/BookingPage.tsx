@@ -43,26 +43,28 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
         <div key={label} className="flex items-center">
           <div
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
+              'flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-medium transition-all duration-300',
               i < currentStep
                 ? 'bg-emerald-700 text-white'
                 : i === currentStep
-                ? 'bg-emerald-700 text-white'
-                : 'bg-slate-200 text-slate-400'
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'bg-slate-50 text-slate-400'
             )}
           >
             <span className={cn(
-              'w-5 h-5 rounded-full flex items-center justify-center text-[10px] border',
-              i <= currentStep
+              'w-5 h-5 rounded-full flex items-center justify-center text-[10px] border transition-all duration-300',
+              i < currentStep
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : i === currentStep
                 ? 'bg-emerald-700 text-white border-emerald-700'
-                : 'bg-white text-slate-400 border-slate-300'
+                : 'bg-white text-slate-400 border-slate-200'
             )}>
               {i < currentStep ? <Check className="w-3 h-3" /> : i + 1}
             </span>
             <span className="hidden sm:inline">{label}</span>
           </div>
           {i < STEP_LABELS.length - 1 && (
-            <div className={cn('w-6 sm:w-10 h-0.5', i < currentStep ? 'bg-emerald-700' : 'bg-slate-200')} />
+            <div className={cn('w-6 sm:w-10 h-px transition-colors duration-300', i < currentStep ? 'bg-emerald-700' : 'bg-slate-200')} />
           )}
         </div>
       ))}
@@ -261,23 +263,20 @@ export function BookingPage() {
             className={cn(
               'rounded-xl border-2 p-4 cursor-pointer transition-all text-left',
               selectedService?.id === service.id
-                ? 'border-emerald-500 bg-emerald-50 ring-2 ring-emerald-500/20'
-                : 'border-slate-100 hover:border-emerald-500'
+                ? 'border-emerald-500 bg-emerald-50/50 ring-2 ring-emerald-500/10'
+                : 'border-slate-100 hover:border-emerald-300'
             )}
           >
             <div className="flex items-center gap-3">
               <div className={cn(
-                'w-10 h-10 rounded-lg flex items-center justify-center shrink-0',
+                'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors',
                 selectedService?.id === service.id ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-400'
               )}>
                 <Stethoscope className="w-5 h-5" />
               </div>
               <div className="min-w-0">
                 <p className="font-medium text-slate-900 text-sm">{service.name}</p>
-                <div className="flex items-center gap-2 text-xs text-slate-400">
-                  <span>{service.duration} min</span>
-                  {service.price != null && <span>· ₹{service.price}</span>}
-                </div>
+                <p className="text-xs text-slate-400">{service.duration} min</p>
               </div>
             </div>
           </button>
@@ -299,7 +298,7 @@ export function BookingPage() {
       <p className="text-sm text-slate-500 mb-6">Choose your preferred appointment date.</p>
 
       <div className="flex justify-center">
-        <div className="rounded-xl border border-slate-200 p-2">
+        <div className="rounded-2xl border border-slate-200 p-3">
           <CalendarComponent
             mode="single"
             selected={selectedDate}
@@ -337,20 +336,20 @@ export function BookingPage() {
     <div>
       <h3 className="text-lg font-semibold text-slate-900 mb-1">Select a Time</h3>
       <p className="text-sm text-slate-500 mb-6">
-        Available time slots for {selectedDate?.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
+        Available slots for {selectedDate?.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
         {selectedService && ` (${selectedService.name})`}
       </p>
 
       {slotsLoading ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="h-11 rounded-lg" />
+            <Skeleton key={i} className="h-11 rounded-xl" />
           ))}
         </div>
       ) : slots.length === 0 ? (
-        <div className="text-center py-8">
-          <Clock className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-500">No available slots for this date.</p>
+        <div className="text-center py-10">
+          <Clock className="w-10 h-10 text-slate-200 mx-auto mb-3" />
+          <p className="text-slate-500 text-sm">No available slots for this date.</p>
           <p className="text-xs text-slate-400 mt-1">Please select a different date.</p>
         </div>
       ) : (
@@ -361,12 +360,12 @@ export function BookingPage() {
               disabled={!slot.available}
               onClick={() => setSelectedTime(slot.time)}
               className={cn(
-                'rounded-lg border p-3 text-center cursor-pointer transition-all text-sm',
+                'rounded-xl border p-3 text-center cursor-pointer transition-all text-sm',
                 !slot.available
                   ? 'border-slate-100 line-through text-slate-300 cursor-not-allowed bg-slate-50'
                   : selectedTime === slot.time
-                  ? 'border-emerald-500 bg-emerald-700 text-white'
-                  : 'border-slate-200 hover:border-emerald-500 text-slate-700'
+                  ? 'border-emerald-500 bg-emerald-700 text-white shadow-sm shadow-emerald-700/15'
+                  : 'border-slate-200 hover:border-emerald-300 text-slate-700 hover:bg-emerald-50/30'
               )}
             >
               {formatTime(slot.time)}
@@ -455,33 +454,33 @@ export function BookingPage() {
       <p className="text-sm text-slate-500 mb-6">Please verify your appointment details.</p>
 
       <div className="space-y-4">
-        <div className="bg-slate-50 rounded-xl p-5">
+        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Service</p>
+              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Service</p>
               <p className="font-medium text-slate-900 text-sm">{selectedService?.name}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{selectedService?.duration} min {selectedService?.price != null ? `· ₹${selectedService.price}` : ''}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{selectedService?.duration} min</p>
             </div>
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Date & Time</p>
+              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Date & Time</p>
               <p className="font-medium text-slate-900 text-sm">
                 {selectedDate?.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
               <p className="text-xs text-slate-500 mt-0.5">{selectedTime ? formatTime(selectedTime) : ''}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Patient Name</p>
+              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Patient Name</p>
               <p className="font-medium text-slate-900 text-sm">{patientInfo.name}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Phone</p>
+              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Phone</p>
               <p className="font-medium text-slate-900 text-sm">{patientInfo.phone}</p>
               {patientInfo.email && <p className="text-xs text-slate-500 mt-0.5">{patientInfo.email}</p>}
             </div>
           </div>
           {patientInfo.message && (
             <div className="mt-4 pt-4 border-t border-slate-200">
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Message</p>
+              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Message</p>
               <p className="text-sm text-slate-700">{patientInfo.message}</p>
             </div>
           )}
@@ -500,30 +499,30 @@ export function BookingPage() {
 
   // Render success
   const renderSuccess = () => (
-    <div className="text-center py-8">
+    <div className="text-center py-10">
       <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-6">
         <CheckCircle2 className="w-10 h-10 text-emerald-600" />
       </div>
       <h2 className="text-2xl font-bold text-slate-900 mb-2">Appointment Booked!</h2>
       <p className="text-slate-500 mb-2">Your appointment has been successfully scheduled.</p>
       {bookingResult?.id && (
-        <p className="text-sm text-slate-500 mb-6">
+        <p className="text-sm text-slate-500 mb-8">
           Booking ID: <span className="font-mono font-medium text-slate-900">{bookingResult.id}</span>
         </p>
       )}
-      <p className="text-sm text-slate-500 mb-8 max-w-sm mx-auto">
+      <p className="text-sm text-slate-500 mb-10 max-w-sm mx-auto">
         You can reach us at {clinicData?.phone || 'our clinic phone'} for any changes or queries.
       </p>
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={resetBooking}
-          className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors"
+          className="border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full px-6 py-2.5 text-sm font-medium transition-colors"
         >
           Book Another
         </button>
         <button
           onClick={() => { window.location.hash = '#/' }}
-          className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors"
+          className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 py-2.5 text-sm transition-all shadow-lg shadow-emerald-700/15 hover:-translate-y-0.5"
         >
           Back to Home
         </button>
@@ -534,20 +533,20 @@ export function BookingPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="page-header">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <span className="section-label text-emerald-600 mb-3 block">Book Appointment</span>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
             Schedule Your Visit
           </h1>
         </div>
       </section>
 
       {/* Booking Form */}
-      <section className="py-10 lg:py-16 bg-slate-50">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-2xl mx-auto px-5 sm:px-8 lg:px-10">
           {currentStep < 5 ? (
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm shadow-slate-900/3">
               <StepIndicator currentStep={currentStep} />
 
               {renderStepByStep()}
@@ -558,7 +557,7 @@ export function BookingPage() {
                 <button
                   onClick={handleBack}
                   disabled={currentStep === 0}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2 border border-slate-200 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-full px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
@@ -567,7 +566,7 @@ export function BookingPage() {
                 {currentStep < 4 ? (
                   <button
                     onClick={handleNext}
-                    className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors inline-flex items-center gap-1.5"
+                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-full px-6 py-2.5 shadow-sm shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-1.5"
                   >
                     Continue
                     <ArrowRight className="w-4 h-4" />
@@ -576,7 +575,7 @@ export function BookingPage() {
                   <button
                     onClick={handleConfirm}
                     disabled={submitting}
-                    className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 shadow-lg shadow-amber-500/20 transition-colors inline-flex items-center gap-1.5 disabled:opacity-50"
+                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-full px-6 py-2.5 shadow-sm shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-1.5 disabled:opacity-50"
                   >
                     {submitting ? (
                       <>

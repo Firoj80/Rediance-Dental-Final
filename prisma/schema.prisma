@@ -60,6 +60,9 @@ model ClinicSettings {
   statServices          String?
   statRating            String?
 
+  // Hero image
+  heroImage             String?
+
   // SEO
   homeSeoTitle          String?
   homeSeoDescription    String?

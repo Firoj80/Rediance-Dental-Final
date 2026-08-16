@@ -4,51 +4,54 @@ import { Award, Clock, HeartPulse, ShieldCheck, Sparkles, BadgeCheck, Users, Thu
 import { useInView } from '@/hooks/use-in-view'
 
 const FEATURES = [
-  { icon: Award, title: 'Experienced Doctor', description: 'Years of expertise in dental care and facial trauma treatment.' },
-  { icon: Sparkles, title: 'Modern Equipment', description: 'State-of-the-art technology for precise diagnostics and treatments.' },
-  { icon: HeartPulse, title: 'Gentle Care', description: 'Your comfort comes first with gentle techniques and compassion.' },
-  { icon: ShieldCheck, title: 'Safe & Hygienic', description: 'Strict sterilization and infection control for your safety.' },
-  { icon: Clock, title: 'Flexible Hours', description: 'Convenient appointment times that fit your busy schedule.' },
-  { icon: BadgeCheck, title: 'Affordable Prices', description: 'Quality care at competitive prices with transparent billing.' },
+  { icon: Award, title: 'Experienced Doctor', description: 'Over a decade of expertise in general dentistry and facial trauma treatment.' },
+  { icon: Sparkles, title: 'Modern Equipment', description: 'State-of-the-art digital X-rays and precision instruments for accurate results.' },
+  { icon: HeartPulse, title: 'Gentle Care', description: 'Your comfort comes first — we use gentle techniques and take time with every patient.' },
+  { icon: ShieldCheck, title: 'Safe & Hygienic', description: 'Hospital-grade sterilization and strict infection control protocols for your safety.' },
+  { icon: Clock, title: 'Flexible Hours', description: 'Convenient Monday to Saturday schedule that fits your busy life.' },
+  { icon: Users, title: 'Family Friendly', description: 'We welcome patients of all ages and create a comfortable experience for everyone.' },
 ]
 
 export function WhyChooseUs() {
   const { ref, inView } = useInView()
 
   return (
-    <section className="py-16 lg:py-24 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-12">
-          <span className="section-label text-emerald-600 mb-3 block">Why Choose Us</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
-            What Makes Us Different
-          </h2>
-          <p className="text-slate-500 leading-relaxed">
-            We combine clinical excellence with genuine care to give you the best dental experience.
-          </p>
-        </div>
+    <section className="py-20 lg:py-28 bg-slate-50/80">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Left column — Heading area */}
+          <div className="lg:col-span-4">
+            <span className="section-label text-emerald-600 mb-3 block">Why Choose Us</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-5 leading-tight">
+              What Makes Us Different
+            </h2>
+            <p className="text-slate-500 leading-relaxed text-[15px]">
+              We combine clinical excellence with genuine compassion to give you the best dental experience in Siwan.
+            </p>
+          </div>
 
-        <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {FEATURES.map((feature, i) => {
-            const Icon = feature.icon
-            return (
-              <div
-                key={feature.title}
-                className={`
-                  bg-white rounded-2xl p-6 border border-slate-100 hover:shadow-md transition-all duration-300
-                  ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
-                `}
-                style={{ transitionDelay: `${i * 60}ms` }}
-              >
-                <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-                  <Icon className="w-5 h-5" />
+          {/* Right column — Features grid */}
+          <div ref={ref} className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {FEATURES.map((feature, i) => {
+              const Icon = feature.icon
+              return (
+                <div
+                  key={feature.title}
+                  className={
+                    `bg-white rounded-2xl p-6 border border-slate-100/80 hover:shadow-lg hover:shadow-slate-900/3 transition-all duration-500
+                    ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`
+                  }
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base font-semibold text-slate-900 mb-1.5">{feature.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{feature.description}</p>
                 </div>
-                <h3 className="text-base font-semibold text-slate-900 mb-1.5">{feature.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{feature.description}</p>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

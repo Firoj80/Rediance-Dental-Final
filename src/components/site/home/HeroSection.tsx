@@ -6,117 +6,114 @@ import { useSiteStore } from '@/lib/store'
 export function HeroSection() {
   const clinicData = useSiteStore((s) => s.clinicData)
   const phone = clinicData?.phone || '+91 96573 72836'
+  const settings = clinicData?.settings?.[0]
+  const statYears = settings?.statYears || '10+'
+  const statRating = settings?.statRating || '4.8'
+  const heroImage = settings?.heroImage
 
   return (
     <section className="relative overflow-hidden bg-white">
-      {/* Soft gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/60 via-white to-amber-50/40" />
-      
-      {/* Subtle decorative shape */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-emerald-100/30 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/20 to-transparent rounded-full translate-y-1/2 -translate-x-1/4" />
+      <div className="relative min-h-[600px] lg:min-h-[680px]">
+        {heroImage ? (
+          <div>
+            <img
+              src={heroImage}
+              alt="Dental Clinic"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/50 to-slate-900/20" />
+          </div>
+        ) : (
+          <div>
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-800 via-emerald-700 to-emerald-900" />
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 to-transparent" />
+            <div className="absolute top-20 right-[10%] w-[500px] h-[500px] rounded-full bg-emerald-600/20 blur-3xl" />
+            <div className="absolute bottom-10 left-[5%] w-[300px] h-[300px] rounded-full bg-amber-500/10 blur-3xl" />
+          </div>
+        )}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 lg:pt-36 pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left — Content */}
-          <div className="animate-fade-up">
-            {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 bg-white border border-emerald-200/60 rounded-full px-4 py-1.5 mb-6 shadow-sm">
-              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-              <span className="text-xs font-medium text-slate-600">Trusted by 5,000+ patients in Siwan</span>
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 pt-32 lg:pt-40 pb-16 lg:pb-24">
+          <div className="max-w-2xl">
+            <div className="animate-fade-up inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 mb-8">
+              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+              <span className="text-xs font-medium text-white/90">
+                {statRating}/5 Rating · Trusted by thousands in Siwan
+              </span>
             </div>
 
-            {/* Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-slate-900 leading-[1.1] tracking-tight mb-5">
+            <h1 className="animate-fade-up stagger-1 text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-bold text-white leading-[1.08] tracking-tight mb-6">
               Your Smile Deserves{' '}
-              <span className="text-emerald-700">Expert Care</span>
+              <span className="text-amber-300">Expert Care</span>
             </h1>
 
-            {/* Description */}
-            <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-lg mb-8">
-              {clinicData?.description?.substring(0, 180) ||
+            <p className="animate-fade-up stagger-2 text-white/75 text-base sm:text-lg leading-relaxed max-w-lg mb-10 line-clamp-3">
+              {clinicData?.description ||
                 'Experience gentle, personalized dental care with modern technology. From routine checkups to advanced cosmetic treatments — your comfort is our priority.'}
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            <div className="animate-fade-up stagger-3 flex flex-col sm:flex-row gap-3 mb-10">
               <a
                 href="#/book"
-                className="inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-xl px-7 h-12 text-sm transition-all shadow-lg shadow-emerald-700/20 hover:shadow-xl hover:shadow-emerald-700/25 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2.5 bg-white text-emerald-800 font-semibold rounded-full px-8 h-[52px] text-sm transition-all shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5 hover:bg-emerald-50"
               >
                 Book Appointment
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
-                className="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 hover:border-emerald-300 hover:text-emerald-700 rounded-xl px-7 h-12 text-sm font-medium transition-colors"
+                className="inline-flex items-center justify-center gap-2.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 rounded-full px-8 h-[52px] text-sm font-medium transition-all"
               >
                 <Phone className="w-4 h-4" />
                 {phone}
               </a>
             </div>
 
-            {/* Quick trust indicators */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <Shield className="w-4 h-4 text-emerald-600" />
-                <span>Safe & Hygienic</span>
+            <div className="animate-fade-up stagger-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="flex items-center gap-2.5 text-sm text-white/70">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-emerald-300" />
+                </div>
+                <span>Safe &amp; Hygienic</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <Clock className="w-4 h-4 text-emerald-600" />
+              <div className="flex items-center gap-2.5 text-sm text-white/70">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-emerald-300" />
+                </div>
                 <span>Mon – Sat, 10AM – 6PM</span>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Right — Image / Visual */}
-          <div className="animate-fade-up stagger-2 hidden lg:block">
-            <div className="relative">
-              {/* Main image container */}
-              <div className="rounded-3xl overflow-hidden h-[440px] xl:h-[500px] shadow-2xl shadow-slate-900/10">
-                {clinicData?.settings?.[0]?.heroImage ? (
-                  <img
-                    src={clinicData.settings[0].heroImage}
-                    alt="Dental Care"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-100 via-emerald-50 to-amber-50 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-20 h-20 rounded-2xl bg-emerald-700 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-700/20">
-                        <span className="text-3xl">🦷</span>
-                      </div>
-                      <p className="text-emerald-700/60 text-sm font-medium">Radiance Dental Care</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Floating card — Rating */}
-              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl shadow-slate-900/8 p-4 animate-float">
-                <div className="flex items-center gap-3">
+        {heroImage ? null : (
+          <div>
+            <div className="hidden lg:block absolute right-[8%] top-[35%]">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl shadow-black/10 p-5 animate-float w-[180px]">
+                <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
                     <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-slate-900">4.8 / 5.0</p>
-                    <p className="text-xs text-slate-400">Patient Rating</p>
+                    <p className="text-lg font-bold text-slate-900">{statRating}</p>
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`w-3 h-3 ${i < Math.round(Number(statRating)) ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-xs text-slate-400">Patient Rating</p>
               </div>
+            </div>
 
-              {/* Floating card — Experience */}
-              <div className="absolute -top-3 -right-3 bg-white rounded-2xl shadow-xl shadow-slate-900/8 p-3 animate-float stagger-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                    <span className="text-emerald-700 text-xs font-bold">10+</span>
-                  </div>
-                  <span className="text-xs font-medium text-slate-600">Years Exp.</span>
-                </div>
+            <div className="hidden lg:block absolute right-[18%] bottom-[25%]">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl shadow-black/10 p-4 animate-float stagger-2 w-[160px]">
+                <p className="text-3xl font-bold text-emerald-700 mb-0.5">{statYears}</p>
+                <p className="text-xs text-slate-500">Years of Experience</p>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

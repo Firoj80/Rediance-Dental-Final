@@ -13,17 +13,17 @@ export function ContactSection() {
 
   if (clinicLoading) {
     return (
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Skeleton className="h-4 w-20 mx-auto mb-3" />
-          <Skeleton className="h-8 w-48 mx-auto mb-8" />
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+          <Skeleton className="h-3 w-16 mx-auto mb-3" />
+          <Skeleton className="h-8 w-44 mx-auto mb-10" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-14 w-full rounded-xl" />
+                <Skeleton key={i} className="h-16 w-full rounded-2xl" />
               ))}
             </div>
-            <Skeleton className="h-[320px] rounded-2xl" />
+            <Skeleton className="h-[360px] rounded-2xl" />
           </div>
         </div>
       </section>
@@ -63,46 +63,46 @@ export function ContactSection() {
   contactItems.push({
     icon: <Clock className="w-4 h-4 text-emerald-600" />,
     label: 'Working Hours',
-    value: 'Mon–Sat: 10AM – 6PM · Sunday: Closed',
+    value: 'Mon – Sat: 10AM – 6PM · Sunday: Closed',
   })
 
   return (
-    <section className="py-16 lg:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 lg:py-28 bg-white">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-12">
+        <div className="max-w-xl mb-14">
           <span className="section-label text-emerald-600 mb-3 block">Contact</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4 leading-tight">
             Get in Touch
           </h2>
-          <p className="text-slate-500 leading-relaxed">
+          <p className="text-slate-500 leading-relaxed text-[15px]">
             We&apos;d love to hear from you. Reach out anytime.
           </p>
         </div>
 
         <div
           ref={ref}
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-10 transition-all duration-500 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 transition-all duration-700 ${
+            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
           {/* LEFT — Contact information */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {contactItems.map((item, i) => {
               const Wrapper = item.href ? 'a' : 'div'
               return (
                 <Wrapper
                   key={i}
                   {...(item.href
-                    ? { href: item.href, className: 'flex items-center gap-4 group cursor-pointer rounded-xl p-3 -mx-3 hover:bg-emerald-50/50 transition-colors' }
-                    : { className: 'flex items-center gap-4 rounded-xl p-3 -mx-3' })}
+                    ? { href: item.href, className: 'flex items-center gap-4 group cursor-pointer rounded-2xl p-4 hover:bg-slate-50 transition-colors' }
+                    : { className: 'flex items-center gap-4 rounded-2xl p-4' })}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 flex items-center justify-center shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-[11px] text-slate-400 uppercase tracking-wider font-medium mb-0.5">{item.label}</p>
-                    <p className="text-slate-700 font-medium text-sm group-hover:text-emerald-700 transition-colors">{item.value}</p>
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">{item.label}</p>
+                    <p className="text-slate-700 font-medium text-sm leading-snug group-hover:text-emerald-700 transition-colors">{item.value}</p>
                   </div>
                 </Wrapper>
               )
@@ -110,7 +110,8 @@ export function ContactSection() {
 
             {/* Social links */}
             {(clinicData?.facebook || clinicData?.instagram || clinicData?.youtube) && (
-              <div className="flex items-center gap-2 pt-3">
+              <div className="flex items-center gap-2.5 pt-4 pl-4">
+                <span className="text-xs text-slate-400 font-medium mr-2">Follow us</span>
                 {clinicData?.facebook && (
                   <a href={clinicData.facebook} target="_blank" rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-600 text-slate-400 transition-colors flex items-center justify-center">
@@ -134,7 +135,7 @@ export function ContactSection() {
           </div>
 
           {/* RIGHT — Google Maps embed */}
-          <div className="h-[280px] lg:h-full lg:min-h-[360px] rounded-2xl overflow-hidden border border-slate-100">
+          <div className="h-[300px] lg:h-full lg:min-h-[400px] rounded-2xl overflow-hidden border border-slate-100">
             {embedUrl ? (
               <iframe
                 src={embedUrl}
@@ -149,12 +150,12 @@ export function ContactSection() {
                 href={rawMapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center gap-3 text-center p-6 hover:bg-slate-50 transition-colors w-full h-full"
+                className="flex flex-col items-center justify-center gap-3 text-center p-8 hover:bg-slate-50 transition-colors w-full h-full"
               >
-                <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
                   <MapPin className="w-6 h-6 text-emerald-600" />
                 </div>
-                <p className="text-sm font-medium text-slate-900">View on Google Maps</p>
+                <p className="text-sm font-semibold text-slate-900">View on Google Maps</p>
                 <ExternalLink className="w-4 h-4 text-slate-400" />
               </a>
             ) : (

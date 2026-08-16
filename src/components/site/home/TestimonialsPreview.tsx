@@ -7,7 +7,15 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 function TestimonialCard({ testimonial }: { testimonial: TestimonialData }) {
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 mx-1 h-full">
+    <div className="bg-white rounded-2xl p-7 sm:p-8 border border-slate-100 mx-1 h-full flex flex-col shadow-sm">
+      {/* Quote icon */}
+      <Quote className="w-8 h-8 text-emerald-100 mb-5 shrink-0" />
+
+      {/* Review text */}
+      <p className="text-slate-600 text-[15px] leading-relaxed mb-6 flex-1">
+        &ldquo;{testimonial.review}&rdquo;
+      </p>
+
       {/* Stars */}
       <div className="flex items-center gap-0.5 mb-4">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -18,21 +26,16 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialData }) {
         ))}
       </div>
 
-      {/* Quote */}
-      <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-6">
-        &ldquo;{testimonial.review}&rdquo;
-      </p>
-
       {/* Author */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 pt-4 border-t border-slate-50">
         {testimonial.photo ? (
           <img
             src={testimonial.photo}
             alt={testimonial.patientName}
-            className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-100"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-50"
           />
         ) : (
-          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
             <span className="text-xs font-bold text-emerald-700">
               {testimonial.patientName.split(' ').map((n) => n[0]).join('').substring(0, 2)}
             </span>
@@ -40,7 +43,7 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialData }) {
         )}
         <div>
           <p className="text-sm font-semibold text-slate-900">{testimonial.patientName}</p>
-          <p className="text-xs text-slate-400">{testimonial.service || 'Patient'}</p>
+          <p className="text-xs text-slate-400">{(testimonial as any).service || 'Patient'}</p>
         </div>
       </div>
     </div>
@@ -53,15 +56,15 @@ export function TestimonialsPreview() {
 
   if (clinicLoading) {
     return (
-      <section className="py-16 lg:py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+      <section className="py-20 lg:py-28 bg-slate-50/80">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+          <div className="text-center mb-12">
             <Skeleton className="h-3 w-20 mx-auto mb-3" />
             <Skeleton className="h-8 w-52 mx-auto" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="h-52 rounded-2xl" />
+              <Skeleton key={i} className="h-64 rounded-2xl" />
             ))}
           </div>
         </div>
@@ -72,15 +75,15 @@ export function TestimonialsPreview() {
   if (testimonials.length === 0) return null
 
   return (
-    <section className="py-16 lg:py-24 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 lg:py-28 bg-slate-50/80">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-12">
+        <div className="max-w-xl mb-14">
           <span className="section-label text-emerald-600 mb-3 block">Testimonials</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4 leading-tight">
             What Our Patients Say
           </h2>
-          <p className="text-slate-500 leading-relaxed">
+          <p className="text-slate-500 leading-relaxed text-[15px]">
             Real stories from real patients who trust us with their smiles.
           </p>
         </div>
@@ -102,14 +105,14 @@ export function TestimonialsPreview() {
           </CarouselContent>
           {testimonials.length > 3 && (
             <>
-              <CarouselPrevious className="hidden md:flex -left-12 bg-white border-slate-200 hover:bg-white" />
-              <CarouselNext className="hidden md:flex -right-12 bg-white border-slate-200 hover:bg-white" />
+              <CarouselPrevious className="hidden md:flex -left-14 bg-white border-slate-200 hover:bg-white hover:border-slate-300 shadow-lg shadow-slate-900/5 w-10 h-10" />
+              <CarouselNext className="hidden md:flex -right-14 bg-white border-slate-200 hover:bg-white hover:border-slate-300 shadow-lg shadow-slate-900/5 w-10 h-10" />
             </>
           )}
         </Carousel>
 
         {/* View all link */}
-        <div className="mt-10 text-center">
+        <div className="mt-12">
           <button
             onClick={() => { window.location.hash = '#/testimonials' }}
             className="text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"

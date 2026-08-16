@@ -34,17 +34,16 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   if (loading) {
     return (
       <div className="pt-20">
-        {/* Compact header skeleton */}
-        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="page-header">
+          <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
             <Skeleton className="h-3 w-20 mb-3" />
             <Skeleton className="h-9 w-96 max-w-full mb-3" />
             <Skeleton className="h-4 w-48" />
           </div>
         </section>
-        <section className="py-10 lg:py-16 bg-white">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <Skeleton className="h-64 lg:h-96 rounded-2xl" />
+        <section className="py-14 lg:py-20 bg-white">
+          <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10 space-y-4">
+            <Skeleton className="h-72 lg:h-96 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-3/4" />
@@ -57,8 +56,8 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   if (notFound || !post) {
     return (
       <div className="pt-20">
-        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="page-header">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <span className="section-label text-emerald-600 mb-3 block">Blog</span>
           </div>
         </section>
@@ -68,7 +67,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
             <p className="text-slate-400 text-sm mb-6">The article you are looking for does not exist.</p>
             <button
               onClick={() => { window.location.hash = '#/blog' }}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Blog
@@ -82,21 +81,21 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   return (
     <div className="pt-20">
       {/* Compact Header with breadcrumb */}
-      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="page-header">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="mb-4">
             <button
               onClick={() => { window.location.hash = '#/blog' }}
-              className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-emerald-600 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-emerald-700 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Blog
             </button>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-4 max-w-3xl mx-auto">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-5 leading-tight max-w-3xl">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm justify-center">
+          <div className="flex flex-wrap items-center gap-4 text-sm">
             {post.author && (
               <span className="flex items-center gap-1.5 text-slate-500">
                 <User className="w-3.5 h-3.5" />
@@ -110,7 +109,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
               </span>
             )}
             {post.category && (
-              <span className="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full">
+              <span className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
                 {post.category}
               </span>
             )}
@@ -120,10 +119,10 @@ export function BlogDetailPage({ slug }: { slug: string }) {
 
       {/* Content */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="animate-fade-up">
             {post.featuredImage && (
-              <div className="rounded-2xl overflow-hidden h-64 lg:h-96 mb-8">
+              <div className="rounded-2xl overflow-hidden h-64 lg:h-96 mb-10">
                 <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
               </div>
             )}
@@ -136,12 +135,12 @@ export function BlogDetailPage({ slug }: { slug: string }) {
 
             {post.tags && (
               <>
-                <Separator className="my-8" />
+                <Separator className="my-10" />
                 <div className="flex flex-wrap gap-2">
                   {post.tags.split(',').map((tag: string) => (
                     <span
                       key={tag.trim()}
-                      className="bg-slate-100 text-slate-600 text-xs px-3 py-1.5 rounded-full"
+                      className="bg-slate-100 text-slate-500 text-xs font-medium px-3 py-1.5 rounded-full"
                     >
                       #{tag.trim()}
                     </span>
@@ -153,14 +152,14 @@ export function BlogDetailPage({ slug }: { slug: string }) {
             <Separator className="my-10" />
 
             {/* CTA Card */}
-            <div className="bg-emerald-50 rounded-2xl p-6 sm:p-8 text-center">
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Ready to take care of your smile?</h3>
-              <p className="text-sm text-slate-500 mb-5 max-w-md mx-auto">
+            <div className="bg-emerald-50 rounded-2xl p-8 sm:p-10 text-center border border-emerald-100/50">
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Ready to take care of your smile?</h3>
+              <p className="text-sm text-slate-500 mb-8 max-w-md mx-auto">
                 Book an appointment with us today and experience the difference.
               </p>
               <button
                 onClick={() => { window.location.hash = '#/book' }}
-                className="bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-6 py-2.5 shadow-lg shadow-amber-500/20 transition-colors"
+                className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 h-12 text-sm transition-all shadow-lg shadow-emerald-700/15 hover:shadow-xl hover:-translate-y-0.5"
               >
                 Book an Appointment
               </button>
