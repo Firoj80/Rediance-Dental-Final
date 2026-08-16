@@ -35,9 +35,9 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <div className="pt-20">
         <section className="page-header">
-          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-            <Skeleton className="h-3 w-24 mb-3" />
-            <Skeleton className="h-8 w-72 mb-2" />
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
+            <Skeleton className="h-3 w-24 mb-3 mx-auto" />
+            <Skeleton className="h-8 w-72 mb-2 mx-auto" />
           </div>
         </section>
         <section className="py-14 lg:py-20 bg-white">
@@ -74,7 +74,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
     <div className="pt-20">
       {/* Compact Page Header with breadcrumb */}
       <section className="page-header">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
           <div className="mb-4">
             <button
               onClick={() => { window.location.hash = '#/services' }}

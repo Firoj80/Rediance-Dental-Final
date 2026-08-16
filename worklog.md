@@ -657,3 +657,25 @@ Stage Summary:
 - All CTAs use rounded-full pill buttons
 - Hero image uploadable from admin settings
 - All inner pages (About, Services, Gallery, Testimonials, Blog, Contact, Booking) redesigned
+---
+Task ID: 15
+Agent: Main Orchestrator
+Task: Center all page titles + redesign booking flow with auto-advance
+
+Work Log:
+- Added explicit `text-center` to inner wrapper divs of all page headers: AboutPage, ServicesPage, ServiceDetailPage, GalleryPage, TestimonialsPage, BlogListingPage, BlogDetailPage, ContactPage, BookingPage
+- Fixed loading skeleton headers in ServiceDetailPage and BlogDetailPage to also be centered (added `mx-auto` to Skeleton elements)
+- Added `justify-center` to BlogDetailPage meta info flex container for centered author/date display
+- Redesigned BookingPage flow: removed 5-step model (Service→Date→Time→Details→Confirm), replaced with 4-step model (Service→Date→Time→Details+Confirm)
+- Steps 0-2 (Service, Date, Time) now auto-advance on selection — no "Continue" button needed
+- Step 3 (Details) combines patient info form + selection summary card + single "Confirm Appointment" button
+- Removed `ArrowRight`, `Separator` imports; added `CalendarDays` import
+- Updated STEP_LABELS from 5 items to 4
+- Success step changed from step 5 to step 4
+- Fixed multiple JSX comment syntax errors (missing closing `}`)
+- Browser-verified: auto-advance works through all steps, textAlign=center confirmed on multiple pages
+
+Stage Summary:
+- All page titles confirmed centered via CSS `text-center` + explicit class
+- Booking flow: 3 auto-advancing steps + 1 details step with Confirm Appointment button
+- No lint errors, dev server runs clean

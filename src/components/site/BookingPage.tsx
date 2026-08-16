@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
   ArrowLeft,
-  ArrowRight,
   Clock,
   CheckCircle2,
   Stethoscope,
@@ -14,9 +13,9 @@ import {
   Loader2,
   AlertCircle,
   Check,
+  CalendarDays,
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Separator } from '@/components/ui/separator'
 import { useSiteStore, type ServiceData } from '@/lib/store'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
@@ -34,7 +33,7 @@ interface SlotData {
   available: boolean
 }
 
-const STEP_LABELS = ['Service', 'Date', 'Time', 'Details', 'Confirm']
+const STEP_LABELS = ['Service', 'Date', 'Time', 'Details']
 
 function StepIndicator({ currentStep }: { currentStep: number }) {
   return (
@@ -168,31 +167,27 @@ export function BookingPage() {
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + bookingAdvanceDays)
 
-  const handleNext = () => {
+  // Auto-advance: when service is selected, go to date step
+  const handleServiceSelect = (service: ServiceData) => {
+    setSelectedService(service)
     setFormErrors({})
-    if (currentStep === 0 && !selectedService) {
-      setFormErrors({ service: 'Please select a service' })
-      return
-    }
-    if (currentStep === 1 && !selectedDate) {
-      setFormErrors({ date: 'Please select a date' })
-      return
-    }
-    if (currentStep === 2 && !selectedTime) {
-      setFormErrors({ time: 'Please select a time slot' })
-      return
-    }
-    if (currentStep === 3) {
-      if (!patientInfo.name.trim()) {
-        setFormErrors({ name: 'Name is required' })
-        return
-      }
-      if (!patientInfo.phone.trim()) {
-        setFormErrors({ phone: 'Phone is required' })
-        return
-      }
-    }
-    setCurrentStep((prev) => Math.min(prev + 1, 4))
+    setCurrentStep(1)
+  }
+
+  // Auto-advance: when date is selected, go to time step
+  const handleDateSelect = (date: Date | undefined) => {
+    if (!date) return
+    setSelectedDate(date)
+    setSelectedTime('')
+    setFormErrors({})
+    setCurrentStep(2)
+  }
+
+  // Auto-advance: when time is selected, go to details step
+  const handleTimeSelect = (time: string) => {
+    setSelectedTime(time)
+    setFormErrors({})
+    setCurrentStep(3)
   }
 
   const handleBack = () => {
@@ -202,6 +197,17 @@ export function BookingPage() {
 
   const handleConfirm = async () => {
     if (!selectedService || !selectedDate || !selectedTime) return
+    setFormErrors({})
+
+    if (!patientInfo.name.trim()) {
+      setFormErrors({ name: 'Name is required' })
+      return
+    }
+    if (!patientInfo.phone.trim()) {
+      setFormErrors({ phone: 'Phone is required' })
+      return
+    }
+
     setSubmitting(true)
     setBookingResult(null)
 
@@ -228,7 +234,7 @@ export function BookingPage() {
       }
 
       setBookingResult({ success: true, id: data.id })
-      setCurrentStep(5)
+      setCurrentStep(4) // success step
     } catch {
       setBookingResult({ success: false, error: 'Something went wrong. Please try again.' })
     } finally {
@@ -259,7 +265,7 @@ export function BookingPage() {
         {services.map((service) => (
           <button
             key={service.id}
-            onClick={() => setSelectedService(service)}
+            onClick={() => handleServiceSelect(service)}
             className={cn(
               'rounded-xl border-2 p-4 cursor-pointer transition-all text-left',
               selectedService?.id === service.id
@@ -302,10 +308,7 @@ export function BookingPage() {
           <CalendarComponent
             mode="single"
             selected={selectedDate}
-            onSelect={(date) => {
-              setSelectedDate(date)
-              setSelectedTime('')
-            }}
+            onSelect={handleDateSelect}
             disabled={[
               { before: new Date(new Date().setHours(0, 0, 0, 0)) },
               ...(offDays.length > 0 ? [{ dayOfWeek: offDays }] : []),
@@ -350,7 +353,14 @@ export function BookingPage() {
         <div className="text-center py-10">
           <Clock className="w-10 h-10 text-slate-200 mx-auto mb-3" />
           <p className="text-slate-500 text-sm">No available slots for this date.</p>
-          <p className="text-xs text-slate-400 mt-1">Please select a different date.</p>
+          <p className="text-xs text-slate-400 mt-1">Please go back and select a different date.</p>
+          <button
+            onClick={handleBack}
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Change Date
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -358,7 +368,7 @@ export function BookingPage() {
             <button
               key={slot.time}
               disabled={!slot.available}
-              onClick={() => setSelectedTime(slot.time)}
+              onClick={() => handleTimeSelect(slot.time)}
               className={cn(
                 'rounded-xl border p-3 text-center cursor-pointer transition-all text-sm',
                 !slot.available
@@ -382,12 +392,48 @@ export function BookingPage() {
     </div>
   )
 
-  // Render patient info
+  // Render patient details + summary + confirm button (combined step)
   const renderStepDetails = () => (
     <div>
       <h3 className="text-lg font-semibold text-slate-900 mb-1">Your Details</h3>
-      <p className="text-sm text-slate-500 mb-6">Please provide your contact information.</p>
+      <p className="text-sm text-slate-500 mb-5">Please provide your contact information to confirm.</p>
 
+      {/* Selection summary */}
+      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Stethoscope className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Service</p>
+              <p className="text-sm font-medium text-slate-900 truncate">{selectedService?.name}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <CalendarDays className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Date</p>
+              <p className="text-sm font-medium text-slate-900 truncate">
+                {selectedDate?.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Clock className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Time</p>
+              <p className="text-sm font-medium text-slate-900">{selectedTime ? formatTime(selectedTime) : ''}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Patient form */}
       <div className="space-y-4">
         <div>
           <label htmlFor="bk-name" className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
@@ -444,56 +490,15 @@ export function BookingPage() {
           />
         </div>
       </div>
-    </div>
-  )
 
-  // Render confirmation
-  const renderStepConfirm = () => (
-    <div>
-      <h3 className="text-lg font-semibold text-slate-900 mb-1">Review & Confirm</h3>
-      <p className="text-sm text-slate-500 mb-6">Please verify your appointment details.</p>
-
-      <div className="space-y-4">
-        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Service</p>
-              <p className="font-medium text-slate-900 text-sm">{selectedService?.name}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{selectedService?.duration} min</p>
-            </div>
-            <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Date & Time</p>
-              <p className="font-medium text-slate-900 text-sm">
-                {selectedDate?.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-              </p>
-              <p className="text-xs text-slate-500 mt-0.5">{selectedTime ? formatTime(selectedTime) : ''}</p>
-            </div>
-            <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Patient Name</p>
-              <p className="font-medium text-slate-900 text-sm">{patientInfo.name}</p>
-            </div>
-            <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Phone</p>
-              <p className="font-medium text-slate-900 text-sm">{patientInfo.phone}</p>
-              {patientInfo.email && <p className="text-xs text-slate-500 mt-0.5">{patientInfo.email}</p>}
-            </div>
-          </div>
-          {patientInfo.message && (
-            <div className="mt-4 pt-4 border-t border-slate-200">
-              <p className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Message</p>
-              <p className="text-sm text-slate-700">{patientInfo.message}</p>
-            </div>
-          )}
+      {/* Error from booking attempt */}
+      {bookingResult && !bookingResult.success && (
+        <div className="mt-4 p-4 rounded-xl bg-red-50 border border-red-200">
+          <p className="text-sm text-red-600 flex items-center gap-1.5">
+            <AlertCircle className="w-4 h-4" /> {bookingResult.error}
+          </p>
         </div>
-
-        {bookingResult && !bookingResult.success && (
-          <div className="p-4 rounded-xl bg-red-50 border border-red-200">
-            <p className="text-sm text-red-600 flex items-center gap-1.5">
-              <AlertCircle className="w-4 h-4" /> {bookingResult.error}
-            </p>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   )
 
@@ -534,7 +539,7 @@ export function BookingPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="page-header">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Book Appointment</span>
           <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
             Schedule Your Visit
@@ -545,51 +550,44 @@ export function BookingPage() {
       {/* Booking Form */}
       <section className="py-14 lg:py-20 bg-white">
         <div className="max-w-2xl mx-auto px-5 sm:px-8 lg:px-10">
-          {currentStep < 5 ? (
+          {currentStep < 4 ? (
             <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm shadow-slate-900/3">
               <StepIndicator currentStep={currentStep} />
 
               {renderStepByStep()}
 
-              <Separator className="my-6" />
-
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={handleBack}
-                  disabled={currentStep === 0}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-full px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back
-                </button>
-
-                {currentStep < 4 ? (
+              {/* Footer: Back + Confirm (only on details step) */}
+              <div className="mt-6 pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-between">
                   <button
-                    onClick={handleNext}
-                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-full px-6 py-2.5 shadow-sm shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-1.5"
+                    onClick={handleBack}
+                    disabled={currentStep === 0}
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-full px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none"
                   >
-                    Continue
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4" />
+                    Back
                   </button>
-                ) : (
-                  <button
-                    onClick={handleConfirm}
-                    disabled={submitting}
-                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-full px-6 py-2.5 shadow-sm shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-1.5 disabled:opacity-50"
-                  >
-                    {submitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Booking...
-                      </>
-                    ) : (
-                      <>
-                        <CheckCircle2 className="w-4 h-4" />
-                        Confirm Appointment
-                      </>
-                    )}
-                  </button>
-                )}
+
+                  {currentStep === 3 && (
+                    <button
+                      onClick={handleConfirm}
+                      disabled={submitting}
+                      className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full px-8 py-3 shadow-lg shadow-emerald-700/15 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Booking...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4" />
+                          Confirm Appointment
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
@@ -606,7 +604,6 @@ export function BookingPage() {
       case 1: return renderStepDate()
       case 2: return renderStepTime()
       case 3: return renderStepDetails()
-      case 4: return renderStepConfirm()
       default: return null
     }
   }

@@ -36,7 +36,7 @@ export function BlogListingPage() {
     <div className="pt-20">
       {/* Compact Page Header */}
       <section className="page-header">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Blog</span>
           <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
             Our Blog

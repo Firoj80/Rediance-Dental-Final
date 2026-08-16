@@ -35,10 +35,10 @@ export function BlogDetailPage({ slug }: { slug: string }) {
     return (
       <div className="pt-20">
         <section className="page-header">
-          <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-            <Skeleton className="h-3 w-20 mb-3" />
-            <Skeleton className="h-9 w-96 max-w-full mb-3" />
-            <Skeleton className="h-4 w-48" />
+          <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
+            <Skeleton className="h-3 w-20 mb-3 mx-auto" />
+            <Skeleton className="h-9 w-96 max-w-full mb-3 mx-auto" />
+            <Skeleton className="h-4 w-48 mx-auto" />
           </div>
         </section>
         <section className="py-14 lg:py-20 bg-white">
@@ -57,7 +57,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
     return (
       <div className="pt-20">
         <section className="page-header">
-          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
             <span className="section-label text-emerald-600 mb-3 block">Blog</span>
           </div>
         </section>
@@ -82,7 +82,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
     <div className="pt-20">
       {/* Compact Header with breadcrumb */}
       <section className="page-header">
-        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
           <div className="mb-4">
             <button
               onClick={() => { window.location.hash = '#/blog' }}
@@ -92,10 +92,10 @@ export function BlogDetailPage({ slug }: { slug: string }) {
               Blog
             </button>
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-5 leading-tight max-w-3xl">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-5 leading-tight">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-4 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
             {post.author && (
               <span className="flex items-center gap-1.5 text-slate-500">
                 <User className="w-3.5 h-3.5" />
