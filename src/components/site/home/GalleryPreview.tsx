@@ -13,22 +13,22 @@ export function GalleryPreview() {
   const previewImages = galleryImages.slice(0, 6)
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-24 lg:py-32 bg-slate-950">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-xl mb-14 mx-auto text-center">
-          <span className="section-label text-emerald-600 mb-3 block">Gallery</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-3 leading-tight">
+        <div className="max-w-xl mb-16 mx-auto text-center">
+          <span className="section-label text-amber-400 mb-3 block">Gallery</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3 leading-tight">
             A Glimpse of Our Clinic
           </h2>
-          <p className="text-slate-500 leading-relaxed text-[15px]">
+          <p className="text-white/50 leading-relaxed text-[15px]">
             See our modern facility, equipment, and the care we provide.
           </p>
         </div>
         <div className="-mt-8 mb-10 text-center">
           <button
             onClick={() => { window.location.hash = '#/gallery' }}
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-800 border border-emerald-200 hover:border-emerald-300 hover:bg-emerald-50 rounded-full px-6 py-2.5 transition-all"
+            className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-500/50 hover:bg-amber-500/10 rounded-full px-6 py-2.5 transition-all"
           >
             View Full Gallery
             <ArrowRight className="w-4 h-4" />
@@ -55,19 +55,19 @@ export function GalleryPreview() {
                     alt={img.caption || 'Clinic gallery'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
                     <p className="text-white text-sm font-medium truncate">
                       {img.title || 'Gallery Image'}
                     </p>
                     {img.category && (
-                      <p className="text-white/70 text-xs mt-0.5">{img.category}</p>
+                      <p className="text-white/60 text-xs mt-0.5">{img.category}</p>
                     )}
                   </div>
                 </>
               ) : (
-                <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-slate-300" />
+                <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-white/10" />
                 </div>
               )}
             </div>

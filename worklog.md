@@ -679,3 +679,55 @@ Stage Summary:
 - All page titles confirmed centered via CSS `text-center` + explicit class
 - Booking flow: 3 auto-advancing steps + 1 details step with Confirm Appointment button
 - No lint errors, dev server runs clean
+
+---
+Task ID: 10
+Agent: Main Orchestrator
+Task: Redesign all homepage components to cinematic dark photography-driven style (matching thetoothdoctors.org)
+
+Work Log:
+- Redesigned HeroSection.tsx: Full-bleed cinematic hero with min-h-[700px]/lg:min-h-[85vh], dark gradient overlay (from-black/80 via-black/50 to-black/20), text positioned at bottom-left, text-5xl sm:text-6xl lg:text-7xl headings, amber-500 pill CTA button, removed all floating stat cards, added "Welcome to {clinic name}" label tag, dark emerald gradient fallback with radial glow shapes
+- Redesigned ServicesPreview.tsx: Dark bg-slate-950 section, glassmorphism cards (bg-white/5 border-white/10 backdrop-blur-sm), amber icon backgrounds, white text headings, amber CTA button, text-3xl sm:text-4xl lg:text-5xl headings
+- Redesigned WhyChooseUs.tsx: Transformed into "How It Works" process section with 3 tall rounded-2xl cards (min-h-[320px]), dark emerald gradient backgrounds with different shades, large step numbers in white/6, amber icons, white title + white/50 description, hover scale animation
+- Redesigned DoctorSection.tsx: Split-screen layout with rounded-3xl container, left panel for doctor photo (h-[400px] lg:h-[600px]), right panel bg-slate-900 with white text, amber qualification, emerald border-left quote, glassmorphism specialization pills (bg-white/10 border-white/10), amber Book Appointment button
+- Redesigned TestimonialsPreview.tsx: Dark bg-slate-950 section, glassmorphism testimonial cards (bg-white/5 border-white/10), amber stars, dark carousel navigation buttons, white author text
+- Redesigned CTASection.tsx: Full-bleed dark cinematic CTA with large emerald gradient blur shapes, text-4xl sm:text-5xl heading with amber accent span, py-28 lg:py-36 padding, amber primary CTA button with glow shadow
+- Redesigned GalleryPreview.tsx: Dark bg-slate-950 section, white headings, amber CTA button, darker hover overlay gradient, dark placeholder backgrounds
+- Restyled TrustStrip.tsx: Dark bg-slate-950 background, border-y border-white/10, white text stats, amber stars, white/10 dividers
+- Restyled BlogPreview.tsx: Dark bg-slate-950, glassmorphism blog cards, amber category badges, dark image placeholder gradients, amber read links
+- Restyled ContactSection.tsx: Dark bg-slate-950, white headings, glassmorphism contact items with amber icons, amber hover states, dark map border
+- All data fetching (useSiteStore) and hash-based navigation preserved unchanged
+- All animation utilities (animate-fade-up, stagger-1/2/3/4, useInView) preserved
+- Section labels now use text-amber-400 for consistency across dark theme
+- Brand identity: emerald green (#047857) + amber-500 warm accent
+- ESLint: zero errors
+- Dev server: clean compilation, no errors
+
+Stage Summary:
+- Transformed homepage from clean/light clinical to dark, cinematic, premium dental aesthetic
+- Color palette: slate-950 dark backgrounds, white text, amber-400 labels/accents, emerald subtle glows
+- Typography: Larger headings (up to text-7xl for hero), tight leading
+- Spacing: More generous section padding (py-24 lg:py-32) matching cinematic reference
+- Components redesigned: HeroSection, ServicesPreview, WhyChooseUs → How It Works, DoctorSection, TestimonialsPreview, CTASection, GalleryPreview, TrustStrip, BlogPreview, ContactSection
+- All business logic, data fetching, and navigation preserved
+
+---
+Task ID: 16
+Agent: Main Orchestrator
+Task: Redesign homepage to match thetoothdoctors.org style
+
+Work Log:
+- Analyzed reference website (thetoothdoctors.org) via web-reader + VLM screenshots
+- Identified key design patterns: cinematic dark hero, photography-driven, warm accent CTAs, dark/light alternation, glassmorphism cards
+- Delegated full redesign of all 10 homepage components to full-stack agent
+- Added CSS utilities: .dark-texture (noise overlay), .glass-card (glassmorphism)
+- Applied dark-texture to Hero, Services, Testimonials, CTA sections
+- Improved hero gradient fallback with diagonal light streak
+- Fixed JSX parsing error by using Fragment instead of wrapper div in ternary
+- VLM final review: 8/10 - 'successfully achieves a premium, cinematic, dark-themed aesthetic'
+
+Stage Summary:
+- Homepage transformed from light clinical to dark cinematic design
+- All 10 components redesigned: Hero, Services, WhyChooseUs (now How It Works), Doctor, Testimonials, CTA, Gallery, TrustStrip, Blog, Contact
+- Design system: slate-950 dark sections, amber-500 warm CTAs, glassmorphism cards, noise texture overlays
+- Zero lint errors, zero runtime errors
