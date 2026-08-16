@@ -23,7 +23,7 @@ export function AboutPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">About Us</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
@@ -36,7 +36,7 @@ export function AboutPage() {
       </section>
 
       {/* Clinic Description */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={descRef}
@@ -66,7 +66,7 @@ export function AboutPage() {
       </section>
 
       {/* Doctor Spotlight — same visual language as home DoctorSection */}
-      <section className="py-20 lg:py-28 bg-slate-50">
+      <section className="py-10 lg:py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={doctorRef}
@@ -162,10 +162,10 @@ export function AboutPage() {
       </section>
 
       {/* Mission / Vision / Values */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <span className="section-label text-emerald-600 mb-3 block">Our Foundation</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
               Mission, Vision & Values

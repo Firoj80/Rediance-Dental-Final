@@ -35,14 +35,14 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <div className="pt-20">
         {/* Compact header skeleton */}
-        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Skeleton className="h-3 w-24 mb-3" />
             <Skeleton className="h-9 w-72 mb-2" />
             <Skeleton className="h-4 w-48" />
           </div>
         </section>
-        <section className="py-16 lg:py-24 bg-white">
+        <section className="py-10 lg:py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             <Skeleton className="h-64 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
@@ -75,7 +75,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
   return (
     <div className="pt-20">
       {/* Compact Page Header with breadcrumb */}
-      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Breadcrumb */}
           <div className="mb-4">
@@ -94,7 +94,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
       </section>
 
       {/* Content */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-8 lg:py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up">
             {/* Image */}

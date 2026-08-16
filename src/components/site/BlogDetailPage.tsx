@@ -35,14 +35,14 @@ export function BlogDetailPage({ slug }: { slug: string }) {
     return (
       <div className="pt-20">
         {/* Compact header skeleton */}
-        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Skeleton className="h-3 w-20 mb-3" />
             <Skeleton className="h-9 w-96 max-w-full mb-3" />
             <Skeleton className="h-4 w-48" />
           </div>
         </section>
-        <section className="py-16 lg:py-24 bg-white">
+        <section className="py-10 lg:py-16 bg-white">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             <Skeleton className="h-64 lg:h-96 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
@@ -57,7 +57,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   if (notFound || !post) {
     return (
       <div className="pt-20">
-        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span className="section-label text-emerald-600 mb-3 block">Blog</span>
           </div>
@@ -82,7 +82,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
   return (
     <div className="pt-20">
       {/* Compact Header with breadcrumb */}
-      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-4">
             <button
@@ -119,7 +119,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
       </section>
 
       {/* Content */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up">
             {post.featuredImage && (

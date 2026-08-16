@@ -22,7 +22,7 @@ export function ServicesPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Our Services</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
@@ -35,7 +35,7 @@ export function ServicesPage() {
       </section>
 
       {/* Search & Grid */}
-      <section className="py-16 lg:py-24 bg-slate-50">
+      <section className="py-10 lg:py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search Bar */}
           <div className="max-w-md mb-10 mx-auto">

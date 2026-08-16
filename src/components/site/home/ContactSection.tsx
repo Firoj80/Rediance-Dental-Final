@@ -16,7 +16,7 @@ export function ContactSection() {
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Skeleton className="h-4 w-20 mb-3" />
-          <Skeleton className="h-8 w-48 mb-12" />
+          <Skeleton className="h-8 w-48 mb-8" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -73,7 +73,7 @@ export function ContactSection() {
     <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-12 text-center">
+        <div className="mb-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Contact</span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Get in Touch

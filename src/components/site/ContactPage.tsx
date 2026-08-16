@@ -44,13 +44,13 @@ export function ContactPage() {
   if (clinicLoading) {
     return (
       <div className="pt-20">
-        <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+        <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Skeleton className="h-3 w-16 mb-3" />
             <Skeleton className="h-9 w-48" />
           </div>
         </section>
-        <section className="py-16 lg:py-24 bg-slate-50">
+        <section className="py-10 lg:py-16 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <Skeleton className="h-96 rounded-2xl" />
@@ -71,7 +71,7 @@ export function ContactPage() {
   return (
     <div className="pt-20">
       {/* Compact Page Header */}
-      <section className="bg-white border-b border-slate-100 py-14 lg:py-16">
+      <section className="bg-white border-b border-slate-100 py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-label text-emerald-600 mb-3 block">Contact</span>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
@@ -81,7 +81,7 @@ export function ContactPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 lg:py-24 bg-slate-50">
+      <section className="py-10 lg:py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* LEFT — Contact Form */}
