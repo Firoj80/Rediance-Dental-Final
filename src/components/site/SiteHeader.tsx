@@ -21,6 +21,7 @@ const NAV_LINKS = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [onHomePage, setOnHomePage] = useState(true)
   const clinicData = useSiteStore((s) => s.clinicData)
 
   useEffect(() => {
@@ -28,6 +29,20 @@ export function SiteHeader() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Detect home page for transparent vs solid header
+  useEffect(() => {
+    const check = () => {
+      const hash = window.location.hash
+      setOnHomePage(hash === '' || hash === '#/' || hash === '#/home')
+    }
+    check()
+    window.addEventListener('hashchange', check)
+    return () => window.removeEventListener('hashchange', check)
+  }, [])
+
+  // On non-home pages, always show solid header
+  const solid = !onHomePage || scrolled
 
   const handleNav = (hash: string) => {
     setMobileOpen(false)
@@ -38,7 +53,7 @@ export function SiteHeader() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-200',
-        scrolled
+        solid
           ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-border'
           : 'bg-transparent'
       )}
@@ -53,20 +68,20 @@ export function SiteHeader() {
           >
             <div className={cn(
               'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
-              scrolled ? 'bg-primary' : 'bg-white/20'
+              solid ? 'bg-primary' : 'bg-white/20'
             )}>
-              <Stethoscope className={cn('w-5 h-5', scrolled ? 'text-white' : 'text-white')} />
+              <Stethoscope className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <span className={cn(
                 'font-bold text-sm leading-tight transition-colors',
-                scrolled ? 'text-foreground' : 'text-white'
+                solid ? 'text-foreground' : 'text-white'
               )}>
                 {clinicData?.name || 'Radiance Dental'}
               </span>
               <span className={cn(
                 'text-[10px] leading-tight transition-colors',
-                scrolled ? 'text-muted-foreground' : 'text-white/70'
+                solid ? 'text-muted-foreground' : 'text-white/70'
               )}>
                 {clinicData?.tagline || 'Dental Care & Facial Trauma Centre'}
               </span>
@@ -81,7 +96,7 @@ export function SiteHeader() {
                 onClick={() => handleNav(link.hash)}
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                  scrolled
+                  solid
                     ? 'text-muted-foreground hover:text-foreground hover:bg-muted'
                     : 'text-white/80 hover:text-white hover:bg-white/10'
                 )}
@@ -108,7 +123,7 @@ export function SiteHeader() {
               <button
                 className={cn(
                   'lg:hidden p-2 rounded-md transition-colors',
-                  scrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10'
+                  solid ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10'
                 )}
               >
                 <Menu className="w-5 h-5" />
