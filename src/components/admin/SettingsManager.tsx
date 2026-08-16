@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Eye, EyeOff, Lock } from 'lucide-react';
+import { Loader2, Eye, EyeOff, Pencil } from 'lucide-react';
 
 type Settings = {
   id: string;
@@ -50,7 +50,6 @@ export default function SettingsManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-
   // Password change
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
@@ -80,15 +79,34 @@ export default function SettingsManager() {
     fetchData();
   }, [fetchData]);
 
+  const updateClinicField = (field: keyof Clinic, value: string | null) => {
+    setClinic((prev) => (prev ? { ...prev, [field]: value } : prev));
+  };
 
+  const updateSettingsField = (field: keyof Settings, value: string | number) => {
+    setSettings((prev) => (prev ? { ...prev, [field]: value } : prev));
+  };
 
   const saveSettings = async () => {
-    if (!settings) return;
+    if (!settings || !clinic) return;
     setSaving(true);
     try {
       await adminFetch('/api/admin/settings', {
         method: 'PUT',
         body: JSON.stringify({
+          // Clinic fields
+          name: clinic.name,
+          tagline: clinic.tagline,
+          description: clinic.description,
+          phone: clinic.phone,
+          email: clinic.email,
+          whatsapp: clinic.whatsapp,
+          address: clinic.address,
+          googleMapsUrl: clinic.googleMapsUrl,
+          facebook: clinic.facebook,
+          instagram: clinic.instagram,
+          youtube: clinic.youtube,
+          // Settings fields
           doctorName: settings.doctorName,
           doctorQualification: settings.doctorQualification,
           doctorExperience: settings.doctorExperience,
@@ -118,7 +136,6 @@ export default function SettingsManager() {
       toast.error('Please fill all fields and ensure passwords match');
       return;
     }
-    // Validate current password
     setChangingPw(true);
     try {
       const authRes = await fetch('/api/auth', {
@@ -131,7 +148,6 @@ export default function SettingsManager() {
         setChangingPw(false);
         return;
       }
-      // Update password via settings
       await adminFetch('/api/admin/settings', {
         method: 'PUT',
         body: JSON.stringify({ adminPassword: newPw }),
@@ -147,10 +163,6 @@ export default function SettingsManager() {
     }
   };
 
-  const updateSettingsField = (field: keyof Settings, value: string | number) => {
-    setSettings((prev) => (prev ? { ...prev, [field]: value } : prev));
-  };
-
   if (loading || !clinic || !settings) {
     return (
       <div className="space-y-4">
@@ -163,65 +175,66 @@ export default function SettingsManager() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      {/* General / Clinic Info */}
+      {/* Clinic Info */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">General <Lock className="h-3.5 w-3.5 text-muted-foreground" /></CardTitle>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Pencil className="h-3.5 w-3.5" /> Clinic Information
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Clinic Name</Label>
-              <Input value={clinic.name} readOnly className="bg-muted" />
+              <Input value={clinic.name} onChange={(e) => updateClinicField('name', e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>Tagline</Label>
-              <Input value={clinic.tagline || ''} readOnly className="bg-muted" />
+              <Input value={clinic.tagline || ''} onChange={(e) => updateClinicField('tagline', e.target.value)} />
             </div>
           </div>
           <div className="space-y-2">
             <Label>Description</Label>
-            <Textarea rows={3} value={clinic.description || ''} readOnly className="bg-muted" />
+            <Textarea rows={3} value={clinic.description || ''} onChange={(e) => updateClinicField('description', e.target.value)} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Phone</Label>
-              <Input value={clinic.phone || ''} readOnly className="bg-muted" />
+              <Input value={clinic.phone || ''} onChange={(e) => updateClinicField('phone', e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>WhatsApp</Label>
-              <Input value={clinic.whatsapp || ''} readOnly className="bg-muted" />
+              <Input value={clinic.whatsapp || ''} onChange={(e) => updateClinicField('whatsapp', e.target.value)} />
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input value={clinic.email || ''} readOnly className="bg-muted" />
+              <Input type="email" value={clinic.email || ''} onChange={(e) => updateClinicField('email', e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>Address</Label>
-              <Input value={clinic.address || ''} readOnly className="bg-muted" />
+              <Input value={clinic.address || ''} onChange={(e) => updateClinicField('address', e.target.value)} />
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Google Maps URL</Label>
-            <Input value={clinic.googleMapsUrl || ''} readOnly className="bg-muted" />
+            <Label>Google Maps Embed URL</Label>
+            <Input placeholder="https://www.google.com/maps/embed?..." value={clinic.googleMapsUrl || ''} onChange={(e) => updateClinicField('googleMapsUrl', e.target.value)} />
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-2">
-              <Label>Facebook</Label>
-              <Input value={clinic.facebook || ''} readOnly className="bg-muted" />
+              <Label>Facebook URL</Label>
+              <Input placeholder="https://facebook.com/..." value={clinic.facebook || ''} onChange={(e) => updateClinicField('facebook', e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>Instagram</Label>
-              <Input value={clinic.instagram || ''} readOnly className="bg-muted" />
+              <Label>Instagram URL</Label>
+              <Input placeholder="https://instagram.com/..." value={clinic.instagram || ''} onChange={(e) => updateClinicField('instagram', e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>YouTube</Label>
-              <Input value={clinic.youtube || ''} readOnly className="bg-muted" />
+              <Label>YouTube URL</Label>
+              <Input placeholder="https://youtube.com/..." value={clinic.youtube || ''} onChange={(e) => updateClinicField('youtube', e.target.value)} />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground flex items-center gap-1"><Lock className="h-3 w-3" /> Clinic general info is read-only (set via database seed).</p>
         </CardContent>
       </Card>
 
@@ -309,7 +322,7 @@ export default function SettingsManager() {
       {/* Save Settings */}
       <div className="flex justify-end">
         <Button onClick={saveSettings} disabled={saving}>
-          {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save Settings
+          {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save All Settings
         </Button>
       </div>
 

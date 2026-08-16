@@ -1,7 +1,29 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { checkAuth } from '@/lib/auth'
+import { z } from 'zod'
 import bcrypt from 'bcryptjs'
+
+// Fields that belong to the Clinic model (not ClinicSettings)
+const CLINIC_FIELDS = ['name', 'tagline', 'description', 'logo', 'favicon', 'phone', 'email', 'whatsapp', 'address', 'googleMapsUrl', 'facebook', 'instagram', 'youtube'] as const
+
+type ClinicField = (typeof CLINIC_FIELDS)[number]
+
+const clinicUpdateSchema = z.object({
+  name: z.string().optional(),
+  tagline: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  logo: z.string().nullable().optional(),
+  favicon: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+  whatsapp: z.string().nullable().optional(),
+  address: z.string().nullable().optional(),
+  googleMapsUrl: z.string().nullable().optional(),
+  facebook: z.string().nullable().optional(),
+  instagram: z.string().nullable().optional(),
+  youtube: z.string().nullable().optional(),
+})
 
 export async function GET(request: Request) {
   try {
@@ -32,27 +54,61 @@ export async function PUT(request: Request) {
 
     const body = await request.json()
 
-    const settings = await db.clinicSettings.findFirst()
-    if (!settings) {
+    // Separate clinic fields from settings fields
+    const clinicData: Record<string, unknown> = {}
+    const settingsData: Record<string, unknown> = {}
+
+    for (const [key, value] of Object.entries(body)) {
+      if ((CLINIC_FIELDS as readonly string[]).includes(key)) {
+        clinicData[key] = value
+      } else {
+        settingsData[key] = value
+      }
+    }
+
+    // Update Clinic model if any clinic fields are present
+    if (Object.keys(clinicData).length > 0) {
+      const clinic = await db.clinic.findFirst()
+      if (!clinic) {
+        return NextResponse.json({ error: 'Clinic not found' }, { status: 404 })
+      }
+      const parsed = clinicUpdateSchema.safeParse(clinicData)
+      if (!parsed.success) {
+        return NextResponse.json({ error: 'Validation error', details: parsed.error.issues }, { status: 400 })
+      }
+      await db.clinic.update({
+        where: { id: clinic.id },
+        data: parsed.data,
+      })
+    }
+
+    // Update ClinicSettings if any settings fields are present
+    if (Object.keys(settingsData).length > 0) {
+      const settings = await db.clinicSettings.findFirst()
+      if (!settings) {
+        return NextResponse.json({ error: 'Settings not found' }, { status: 404 })
+      }
+
+      // Hash new password if provided
+      if (settingsData.adminPassword && settingsData.adminPassword !== '********') {
+        settingsData.adminPassword = await bcrypt.hash(settingsData.adminPassword as string, 10)
+      } else {
+        delete settingsData.adminPassword
+      }
+
+      await db.clinicSettings.update({
+        where: { id: settings.id },
+        data: settingsData,
+      })
+    }
+
+    // Return updated settings (without password)
+    const updatedSettings = await db.clinicSettings.findFirst()
+    if (!updatedSettings) {
       return NextResponse.json({ error: 'Settings not found' }, { status: 404 })
     }
 
-    const updateData: Record<string, unknown> = { ...body }
-
-    // Hash new password if provided
-    if (body.adminPassword && body.adminPassword !== '********') {
-      updateData.adminPassword = await bcrypt.hash(body.adminPassword, 10)
-    } else {
-      delete updateData.adminPassword
-    }
-
-    const updated = await db.clinicSettings.update({
-      where: { id: settings.id },
-      data: updateData,
-    })
-
-    // Mask password in response
-    const { adminPassword, ...rest } = updated
+    const { adminPassword, ...rest } = updatedSettings
     return NextResponse.json({
       ...rest,
       adminPassword: adminPassword ? '********' : null,
