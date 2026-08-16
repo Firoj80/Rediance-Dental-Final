@@ -152,10 +152,10 @@ export function AboutPage() {
       {/* Mission / Vision / Values */}
       <section className="py-14 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-          <div className="mb-12">
+          <div className="mb-12 text-center">
             <span className="section-label text-emerald-600 mb-3 block">Our Foundation</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
-              Mission, Vision & Values
+              Mission, Vision &amp; Values
             </h2>
           </div>
 

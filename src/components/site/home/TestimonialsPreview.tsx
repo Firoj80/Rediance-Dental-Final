@@ -78,7 +78,7 @@ export function TestimonialsPreview() {
     <section className="py-20 lg:py-28 bg-slate-50/80">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-xl mb-14">
+        <div className="max-w-xl mb-14 mx-auto text-center">
           <span className="section-label text-emerald-600 mb-3 block">Testimonials</span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4 leading-tight">
             What Our Patients Say
@@ -112,7 +112,7 @@ export function TestimonialsPreview() {
         </Carousel>
 
         {/* View all link */}
-        <div className="mt-12">
+        <div className="mt-12 text-center">
           <button
             onClick={() => { window.location.hash = '#/testimonials' }}
             className="text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"

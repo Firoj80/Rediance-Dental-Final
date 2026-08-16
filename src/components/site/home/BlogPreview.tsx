@@ -17,19 +17,19 @@ export function BlogPreview() {
     <section className="py-20 lg:py-28 bg-slate-50/80">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
-          <div className="max-w-xl">
-            <span className="section-label text-emerald-600 mb-3 block">Blog</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-3 leading-tight">
-              Latest from Our Blog
-            </h2>
-            <p className="text-slate-500 leading-relaxed text-[15px]">
-              Tips, guides, and news about dental health and wellness.
-            </p>
-          </div>
+        <div className="max-w-xl mb-14 mx-auto text-center">
+          <span className="section-label text-emerald-600 mb-3 block">Blog</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-3 leading-tight">
+            Latest from Our Blog
+          </h2>
+          <p className="text-slate-500 leading-relaxed text-[15px]">
+            Tips, guides, and news about dental health and wellness.
+          </p>
+        </div>
+        <div className="-mt-8 mb-10 text-center">
           <button
             onClick={() => { window.location.hash = '#/blog' }}
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors shrink-0"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
           >
             View All Posts
             <ArrowRight className="w-4 h-4" />
