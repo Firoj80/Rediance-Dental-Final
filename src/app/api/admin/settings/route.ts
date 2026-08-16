@@ -26,11 +26,27 @@ const clinicUpdateSchema = z.object({
 })
 
 /**
+ * Extract a URL from a Google Maps embed <iframe> HTML snippet,
+ * or return the string as-is if it's already a plain URL.
+ */
+function extractMapUrl(input: string): string {
+  if (!input) return input
+  const match = input.match(/src="([^"]+)"/)
+  if (match) return match[1]
+  return input.trim()
+}
+
+/**
  * Resolve short Google Maps URLs (maps.app.goo.gl, goo.gl/maps)
  * by following redirects to get the full URL with coordinates.
  */
 async function resolveMapUrl(url: string): Promise<string> {
+  // First, extract URL if user pasted an <iframe> tag
+  url = extractMapUrl(url)
+  
   if (!url) return url
+  // Already an embed URL — no need to resolve
+  if (url.includes('/maps/embed')) return url
   if (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps')) return url
 
   try {
