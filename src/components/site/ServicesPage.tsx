@@ -38,10 +38,10 @@ export function ServicesPage() {
       </section>
 
       {/* Search & Grid */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Search Bar */}
-          <div className="max-w-sm mb-12">
+          <div className="max-w-sm mb-8">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input

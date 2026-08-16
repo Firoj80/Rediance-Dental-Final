@@ -48,10 +48,10 @@ export function BlogListingPage() {
       </section>
 
       {/* Blog Listing */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Search & Filter */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input

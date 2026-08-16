@@ -36,7 +36,7 @@ export function AboutPage() {
       </section>
 
       {/* Clinic Description */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <div
             ref={descRef}
@@ -65,7 +65,7 @@ export function AboutPage() {
       </section>
 
       {/* Doctor Spotlight */}
-      <section className="py-14 lg:py-20 bg-slate-50/80">
+      <section className="py-10 lg:py-14 bg-slate-50/80">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <div
             ref={doctorRef}
@@ -150,9 +150,9 @@ export function AboutPage() {
       </section>
 
       {/* Mission / Vision / Values */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-          <div className="mb-12 text-center">
+          <div className="mb-10 text-center">
             <span className="section-label text-emerald-600 mb-3 block">Our Foundation</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
               Mission, Vision &amp; Values

@@ -40,7 +40,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
             <Skeleton className="h-8 w-72 mb-2 mx-auto" />
           </div>
         </section>
-        <section className="py-14 lg:py-20 bg-white">
+        <section className="py-10 lg:py-14 bg-white">
           <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 space-y-4">
             <Skeleton className="h-72 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
@@ -91,18 +91,18 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
       </section>
 
       {/* Content */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-8 lg:py-12 bg-white">
         <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="animate-fade-up">
             {/* Image */}
             {service.image && (
-              <div className="rounded-2xl overflow-hidden h-64 lg:h-80 mb-10">
+              <div className="rounded-2xl overflow-hidden h-64 lg:h-80 mb-8">
                 <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
               </div>
             )}
 
             {/* Duration info bar */}
-            <div className="flex flex-wrap items-center gap-4 mb-10 p-4 bg-slate-50 rounded-xl border border-slate-100">
+            <div className="flex flex-wrap items-center gap-4 mb-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-slate-400 uppercase tracking-wide font-medium">Estimated Duration</span>
                 <span className="flex items-center gap-1 text-sm text-slate-600 font-medium">
@@ -123,11 +123,11 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
 
             {/* Full Description */}
             {service.fullDescription ? (
-              <div className="prose-dental mb-14">
+              <div className="prose-dental mb-10">
                 <ReactMarkdown>{service.fullDescription}</ReactMarkdown>
               </div>
             ) : service.shortDescription ? (
-              <p className="text-slate-500 leading-relaxed text-lg mb-14">{service.shortDescription}</p>
+              <p className="text-slate-500 leading-relaxed text-lg mb-10">{service.shortDescription}</p>
             ) : null}
 
             {/* Bottom CTA Card */}

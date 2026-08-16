@@ -548,7 +548,7 @@ export function BookingPage() {
       </section>
 
       {/* Booking Form */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-2xl mx-auto px-5 sm:px-8 lg:px-10">
           {currentStep < 4 ? (
             <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm shadow-slate-900/3">

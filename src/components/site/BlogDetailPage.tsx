@@ -41,7 +41,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
             <Skeleton className="h-4 w-48 mx-auto" />
           </div>
         </section>
-        <section className="py-14 lg:py-20 bg-white">
+        <section className="py-10 lg:py-14 bg-white">
           <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10 space-y-4">
             <Skeleton className="h-72 lg:h-96 rounded-2xl" />
             <Skeleton className="h-4 w-full" />
@@ -92,7 +92,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
               Blog
             </button>
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-5 leading-tight">
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-4 leading-tight">
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
@@ -118,11 +118,11 @@ export function BlogDetailPage({ slug }: { slug: string }) {
       </section>
 
       {/* Content */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-8 lg:py-12 bg-white">
         <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="animate-fade-up">
             {post.featuredImage && (
-              <div className="rounded-2xl overflow-hidden h-64 lg:h-96 mb-10">
+              <div className="rounded-2xl overflow-hidden h-64 lg:h-96 mb-8">
                 <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
               </div>
             )}
@@ -135,7 +135,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
 
             {post.tags && (
               <>
-                <Separator className="my-10" />
+                <Separator className="my-8" />
                 <div className="flex flex-wrap gap-2">
                   {post.tags.split(',').map((tag: string) => (
                     <span
@@ -149,7 +149,7 @@ export function BlogDetailPage({ slug }: { slug: string }) {
               </>
             )}
 
-            <Separator className="my-10" />
+            <Separator className="my-8" />
 
             {/* CTA Card */}
             <div className="bg-emerald-50 rounded-2xl p-8 sm:p-10 text-center border border-emerald-100/50">

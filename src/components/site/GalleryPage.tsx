@@ -41,7 +41,7 @@ export function GalleryPage() {
             <Skeleton className="h-4 w-64" />
           </div>
         </section>
-        <section className="py-14 lg:py-20 bg-white">
+        <section className="py-10 lg:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
@@ -70,11 +70,11 @@ export function GalleryPage() {
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           {/* Category Filter Pills */}
           {categories.length > 2 && (
-            <div className="flex flex-wrap gap-2 mb-12">
+            <div className="flex flex-wrap gap-2 mb-8">
               {categories.map((cat) => (
                 <button
                   key={cat}

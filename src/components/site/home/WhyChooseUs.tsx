@@ -31,10 +31,10 @@ export function WhyChooseUs() {
   const { ref, inView } = useInView()
 
   return (
-    <section className="py-24 lg:py-32 bg-slate-950">
+    <section className="py-16 lg:py-20 bg-slate-950">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-xl mb-16 mx-auto text-center">
+        <div className="max-w-xl mb-10 mx-auto text-center">
           <span className="section-label text-amber-400 mb-3 block">How It Works</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5 leading-tight">
             Your Journey to a Better Smile

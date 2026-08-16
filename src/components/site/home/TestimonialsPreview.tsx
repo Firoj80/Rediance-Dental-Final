@@ -56,9 +56,9 @@ export function TestimonialsPreview() {
 
   if (clinicLoading) {
     return (
-      <section className="py-24 lg:py-32 bg-slate-950 dark-texture">
+      <section className="py-16 lg:py-20 bg-slate-950 dark-texture">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <Skeleton className="h-3 w-20 mx-auto mb-3 bg-white/10" />
             <Skeleton className="h-8 w-52 mx-auto bg-white/10" />
           </div>
@@ -75,10 +75,10 @@ export function TestimonialsPreview() {
   if (testimonials.length === 0) return null
 
   return (
-    <section className="py-24 lg:py-32 bg-slate-950 dark-texture">
+    <section className="py-16 lg:py-20 bg-slate-950 dark-texture">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="max-w-xl mb-16 mx-auto text-center">
+        <div className="max-w-xl mb-10 mx-auto text-center">
           <span className="section-label text-amber-400 mb-3 block">Testimonials</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-4 leading-tight">
             What Our Patients Say

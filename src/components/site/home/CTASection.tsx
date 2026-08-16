@@ -20,12 +20,12 @@ export function CTASection() {
         backgroundSize: '32px 32px',
       }} />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 py-28 lg:py-36 text-center">
-        <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+      <div className="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 py-16 lg:py-20 text-center">
+        <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4 tracking-tight leading-tight">
           Ready for a{' '}
           <span className="text-amber-400">Healthier Smile</span>?
         </h2>
-        <p className="text-white/50 mb-12 text-base sm:text-lg leading-relaxed max-w-lg mx-auto">
+        <p className="text-white/50 mb-8 text-base sm:text-lg leading-relaxed max-w-lg mx-auto">
           Book your appointment today. We&apos;re here to make your visit comfortable, efficient, and stress-free.
         </p>
 

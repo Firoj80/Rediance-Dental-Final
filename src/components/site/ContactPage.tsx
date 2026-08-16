@@ -50,7 +50,7 @@ export function ContactPage() {
             <Skeleton className="h-8 w-40" />
           </div>
         </section>
-        <section className="py-14 lg:py-20 bg-white">
+        <section className="py-10 lg:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <Skeleton className="h-[500px] rounded-2xl" />
@@ -84,7 +84,7 @@ export function ContactPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* LEFT — Contact Form */}
