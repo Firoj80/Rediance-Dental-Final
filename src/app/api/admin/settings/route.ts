@@ -25,6 +25,32 @@ const clinicUpdateSchema = z.object({
   youtube: z.string().nullable().optional(),
 })
 
+/**
+ * Resolve short Google Maps URLs (maps.app.goo.gl, goo.gl/maps)
+ * by following redirects to get the full URL with coordinates.
+ */
+async function resolveMapUrl(url: string): Promise<string> {
+  if (!url) return url
+  if (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps')) return url
+
+  try {
+    const res = await fetch(url, {
+      redirect: 'follow',
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      signal: AbortSignal.timeout(8000),
+    })
+    const finalUrl = res.url
+    // The resolved URL should have @lat,lng coordinates
+    if (finalUrl && finalUrl.includes('@')) {
+      return finalUrl
+    }
+    return url
+  } catch {
+    // If resolution fails, keep original URL
+    return url
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const authError = await checkAuth(request)
@@ -71,6 +97,10 @@ export async function PUT(request: Request) {
       const clinic = await db.clinic.findFirst()
       if (!clinic) {
         return NextResponse.json({ error: 'Clinic not found' }, { status: 404 })
+      }
+      // Auto-resolve short Google Maps URLs to full URLs with coordinates
+      if (typeof clinicData.googleMapsUrl === 'string') {
+        clinicData.googleMapsUrl = await resolveMapUrl(clinicData.googleMapsUrl)
       }
       const parsed = clinicUpdateSchema.safeParse(clinicData)
       if (!parsed.success) {
