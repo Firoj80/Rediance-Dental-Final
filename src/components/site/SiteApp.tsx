@@ -151,6 +151,19 @@ export function SiteApp() {
     document.title = `${titles[route] || 'Home'} | ${useSiteStore.getState().clinicData?.name || 'Radiance Dental Care'}`
   }, [route])
 
+  // Dynamic favicon from clinic data
+  const clinicDataForFavicon = useSiteStore((s) => s.clinicData?.favicon)
+  useEffect(() => {
+    if (!clinicDataForFavicon) return
+    let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']")
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'icon'
+      document.head.appendChild(link)
+    }
+    link.href = clinicDataForFavicon
+  }, [clinicDataForFavicon])
+
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />

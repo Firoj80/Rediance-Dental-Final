@@ -271,3 +271,63 @@ Stage Summary:
 - Eliminates unreliable `throw NextResponse` behavior in Turbopack
 - Lint clean (0 errors)
 - `src/lib/auth.ts` was NOT modified (already correct with both exports)
+
+---
+Task ID: 10
+Agent: fullstack-developer
+Task: Add ImageUploader component to Gallery, Blog, and Testimonials admin managers
+
+Work Log:
+- Replaced plain `<Input>` URL fields with `<ImageUploader>` component in 3 admin manager files
+- `GalleryManager.tsx`: replaced "Image URL" input with ImageUploader (category='gallery', previewClassName='h-40', hint='Upload a clinic/treatment photo'); kept title, category Select, visible Switch
+- `BlogManager.tsx`: replaced "Featured Image URL" input with ImageUploader (category='blog', previewClassName='h-40', hint='Upload a featured image for the blog post'); kept all other fields (title, slug, category, author, tags, content, SEO, published)
+- `TestimonialsManager.tsx`: replaced "Photo URL (optional)" input with ImageUploader (category='testimonial', previewClassName='h-24 w-24', hint='Optional patient photo'); kept all other fields (patient name, rating, review, published)
+- Added `import ImageUploader from './ImageUploader'` to all 3 files
+- Used `value={form.field || null}` and `onChange={(url) => setForm({ ...form, field: url || '' })}` pattern to bridge string form state with ImageUploader's `string | null` interface
+- No other functionality changed (CRUD, delete, toggle, etc. all preserved)
+- Lint: 0 errors, 2 pre-existing warnings (unrelated eslint-disable directives)
+
+Files updated:
+1. `src/components/admin/GalleryManager.tsx` — import + replaced Image URL div with ImageUploader
+2. `src/components/admin/BlogManager.tsx` — import + replaced Featured Image URL div with ImageUploader
+3. `src/components/admin/TestimonialsManager.tsx` — import + replaced Photo URL div with ImageUploader
+
+Stage Summary:
+- ImageUploader now provides file upload + URL display in Gallery, Blog, and Testimonials admin forms
+- Admins can drag-and-drop or click-to-upload images instead of manually entering URLs
+- All existing CRUD functionality preserved unchanged
+- Lint clean (0 errors)
+
+---
+Task ID: 11
+Agent: Main Orchestrator
+Task: Add image upload system with logo, favicon, and file upload support across admin
+
+Work Log:
+- Created `/api/admin/upload/route.ts` — multipart FormData upload endpoint with:
+  - Per-category file type validation (logo, favicon, gallery, blog, doctor, testimonial)
+  - 5MB max file size
+  - Unique filename generation (timestamp + random)
+  - Files saved to `public/uploads/{category}/`
+  - Returns URL path like `/uploads/logo/1234abc.png`
+- Created `src/components/admin/ImageUploader.tsx` — reusable upload component:
+  - Drag-and-drop + click-to-upload
+  - Image preview with hover overlay (Replace/Remove buttons)
+  - Loading spinner during upload
+  - File type and size validation on client side
+  - Size hints per use case (logo: 200x60, favicon: 32x32, doctor: 400x500)
+- Fixed `admin-fetch.ts` to handle FormData (skip Content-Type header for multipart requests)
+- Updated `SettingsManager.tsx`:
+  - New "Branding" card at top with Logo and Favicon uploaders
+  - Doctor Photo section now uses ImageUploader instead of URL input
+  - Logo and favicon fields now included in save payload
+- Updated `SiteHeader.tsx`: shows uploaded logo image when available, falls back to Stethoscope icon
+- Updated `SiteApp.tsx`: dynamically sets favicon from clinic data
+- Applied ImageUploader to Gallery, Blog, and Testimonials managers (via subagent, fixed default→named import)
+- Settings API: auto-extracts URL from pasted `<iframe>` HTML snippets
+
+Stage Summary:
+- Full image upload system: API + reusable component + applied to 5 admin sections
+- Logo shows in header, favicon updates browser tab icon
+- All admin managers (Settings, Gallery, Blog, Testimonials) support drag-and-drop uploads
+- Lint clean (0 errors, 0 warnings)

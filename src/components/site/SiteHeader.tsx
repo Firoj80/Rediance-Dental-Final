@@ -66,12 +66,20 @@ export function SiteHeader() {
             className="flex items-center gap-2 group"
             onClick={() => handleNav('#/')}
           >
-            <div className={cn(
-              'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
-              solid ? 'bg-primary' : 'bg-white/20'
-            )}>
-              <Stethoscope className="w-5 h-5 text-white" />
-            </div>
+            {clinicData?.logo ? (
+              <img
+                src={clinicData.logo}
+                alt={clinicData.name || 'Logo'}
+                className="h-9 w-auto max-w-[140px] object-contain rounded"
+              />
+            ) : (
+              <div className={cn(
+                'w-9 h-9 rounded-lg flex items-center justify-center transition-colors',
+                solid ? 'bg-primary' : 'bg-white/20'
+              )}>
+                <Stethoscope className="w-5 h-5 text-white" />
+              </div>
+            )}
             <div className="flex flex-col">
               <span className={cn(
                 'font-bold text-sm leading-tight transition-colors',

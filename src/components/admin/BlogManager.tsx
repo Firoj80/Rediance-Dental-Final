@@ -35,6 +35,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 
 type BlogPost = {
   id: string;
@@ -307,14 +308,14 @@ export default function BlogManager() {
                 placeholder="tag1, tag2"
               />
             </div>
-            <div className="space-y-2">
-              <Label>Featured Image URL</Label>
-              <Input
-                value={form.featuredImage}
-                onChange={(e) => setForm({ ...form, featuredImage: e.target.value })}
-                placeholder="https://..."
-              />
-            </div>
+            <ImageUploader
+              value={form.featuredImage || null}
+              onChange={(url) => setForm({ ...form, featuredImage: url || '' })}
+              category="blog"
+              label="Featured Image"
+              previewClassName="h-40"
+              hint="Upload a featured image for the blog post"
+            />
             <div className="space-y-2">
               <Label>Content (Markdown)</Label>
               <Textarea

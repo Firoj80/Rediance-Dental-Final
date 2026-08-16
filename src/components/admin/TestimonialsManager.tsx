@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Star, Plus, Pencil, Trash2 } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 import {
   Dialog,
   DialogContent,
@@ -248,14 +249,14 @@ export default function TestimonialsManager() {
                 placeholder="Patient review..."
               />
             </div>
-            <div className="space-y-2">
-              <Label>Photo URL (optional)</Label>
-              <Input
-                value={form.photo}
-                onChange={(e) => setForm({ ...form, photo: e.target.value })}
-                placeholder="https://..."
-              />
-            </div>
+            <ImageUploader
+              value={form.photo || null}
+              onChange={(url) => setForm({ ...form, photo: url || '' })}
+              category="testimonial"
+              label="Photo"
+              previewClassName="h-24 w-24"
+              hint="Optional patient photo"
+            />
             <label className="flex items-center gap-2 text-sm">
               <Switch
                 checked={form.published}

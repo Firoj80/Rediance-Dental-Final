@@ -32,6 +32,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Plus, Trash2, ImageIcon } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 
 type GalleryImage = {
   id: string;
@@ -215,14 +216,14 @@ export default function GalleryManager() {
                 placeholder="Image title"
               />
             </div>
-            <div className="space-y-2">
-              <Label>Image URL</Label>
-              <Input
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-                placeholder="https://..."
-              />
-            </div>
+            <ImageUploader
+              value={form.image || null}
+              onChange={(url) => setForm({ ...form, image: url || '' })}
+              category="gallery"
+              label="Image"
+              previewClassName="h-40"
+              hint="Upload a clinic/treatment photo"
+            />
             <div className="space-y-2">
               <Label>Category</Label>
               <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>

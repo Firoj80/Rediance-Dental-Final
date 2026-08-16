@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Eye, EyeOff, Pencil } from 'lucide-react';
+import { Loader2, Eye, EyeOff, Pencil, Image as ImageIcon, Globe } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 
 type Settings = {
   id: string;
@@ -34,6 +35,8 @@ type Clinic = {
   name: string;
   tagline: string | null;
   description: string | null;
+  logo: string | null;
+  favicon: string | null;
   phone: string | null;
   email: string | null;
   whatsapp: string | null;
@@ -98,6 +101,8 @@ export default function SettingsManager() {
           name: clinic.name,
           tagline: clinic.tagline,
           description: clinic.description,
+          logo: clinic.logo,
+          favicon: clinic.favicon,
           phone: clinic.phone,
           email: clinic.email,
           whatsapp: clinic.whatsapp,
@@ -129,7 +134,6 @@ export default function SettingsManager() {
         return;
       }
       toast.success('Settings saved');
-      // Refresh data from server
       fetchData();
     } catch {
       toast.error('Failed to save settings');
@@ -182,6 +186,35 @@ export default function SettingsManager() {
 
   return (
     <div className="space-y-6 max-w-3xl">
+      {/* Branding */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <ImageIcon className="h-3.5 w-3.5" /> Branding
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-6 sm:grid-cols-2">
+            <ImageUploader
+              value={clinic.logo}
+              onChange={(url) => updateClinicField('logo', url)}
+              category="logo"
+              label="Website Logo"
+              previewClassName="h-24"
+              hint="Recommended: 200x60px, PNG with transparent background or SVG"
+            />
+            <ImageUploader
+              value={clinic.favicon}
+              onChange={(url) => updateClinicField('favicon', url)}
+              category="favicon"
+              label="Favicon"
+              previewClassName="h-24 w-24"
+              hint="Recommended: 32x32px or 64x64px, PNG or ICO"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Clinic Info */}
       <Card>
         <CardHeader>
@@ -227,7 +260,7 @@ export default function SettingsManager() {
           <div className="space-y-2">
             <Label>Google Maps URL</Label>
             <Input placeholder="Any Google Maps URL (place, short link, or embed)" value={clinic.googleMapsUrl || ''} onChange={(e) => updateClinicField('googleMapsUrl', e.target.value)} />
-            <p className="text-xs text-muted-foreground">Paste any Google Maps link — it will be automatically converted for embedding.</p>
+            <p className="text-xs text-muted-foreground">Paste any Google Maps link or embed code — it will be automatically handled.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-2">
@@ -252,6 +285,14 @@ export default function SettingsManager() {
           <CardTitle className="text-base">Doctor</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          <ImageUploader
+            value={settings.doctorPhoto}
+            onChange={(url) => updateSettingsField('doctorPhoto', url || '')}
+            category="doctor"
+            label="Doctor Photo"
+            previewClassName="h-48 w-48"
+            hint="Recommended: 400x500px, professional headshot"
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Name</Label>
@@ -262,15 +303,9 @@ export default function SettingsManager() {
               <Input value={settings.doctorQualification || ''} onChange={(e) => updateSettingsField('doctorQualification', e.target.value)} />
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>Experience</Label>
-              <Input value={settings.doctorExperience || ''} onChange={(e) => updateSettingsField('doctorExperience', e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label>Photo URL</Label>
-              <Input value={settings.doctorPhoto || ''} onChange={(e) => updateSettingsField('doctorPhoto', e.target.value)} />
-            </div>
+          <div className="space-y-2">
+            <Label>Experience</Label>
+            <Input value={settings.doctorExperience || ''} onChange={(e) => updateSettingsField('doctorExperience', e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label>Specializations (comma separated)</Label>
