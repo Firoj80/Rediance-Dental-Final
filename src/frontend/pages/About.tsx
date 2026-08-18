@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { useStaggeredReveal } from '../shared';
 import { useClinic } from '../context/ClinicContext';
-const aboutClinic = '/uploads/about-clinic.jpg';
-const team1 = '/uploads/team-1.jpg';
-const team2 = '/uploads/team-2.jpg';
-const team3 = '/uploads/team-3.jpg';
+const aboutClinic = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/about-clinic.jpg';
+const team1 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/team-1.jpg';
+const team2 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/team-2.jpg';
+const team3 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/team-3.jpg';
 
 const STATS = [
   { value: '5.0', label: 'Patient Rating' },

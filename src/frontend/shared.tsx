@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // ============ IMAGE CONSTANTS ============
-export const HERO_IMAGE = '/uploads/hero-image.webp';
+export const HERO_IMAGE = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/hero-image.webp';
 
-export const SECTION2_IMAGE = '/uploads/section2-image.webp';
+export const SECTION2_IMAGE = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/section2-image.webp';
 
-export const SECTION3_IMG1 = '/uploads/section3-img1.webp';
+export const SECTION3_IMG1 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/section3-img1.webp';
 
-export const SECTION3_IMG2 = '/uploads/section3-img2.webp';
+export const SECTION3_IMG2 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/section3-img2.webp';
 
-export const SECTION3_BG = '/uploads/section3-bg.webp';
+export const SECTION3_BG = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/section3-bg.webp';
 
 // ============ NAV LINKS ============
 export const NAV_LINKS = [
@@ -48,21 +48,21 @@ export const BUSINESS = {
 // ============ SERVICE IMAGES ============
 export const SERVICE_IMAGES = {
   veneers:
-    '/uploads/service-veneers.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-veneers.jpg',
   crowns:
-    '/uploads/service-crowns.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-crowns.jpg',
   whitening:
-    '/uploads/service-whitening.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-whitening.jpg',
   implants:
-    '/uploads/service-implants.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-implants.jpg',
   orthodontics:
-    '/uploads/service-orthodontics.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-orthodontics.jpg',
   rootCanal:
-    '/uploads/service-rootcanal.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-rootcanal.jpg',
   trauma:
-    '/uploads/service-trauma.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-trauma.jpg',
   gums:
-    '/uploads/service-gums.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-gums.jpg',
 };
 
 // ============ TYPES ============
