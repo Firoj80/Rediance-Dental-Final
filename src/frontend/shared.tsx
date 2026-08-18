@@ -48,21 +48,21 @@ export const BUSINESS = {
 // ============ SERVICE IMAGES ============
 export const SERVICE_IMAGES = {
   veneers:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-veneers.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-veneers.webp',
   crowns:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-crowns.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-crowns.webp',
   whitening:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-whitening.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-whitening.webp',
   implants:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-implants.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-implants.webp',
   orthodontics:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-orthodontics.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-orthodontics.webp',
   rootCanal:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-rootcanal.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-rootcanal.webp',
   trauma:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-trauma.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-trauma.webp',
   gums:
-    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-gums.jpg',
+    'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/service-gums.webp',
 };
 
 // ============ TYPES ============

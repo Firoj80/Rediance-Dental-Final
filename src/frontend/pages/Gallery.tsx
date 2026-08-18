@@ -9,10 +9,10 @@ import {
 } from '../shared';
 import { useClinic } from '../context/ClinicContext';
 
-const gallery1 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-1.jpg';
-const gallery2 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-2.jpg';
-const gallery3 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-3.jpg';
-const gallery4 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-4.jpg';
+const gallery1 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-1.webp';
+const gallery2 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-2.webp';
+const gallery3 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-3.webp';
+const gallery4 = 'https://ykloolwpxcehzfv0.public.blob.vercel-storage.com/gallery-4.webp';
 
 const GALLERY_ITEMS = [
   { src: HERO_IMAGE, label: 'Smile Makeover', featured: true },
