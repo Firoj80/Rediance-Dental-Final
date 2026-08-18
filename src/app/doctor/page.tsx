@@ -20,19 +20,22 @@ export default function DoctorPage() {
   const [currentView, setCurrentView] = useState<AdminView>('dashboard');
 
   useEffect(() => {
-    const token = localStorage.getItem('admin-token');
-    if (token) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- must check localStorage after mount to avoid hydration mismatch
-      setAuthenticated(true);
-    }
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated) {
+          setAuthenticated(true);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const handleLogin = () => {
     window.location.reload();
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin-token');
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
     window.location.reload();
   };
 

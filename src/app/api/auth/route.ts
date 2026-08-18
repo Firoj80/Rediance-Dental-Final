@@ -35,7 +35,22 @@ export async function POST(request: Request) {
 
     const token = await createSessionToken()
 
-    return NextResponse.json({ success: true, token })
+    // Set HTTP-Only Cookie
+    const response = NextResponse.json({ success: true })
+    
+    // Cookie expires in 7 days
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 7)
+    
+    response.cookies.set('admin-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      expires,
+    })
+
+    return response
   } catch (error) {
     console.error('Error during login:', error)
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })

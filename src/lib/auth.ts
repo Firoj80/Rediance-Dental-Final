@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 import { db } from '@/lib/db'
+import { cookies } from 'next/headers'
 
 /**
  * Generate a deterministic session token from the stored password hash.
@@ -13,13 +14,13 @@ function computeToken(passwordHash: string): string {
 /**
  * Validate admin auth. Returns null if authorized, or a 401 NextResponse to return.
  */
-export async function checkAuth(request: Request): Promise<NextResponse | null> {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+export async function checkAuth(request?: Request): Promise<NextResponse | null> {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('admin-token')?.value
+
+  if (!token) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
-
-  const token = authHeader.slice(7)
 
   const settings = await db.clinicSettings.findFirst()
   if (!settings?.adminPassword) {

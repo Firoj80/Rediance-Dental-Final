@@ -41,30 +41,41 @@ function extractMapUrl(input: string): string {
  * by following redirects to get the full URL with coordinates.
  */
 async function resolveMapUrl(url: string): Promise<string> {
-  // First, extract URL if user pasted an <iframe> tag
   url = extractMapUrl(url)
-  
   if (!url) return url
-  // Already an embed URL — no need to resolve
-  if (url.includes('/maps/embed')) return url
-  if (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps')) return url
+  if (url.includes('/maps/embed') || url.includes('output=embed')) return url
 
-  try {
-    const res = await fetch(url, {
-      redirect: 'follow',
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-      signal: AbortSignal.timeout(8000),
-    })
-    const finalUrl = res.url
-    // The resolved URL should have @lat,lng coordinates
-    if (finalUrl && finalUrl.includes('@')) {
-      return finalUrl
+  let finalUrl = url;
+
+  // Follow redirect for short URLs
+  if (url.includes('maps.app.goo.gl') || url.includes('goo.gl/maps')) {
+    try {
+      const res = await fetch(url, {
+        redirect: 'follow',
+        headers: { 'User-Agent': 'Mozilla/5.0' },
+        signal: AbortSignal.timeout(8000),
+      })
+      finalUrl = res.url
+    } catch {
+      // Ignore
     }
-    return url
-  } catch {
-    // If resolution fails, keep original URL
-    return url
   }
+
+  // Convert place URLs with coordinates to embed URLs
+  if (finalUrl.includes('@')) {
+    const match = finalUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)
+    if (match) {
+      return `https://www.google.com/maps?q=${match[1]},${match[2]}&z=16&output=embed`
+    }
+  } else if (finalUrl.includes('/place/')) {
+    // If it has a place name but no coordinates, we can try querying the place name
+    const match = finalUrl.match(/\/place\/([^\/]+)/)
+    if (match) {
+      return `https://www.google.com/maps?q=${match[1]}&z=16&output=embed`
+    }
+  }
+
+  return finalUrl
 }
 
 export async function GET(request: Request) {

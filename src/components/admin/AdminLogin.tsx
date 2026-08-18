@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Stethoscope, Loader2 } from 'lucide-react';
 
 type AdminLoginProps = {
-  onLogin: (token: string) => void;
+  onLogin: () => void;
 };
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
@@ -27,9 +27,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
         body: JSON.stringify({ password }),
       });
       if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('admin-token', data.token);
-        onLogin(data.token);
+        onLogin();
       } else {
         const data = await res.json();
         setError(data.error || 'Invalid password');

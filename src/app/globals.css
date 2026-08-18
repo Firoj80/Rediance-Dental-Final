@@ -1,249 +1,143 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+
+@plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-jakarta);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  /* Custom theme colors matching Material Design 3 dark */
-  --color-surface: #10131a;
-  --color-surface-dim: #10131a;
-  --color-surface-obsidian: #0a111a;
-  --color-surface-lowest: #0b0e14;
-  --color-surface-low: #181c22;
-  --color-surface-container: #1c2026;
-  --color-surface-high: #272a31;
-  --color-surface-variant: #32353c;
-  --color-surface-bright: #363940;
-  --color-teal: #59dad1;
-  --color-teal-dark: #00a8a0;
-  --color-teal-text: #243240;
-  --color-heading: #d5e4f7;
-  --color-body: #c4c6cf;
-  --color-subtle: #8e9196;
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
-:root {
-  --radius: 0.125rem;
-  --background: #10131a;
-  --foreground: #e0e2eb;
-  --card: #181c22;
-  --card-foreground: #e0e2eb;
-  --popover: #1c2026;
-  --popover-foreground: #e0e2eb;
-  --primary: #59dad1;
-  --primary-foreground: #243240;
-  --secondary: #00a8a0;
-  --secondary-foreground: #e0e2eb;
-  --muted: #1c2026;
-  --muted-foreground: #c4c6cc;
-  --accent: #d5e4f7;
-  --accent-foreground: #0e1d2a;
-  --destructive: #ffb4ab;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: #59dad1;
-  --chart-1: #59dad1;
-  --chart-2: #d5e4f7;
-  --chart-3: #ffb598;
-  --chart-4: #b9c8da;
-  --chart-5: #79f6ed;
-  --sidebar: #10131a;
-  --sidebar-foreground: #e0e2eb;
-  --sidebar-primary: #59dad1;
-  --sidebar-primary-foreground: #243240;
-  --sidebar-accent: #1c2026;
-  --sidebar-accent-foreground: #59dad1;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #59dad1;
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
   }
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #32353c;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #4a4d52;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Animations */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.animate-fade-up { animation: fadeUp 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.animate-fade-in { animation: fadeIn 500ms ease forwards; }
-.animate-slide-left { animation: slideInLeft 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.animate-slide-right { animation: slideInRight 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.animate-scale-in { animation: scaleIn 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.animate-float { animation: float 6s ease-in-out infinite; }
-
-/* Stagger delays */
-.stagger-1 { animation-delay: 100ms; }
-.stagger-2 { animation-delay: 200ms; }
-.stagger-3 { animation-delay: 300ms; }
-.stagger-4 { animation-delay: 400ms; }
-.stagger-5 { animation-delay: 500ms; }
-.stagger-6 { animation-delay: 600ms; }
-
-/* Card interactions */
-.card-hover {
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease, border-color 300ms ease;
-}
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 0.3);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-/* Subtle noise texture for dark sections */
-.dark-texture {
-  position: relative;
-}
-.dark-texture::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Theme card for sections */
-.theme-card {
-  @apply bg-surface-low rounded-xl border border-border-subtle overflow-hidden;
-}
-
-.img-zoom { overflow: hidden; }
-.img-zoom img {
-  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.img-zoom:hover img {
-  transform: scale(1.05);
-}
-
-/* Section label (small uppercase text above headings) */
-.section-label {
-  @apply text-xs font-semibold tracking-[0.15em] uppercase;
-}
-
-/* Prose for blog content */
-.prose-dental h2 {
-  @apply text-xl font-bold text-heading mt-10 mb-4;
-}
-.prose-dental h3 {
-  @apply text-lg font-semibold text-heading mt-8 mb-3;
-}
-.prose-dental p {
-  @apply text-muted-foreground leading-relaxed mb-4 text-[15px];
-}
-.prose-dental ul, .prose-dental ol {
-  @apply text-muted-foreground leading-relaxed mb-4 ml-6 text-[15px];
-}
-.prose-dental ul { @apply list-disc; }
-.prose-dental ol { @apply list-decimal; }
-.prose-dental li { @apply mb-2; }
-.prose-dental strong { @apply text-foreground font-semibold; }
-.prose-dental a {
-  @apply text-teal underline underline-offset-2 hover:text-teal-dark transition-colors;
-}
-
-/* Dark page header shared style */
-.page-header {
-  @apply bg-surface-low border-b border-border-subtle py-5 lg:py-7 text-center;
 }
