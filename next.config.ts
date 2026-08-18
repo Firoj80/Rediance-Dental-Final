@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*.public.blob.vercel-storage.com",
+        hostname: "ykloolwpxcehzfv0.public.blob.vercel-storage.com",
         port: "",
       },
       // Keep localhost for locally uploaded legacy images if any
